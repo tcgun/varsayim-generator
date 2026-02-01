@@ -38,9 +38,12 @@ const INITIAL_STATE: AppState = {
   sponsorName: "Sponsorunuz",
 };
 
+type Tab = 'editor' | 'preview';
+
 export default function Home() {
   const [state, setState] = useState<AppState>(INITIAL_STATE);
   const [mounted, setMounted] = useState(false);
+  const [activeTab, setActiveTab] = useState<Tab>('editor');
   const captureRef = useRef<HTMLDivElement>(null);
 
   // Load from localStorage on mount
@@ -68,11 +71,9 @@ export default function Home() {
     if (!captureRef.current) return;
 
     try {
-      // Create a temporary clone for high-res capture to avoid scaling issues? 
-      // html-to-image usually handles this well with pixelRatio.
       const dataUrl = await toPng(captureRef.current, {
         quality: 1,
-        pixelRatio: 2, // Double quality for crispness
+        pixelRatio: 2,
         cacheBust: true,
       });
 
@@ -92,30 +93,52 @@ export default function Home() {
   };
 
   if (!mounted) return (
-    <div className="h-screen w-screen flex items-center justify-center bg-v-gray">
+    <div className="h-dvh w-screen flex items-center justify-center bg-v-gray">
       <div className="text-2xl font-black italic tracking-tighter animate-pulse">VARSAYIM LABS</div>
     </div>
   );
 
   return (
-    <main className="flex flex-col md:flex-row h-screen w-full bg-v-gray text-black overflow-hidden font-sans">
-      {/* Editor Panel (Top on Mobile) */}
-      <div className="order-1 md:order-1 w-full md:w-96 lg:w-[400px] h-[50vh] md:h-full flex-shrink-0 z-10 shadow-xl overflow-y-auto md:border-r-brutal border-black bg-white pb-32 md:pb-40">
-        <Editor
-          state={state}
-          setState={setState}
-          onDownload={handleDownload}
-          onSavePreset={handleSavePreset}
-        />
+    <main className="flex flex-col md:flex-row h-dvh w-full bg-v-gray text-black overflow-hidden font-sans">
+
+      {/* Mobile Tab Switcher */}
+      <div className="md:hidden shrink-0 flex items-center justify-between p-2 bg-white border-b-brutal border-black z-50">
+        <div className="flex bg-v-gray p-1 rounded-brutal border-2 border-black/10 mx-auto">
+          <button
+            onClick={() => setActiveTab('editor')}
+            className={`px-6 py-2 rounded-lg font-black italic upppercase transition-all ${activeTab === 'editor' ? 'bg-black text-white shadow-lg' : 'text-black/50 hover:text-black'}`}
+          >
+            EDİTÖR
+          </button>
+          <button
+            onClick={() => setActiveTab('preview')}
+            className={`px-6 py-2 rounded-lg font-black italic upppercase transition-all ${activeTab === 'preview' ? 'bg-v-pink text-white shadow-lg' : 'text-black/50 hover:text-black'}`}
+          >
+            ÖNİZLEME
+          </button>
+        </div>
       </div>
 
-      {/* Preview Area (Bottom on Mobile) */}
-      <div className="order-2 md:order-2 flex-1 md:h-full overflow-hidden flex flex-col relative bg-[url('https://grainy-gradients.vercel.app/noise.svg')] bg-repeat p-2 md:p-10 border-t-brutal md:border-t-0 border-black mb-0">
+      {/* Editor Panel */}
+      <div className={`${activeTab === 'editor' ? 'flex' : 'hidden'} md:flex order-1 w-full md:w-96 lg:w-[400px] h-full flex-col z-10 shadow-xl border-r-brutal border-black bg-white`}>
+        <div className="flex-1 overflow-y-auto pb-40 md:pb-32">
+          <Editor
+            state={state}
+            setState={setState}
+            onDownload={handleDownload}
+            onSavePreset={handleSavePreset}
+            isMobile={true}
+          />
+        </div>
+      </div>
+
+      {/* Preview Area */}
+      <div className={`${activeTab === 'preview' ? 'flex' : 'hidden'} md:flex order-2 flex-1 h-full overflow-hidden flex-col relative bg-[url('https://grainy-gradients.vercel.app/noise.svg')] bg-repeat p-0 md:p-10 mb-0`}>
         <Preview state={state} domRef={captureRef} />
       </div>
 
-      {/* Global Bottom Buttons (Mobile: Fixed Full Width, Desktop: Fixed under Sidebar) */}
-      <div className="fixed bottom-0 left-0 right-0 md:right-auto md:w-96 lg:w-[400px] bg-white border-t-brutal border-black p-4 grid grid-cols-2 gap-4 z-[100] shadow-[0_-10px_20px_rgba(0,0,0,0.1)]">
+      {/* Global Bottom Buttons (Mobile: Fixed Full Width, Desktop: Included in Editor or Specific Area) */}
+      <div className={`${activeTab === 'editor' ? 'grid' : 'hidden'} md:grid fixed md:absolute bottom-0 left-0 right-0 md:left-0 md:right-auto md:w-96 lg:w-[400px] bg-white border-t-brutal border-black p-4 grid-cols-2 gap-4 z-[100] shadow-[0_-10px_20px_rgba(0,0,0,0.1)]`}>
         <button
           onClick={handleDownload}
           className="brutal-button bg-black text-white hover:bg-v-pink py-4 transition-all"
@@ -129,6 +152,19 @@ export default function Home() {
           KAYDET
         </button>
       </div>
+
+      {/* Mobile Preview Action Button */}
+      {activeTab === 'preview' && (
+        <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[100]">
+          <button
+            onClick={handleDownload}
+            className="brutal-button bg-black text-white hover:bg-v-pink py-3 px-8 text-lg shadow-2xl animate-bounce"
+          >
+            GÖRSELİ İNDİR
+          </button>
+        </div>
+      )}
+
     </main>
   );
 }

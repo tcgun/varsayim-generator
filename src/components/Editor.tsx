@@ -9,9 +9,10 @@ interface Props {
     setState: React.Dispatch<React.SetStateAction<AppState>>;
     onDownload: () => void;
     onSavePreset: () => void;
+    isMobile?: boolean;
 }
 
-const Editor: React.FC<Props> = ({ state, setState, onDownload, onSavePreset }) => {
+const Editor: React.FC<Props> = ({ state, setState, onDownload, onSavePreset, isMobile }) => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value, type } = e.target as HTMLInputElement;
         const val = type === "checkbox" ? (e.target as HTMLInputElement).checked : value;
