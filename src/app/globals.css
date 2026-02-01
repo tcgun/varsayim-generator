@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+:root {
+  --background: #F3F4F6;
+  --foreground: #000000;
+  
+  --varsayim-yellow: #FFDD00;
+  --varsayim-pink: #FF5DAD;
+  --varsayim-gray: #F3F4F6;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  
+  --color-v-yellow: var(--varsayim-yellow);
+  --color-v-pink: var(--varsayim-pink);
+  --color-v-gray: var(--varsayim-gray);
+  
+  --shadow-brutal: 4px 4px 0px 0px #000000;
+  --shadow-brutal-pink: 4px 4px 0px 0px var(--varsayim-pink);
+  
+  --radius-brutal: 12px;
+  --border-width-brutal: 2px;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.brutal-card {
+  @apply border-brutal border-black bg-white shadow-brutal rounded-brutal;
+}
+
+.brutal-button {
+  @apply border-brutal border-black bg-white hover:bg-v-yellow transition-colors shadow-brutal active:shadow-none active:translate-x-[2px] active:translate-y-[2px] rounded-brutal px-4 py-2 font-bold;
+}
+
+.brutal-input {
+  @apply border-brutal border-black bg-white rounded-brutal px-3 py-2 focus:outline-none focus:ring-2 focus:ring-v-pink w-full;
+}
