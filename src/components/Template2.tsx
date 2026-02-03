@@ -2,6 +2,7 @@
 
 import React, { useMemo } from "react";
 import { AppState, PRESETS } from "../types";
+import { Globe } from "lucide-react";
 
 interface Props {
     state: AppState;
@@ -10,161 +11,241 @@ interface Props {
 
 const Template2: React.FC<Props> = ({ state, domRef }) => {
     const preset = PRESETS[state.currentPreset] || PRESETS["ig-square"];
+    const isLandscape = preset.width > preset.height;
+    const isExtremeLandscape = isLandscape && preset.height < 650;
 
-    const THEMES = {
+    // Tema Renkleri (T1 ile tam uyumlu)
+    const THEMES: Record<string, any> = {
         default: { primary: "bg-v-yellow", bg: state.bgColor, border: "border-black", shadow: "shadow-brutal-pink", text: "text-black" },
-        gs: { primary: "bg-[#A32638]", bg: "#FFB81C", border: "border-[#A32638]", shadow: "shadow-[8px_8px_0px_0px_#A32638]", text: "text-[#A32638]" },
-        fb: { primary: "bg-[#002D72]", bg: "#FEDD00", border: "border-[#002D72]", shadow: "shadow-[8px_8px_0px_0px_#002D72]", text: "text-[#002D72]" },
+        gs: { primary: "bg-[#A90432]", bg: "#FDB912", border: "border-[#A90432]", shadow: "shadow-[8px_8px_0px_0px_#A90432]", text: "text-[#A90432]" },
+        fb: { primary: "bg-[#002d72]", bg: "#f9b517", border: "border-[#002d72]", shadow: "shadow-[8px_8px_0px_0px_#002d72]", text: "text-[#002d72]" },
         bjk: { primary: "bg-black", bg: "#FFFFFF", border: "border-black", shadow: "shadow-[8px_8px_0px_0px_#000000]", text: "text-black" },
-        ts: { primary: "bg-[#711628]", bg: "#6BAEE3", border: "border-[#711628]", shadow: "shadow-[8px_8px_0px_0px_#711628]", text: "text-[#711628]" },
-        basak: { primary: "bg-[#ED782F]", bg: "#002D72", border: "border-[#ED782F]", shadow: "shadow-[8px_8px_0px_0px_#ED782F]", text: "text-[#ED782F]" },
-        kasimpasa: { primary: "bg-[#002D72]", bg: "#FFFFFF", border: "border-[#002D72]", shadow: "shadow-[8px_8px_0px_0px_#002D72]", text: "text-[#002D72]" },
-        eyup: { primary: "bg-[#5D3EBC]", bg: "#FFD700", border: "border-[#5D3EBC]", shadow: "shadow-[8px_8px_0px_0px_#5D3EBC]", text: "text-[#5D3EBC]" },
-        goztepe: { primary: "bg-[#FFD700]", bg: "#FF0000", border: "border-[#FFD700]", shadow: "shadow-[8px_8px_0px_0px_#FFD700]", text: "text-[#FFD700]" },
-        samsun: { primary: "bg-[#E30613]", bg: "#FFFFFF", border: "border-[#E30613]", shadow: "shadow-[8px_8px_0px_0px_#E30613]", text: "text-[#E30613]" },
-        hatay: { primary: "bg-[#600000]", bg: "#FFFFFF", border: "border-[#600000]", shadow: "shadow-[8px_8px_0px_0px_#600000]", text: "text-[#600000]" },
-        rize: { primary: "bg-[#008000]", bg: "#0000FF", border: "border-[#008000]", shadow: "shadow-[8px_8px_0px_0px_#008000]", text: "text-[#008000]" },
-        sivas: { primary: "bg-[#FF0000]", bg: "#FFFFFF", border: "border-[#FF0000]", shadow: "shadow-[8px_8px_0px_0px_#FF0000]", text: "text-[#FF0000]" },
-        konya: { primary: "bg-[#006400]", bg: "#FFFFFF", border: "border-[#006400]", shadow: "shadow-[8px_8px_0px_0px_#006400]", text: "text-[#006400]" },
-        antalya: { primary: "bg-[#FF0000]", bg: "#FFFFFF", border: "border-[#FF0000]", shadow: "shadow-[8px_8px_0px_0px_#FF0000]", text: "text-[#FF0000]" },
-        alanya: { primary: "bg-[#FFA500]", bg: "#008000", border: "border-[#FFA500]", shadow: "shadow-[8px_8px_0px_0px_#FFA500]", text: "text-[#FFA500]" },
-        kayseri: { primary: "bg-[#FFFF00]", bg: "#FF0000", border: "border-[#FFFF00]", shadow: "shadow-[8px_8px_0px_0px_#FFFF00]", text: "text-[#FFFF00]" },
-        bodrum: { primary: "bg-[#00FF00]", bg: "#FFFFFF", border: "border-[#00FF00]", shadow: "shadow-[8px_8px_0px_0px_#00FF00]", text: "text-[#00FF00]" },
-        gaziantep: { primary: "bg-[#FF0000]", bg: "#000000", border: "border-[#FF0000]", shadow: "shadow-[8px_8px_0px_0px_#FF0000]", text: "text-[#FF0000]" },
+        ts: { primary: "bg-[#A52A2A]", bg: "#87CEEB", border: "border-[#A52A2A]", shadow: "shadow-[8px_8px_0px_0px_#A52A2A]", text: "text-[#A52A2A]" },
+        basak: { primary: "bg-[#E56B25]", bg: "#163962", border: "border-[#E56B25]", shadow: "shadow-[8px_8px_0px_0px_#E56B25]", text: "text-[#E56B25]" },
+        kasimpasa: { primary: "bg-[#004A99]", bg: "#FFFFFF", border: "border-[#004A99]", shadow: "shadow-[8px_8px_0px_0px_#004A99]", text: "text-[#004A99]" },
+        eyup: { primary: "bg-[#800080]", bg: "#FFFF00", border: "border-[#800080]", shadow: "shadow-[8px_8px_0px_0px_#800080]", text: "#800080" },
+        goztepe: { primary: "bg-[#FFFF00]", bg: "#FF0000", border: "border-[#FFFF00]", shadow: "shadow-[8px_8px_0px_0px_#FFFF00]", text: "#FFFF00" },
+        samsun: { primary: "bg-[#CC0000]", bg: "#FFFFFF", border: "border-[#CC0000]", shadow: "shadow-[8px_8px_0px_0px_#CC0000]", text: "#CC0000" },
+        rize: { primary: "bg-[#008C45]", bg: "#163962", border: "border-[#008C45]", shadow: "shadow-[8px_8px_0px_0px_#008C45]", text: "#008C45" },
+        konya: { primary: "bg-[#008000]", bg: "#FFFFFF", border: "border-[#008000]", shadow: "shadow-[8px_8px_0px_0px_#008000]", text: "#008000" },
+        antalya: { primary: "bg-[#E30613]", bg: "#FFFFFF", border: "border-[#E30613]", shadow: "shadow-[8px_8px_0px_0px_#E30613]", text: "#E30613" },
+        alanya: { primary: "bg-[#F9B517]", bg: "#008C45", border: "border-[#F9B517]", shadow: "shadow-[8px_8px_0px_0px_#F9B517]", text: "#F9B517" },
+        kayseri: { primary: "bg-[#FFD700]", bg: "#CC0000", border: "border-[#FFD700]", shadow: "shadow-[8px_8px_0px_0px_#FFD700]", text: "#FFD700" },
+        gaziantep: { primary: "bg-[#DA291C]", bg: "#000000", border: "border-[#DA291C]", shadow: "shadow-[8px_8px_0px_0px_#DA291C]", text: "#DA291C" },
+        gencler: { primary: "bg-[#ff0000]", bg: "#000000", border: "border-[#ff0000]", shadow: "shadow-[8px_8px_0px_0px_#ff0000]", text: "#ff0000" },
+        kocaeli: { primary: "bg-[#008000]", bg: "#000000", border: "border-[#008000]", shadow: "shadow-[8px_8px_0px_0px_#008000]", text: "#008000" },
+        karagumruk: { primary: "bg-[#ff0000]", bg: "#000000", border: "border-[#ff0000]", shadow: "shadow-[8px_8px_0px_0px_#ff0000]", text: "#ff0000" },
     };
 
     const currentTheme = THEMES[state.theme] || THEMES.default;
 
-    const renderedComment = useMemo(() => {
-        if (!state.highlight || !state.comment.toLowerCase().includes(state.highlight.toLowerCase())) {
-            return state.comment;
+    const fontSize = useMemo(() => {
+        const len = state.comment.length;
+        const isSpread = state.contentLayout === 'spread';
+
+        if (isSpread) {
+            if (len > 500) return "text-2xl";
+            if (len > 400) return "text-3xl";
+            if (len > 300) return "text-4xl";
+            if (len > 250) return "text-5xl";
+            if (len > 200) return "text-6xl";
+            if (len > 150) return "text-7xl";
+            if (len > 100) return "text-[8rem]";
+            if (len > 50) return "text-[10rem]";
+            return "text-[12rem]";
         }
 
-        const index = state.comment.toLowerCase().indexOf(state.highlight.toLowerCase());
-        const before = state.comment.substring(0, index);
-        const match = state.comment.substring(index, index + state.highlight.length);
-        const after = state.comment.substring(index + state.highlight.length);
+        if (len > 500) return "text-xs";
+        if (len > 400) return "text-sm";
+        if (len > 300) return "text-base";
+        if (len > 250) return "text-lg";
+        if (len > 200) return "text-xl";
+        if (len > 150) return "text-2xl";
+        if (len > 100) return isExtremeLandscape ? "text-lg" : "text-4xl";
+        if (len > 50) return isExtremeLandscape ? "text-xl" : "text-5xl";
+        return isExtremeLandscape ? "text-2xl" : "text-6xl";
+    }, [state.comment, isExtremeLandscape, state.contentLayout]);
+
+    const renderedComment = useMemo(() => {
+        const comment = state.comment.trim();
+        if (!state.highlight || !comment.toLowerCase().includes(state.highlight.toLowerCase())) {
+            return comment;
+        }
+
+        const index = comment.toLowerCase().indexOf(state.highlight.toLowerCase());
+        const before = comment.substring(0, index);
+        const match = comment.substring(index, index + state.highlight.length);
+        const after = comment.substring(index + state.highlight.length);
 
         return (
             <>
                 {before}
-                <span className={`${currentTheme.primary} ${state.theme === "default" ? 'text-black' : 'text-white'} px-2 py-0.5 mx-1 translate-y-[-2px] inline-block`}>{match}</span>
+                <span className={`${currentTheme.primary} ${state.theme === 'default' ? 'text-black' : 'text-white'} px-2 py-0.5 mx-1 inline-block skew-x-[-12deg] font-black`}>{match}</span>
                 {after}
             </>
         );
     }, [state.comment, state.highlight, currentTheme, state.theme]);
 
-    const STICKERS = {
-        gol: { text: "GOL!", color: "bg-green-500" },
-        var: { text: "VAR", color: "bg-v-yellow" },
-        ofsayt: { text: "OFSAYT", color: "bg-red-500" },
-        penalti: { text: "PENALTI", color: "bg-yellow-400" },
-        kirmizi: { text: "KIRMIZI", color: "bg-red-600" },
-    };
-
     return (
         <div
             ref={domRef}
-            className={`relative flex flex-col p-0 overflow-hidden box-border`}
+            className="relative flex flex-col p-0 overflow-hidden box-border font-sans bg-black"
             style={{
                 width: preset.width,
                 height: preset.height,
-                backgroundColor: state.theme === "default" ? state.bgColor : currentTheme.bg,
             }}
             id="capture-area"
         >
-            {/* Üst Kuşak (Haber Başlığı Tarzı) */}
-            <div className={`w-full ${currentTheme.primary} h-32 flex items-center px-12 border-b-brutal border-black z-20`}>
-                <span className={`text-6xl font-black italic uppercase italic ${state.theme === "default" ? 'text-black' : 'text-white'} tracking-tighter`}>
-                    SON DAKİKA
-                </span>
-
-                {state.sticker !== "none" && STICKERS[state.sticker] && (
-                    <div className={`${STICKERS[state.sticker].color} border-brutal border-black px-4 py-1 ml-auto rotate-3`}>
-                        <span className="text-2xl font-black text-white">{STICKERS[state.sticker].text}</span>
-                    </div>
+            {/* Arka Plan Görseli */}
+            <div className="absolute inset-0 z-0">
+                {state.authorImage ? (
+                    <img src={state.authorImage} className="w-full h-full object-cover blur-sm opacity-30 scale-110" />
+                ) : (
+                    <div className="w-full h-full bg-slate-950" />
                 )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
             </div>
 
-            <div className="flex-1 flex flex-row relative z-10 overflow-hidden">
-                {/* Sol Taraf: Fotoğraf */}
-                <div className="w-2/5 h-full relative border-r-brutal border-black bg-v-gray">
-                    {state.authorImage ? (
-                        <img src={state.authorImage} className="w-full h-full object-cover" />
-                    ) : (
-                        <div className="w-full h-full flex items-center justify-center opacity-20">
-                            <span className="text-9xl font-black">?</span>
-                        </div>
-                    )}
-                    {/* İsim Paneli */}
-                    <div className="absolute bottom-12 left-0 right-0 bg-black text-white p-6 border-y-brutal border-white/20 flex flex-col items-start gap-1">
-                        <h2 className="text-4xl font-black uppercase tracking-tighter leading-none italic">{state.author}</h2>
-                        <p className="text-v-yellow text-sm font-bold mt-1 tracking-widest uppercase opacity-80">VARSAYIM YORUMCU</p>
-                    </div>
-                </div>
+            {/* TV Üst Bandı */}
+            <div className="absolute top-0 left-0 right-0 h-1 z-[60] bg-gradient-to-r from-red-600 via-yellow-400 to-red-600 animate-pulse" />
 
-                {/* Sağ Taraf: Haber Metni */}
-                <div className="w-3/5 h-full p-16 flex flex-col justify-center bg-white relative">
-                    {/* Pozisyon Bilgi Kutusu (Sağ Üst) */}
-                    {state.showPositionBox && (
-                        <div className={`absolute top-12 left-6 z-20 ${currentTheme.primary} border-brutal border-black px-6 py-4 shadow-brutal flex items-center rotate-[-1deg]`}>
-                            <span className={`text-xl font-black italic uppercase tracking-normal ${state.theme === "default" ? 'text-black' : 'text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]'}`}>
-                                {state.positionText}
-                            </span>
-                        </div>
-                    )}
-
-                    <div className="relative flex flex-col gap-6 pt-10">
-                        {/* Dakika Etiketi (Proper Kutu Stili) */}
-                        <div className={`absolute -top-4 left-6 z-30 bg-white border-brutal border-black ${currentTheme.shadow} px-5 py-1.5 rounded-brutal flex items-center gap-2 rotate-1`}>
-                            <span className="text-[10px] font-black uppercase tracking-widest opacity-40">DAKİKA</span>
-                            <span className="text-3xl font-black italic tracking-tighter text-black">{state.positionMinute}</span>
-                        </div>
-
-                        <div className="absolute -top-10 -left-6 text-9xl opacity-5 font-black">"</div>
-
-                        <p className="text-5xl font-black leading-[1.1] tracking-normal uppercase break-words relative z-10">
-                            {renderedComment}
-                        </p>
-                    </div>
-
-                    {/* Maç Bilgisi Alt Bölüm (Kutu İçinde) */}
-                    {state.showMatchInfo && (
-                        <div className={`mt-12 p-6 bg-v-gray/30 border-2 border-brutal border-black rounded-brutal`}>
-                            <div className="flex items-center gap-3">
-                                <div className={`${currentTheme.primary} text-white px-3 py-1 text-sm font-black italic border-2 border-black`}>CANLI</div>
-                                <span className="font-bold text-xl uppercase tracking-tighter text-black">
-                                    {state.homeTeam} {state.score} {state.awayTeam}
-                                </span>
-                            </div>
-                            <div className="mt-2 text-sm font-mono opacity-50 font-bold uppercase text-black">
-                                {state.date} {state.separator} VARSAYIM LABS
-                            </div>
-                        </div>
-                    )}
-                </div>
-            </div>
-
-            {/* Branding Bar (Alt Sabit) */}
-            {state.showBrandingBar && (
-                <div className="w-full bg-black text-white py-4 px-12 flex items-center justify-between border-t-brutal border-white/20 z-30">
-                    <div className="flex items-center gap-4">
-                        <div className="flex items-center gap-2">
-                            <span className="bg-v-yellow text-black px-2 py-0.5 rounded text-xs font-black italic">VARSAYIM.COM</span>
-                        </div>
-                        {state.showSponsor && state.sponsorName && (
-                            <div className="flex items-center gap-2 border-l border-white/20 pl-4 animate-in fade-in duration-700">
-                                <span className="text-[9px] font-black uppercase opacity-40 italic">SPONSOR:</span>
-                                <span className="text-sm font-black italic text-v-pink uppercase tracking-tight">{state.sponsorName}</span>
+            {/* HEADER: Sponsor & Logo Standardı */}
+            <div className={`absolute ${isLandscape ? 'top-8 left-8 right-8' : 'top-12 left-12 right-12'} flex items-start justify-between z-50`}>
+                {state.showSponsor && (state.sponsorName || state.sponsorLogo) ? (
+                    <div className="bg-white text-black p-2 flex items-center gap-3 rounded-brutal shadow-2xl border-2 border-black rotate-[-1deg]">
+                        {state.sponsorLogo && <img src={state.sponsorLogo} alt="Sponsor" className="h-6 object-contain" />}
+                        {state.sponsorName && (
+                            <div className="flex flex-col items-start leading-none pr-2">
+                                <span className="text-[6px] font-black uppercase tracking-widest opacity-30 italic">DESTEĞİYLE</span>
+                                <span className="text-xs font-black italic uppercase tracking-tighter">{state.sponsorName}</span>
                             </div>
                         )}
                     </div>
-                    <div className="flex items-center gap-6 opacity-80 text-xs font-bold uppercase tracking-widest">
-                        {state.handleInstagram && <span>IG: {state.handleInstagram}</span>}
-                        {state.handleX && <span>X: {state.handleX}</span>}
+                ) : <div />}
+
+                <div className={`${currentTheme.primary} border-brutal border-black shadow-brutal px-8 py-3 rotate-[1deg]`}>
+                    <span className={`text-4xl font-black tracking-tighter uppercase italic ${state.theme === "default" ? 'text-black' : 'text-white'} leading-none`}>VARSAYIM</span>
+                </div>
+            </div>
+
+            {/* İçerik */}
+            <div className="relative z-10 flex-1 flex flex-col h-full">
+                <div className="flex-1 flex flex-col md:flex-row h-full">
+                    {/* Sol: Fotoğraf Alanı (%50) */}
+                    <div className="hidden md:flex md:w-1/2 h-full relative overflow-hidden">
+                        <div
+                            className="absolute inset-0 z-10"
+                            style={{
+                                clipPath: 'polygon(0 0, 100% 0, 90% 100%, 0% 100%)',
+                                borderRight: '12px solid #FACC15'
+                            }}
+                        >
+                            {state.authorImage ? (
+                                <img src={state.authorImage} className="w-full h-full object-cover" />
+                            ) : (
+                                <div className="w-full h-full bg-slate-800 flex items-center justify-center" />
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Sağ: Metin Alanı (%50) */}
+                    <div className={`flex-1 md:w-1/2 p-8 md:p-16 flex flex-col ${state.contentLayout === 'spread' ? 'justify-between pb-32' : 'justify-end pb-32'} gap-8 relative h-full shrink-0`}>
+
+                        {/* Başlık ve Dakika Alanı */}
+                        <div className={`flex flex-col gap-4 ${state.contentLayout === 'spread' ? 'mt-24' : ''}`}>
+                            {state.showPositionBox && (state.positionLabel || (state.showMinute && state.positionMinute)) && (
+                                <div className="flex items-center gap-0">
+                                    {state.positionLabel && (
+                                        <div className="bg-red-600 text-white px-8 py-3 font-black italic text-3xl skew-x-[-12deg] shadow-2xl border-2 border-white/20 z-20">
+                                            {state.positionLabel}
+                                        </div>
+                                    )}
+                                    {state.showMinute && state.positionMinute && (
+                                        <div className="bg-white text-black px-6 py-3 font-black text-3xl skew-x-[-12deg] ml-[-12px] shadow-2xl border-2 border-black z-10">
+                                            {state.positionMinute}
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+
+                            {state.showPositionBox && state.positionText && (
+                                <div className="inline-block self-start">
+                                    <h1 className="bg-yellow-400 text-black px-10 py-4 text-5xl md:text-6xl font-black uppercase italic skew-x-[-5deg] shadow-[15px_15px_0px_0px_rgba(0,0,0,0.4)] leading-none text-left border-2 border-black">
+                                        {state.positionText}
+                                    </h1>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Orta: Ana Metin */}
+                        <div className={`relative ${state.contentLayout === 'spread' ? 'flex-1 flex flex-col justify-center' : 'mt-4'} w-full`}>
+                            <p className={`${fontSize} text-white font-black leading-[1] tracking-tighter uppercase drop-shadow-[0_15px_30px_rgba(0,0,0,1)] relative z-10 italic w-full text-left`}>
+                                {renderedComment || "DRIES MERTENS"}
+                            </p>
+                        </div>
                     </div>
                 </div>
-            )}
+
+                {/* Yorumcu İsim Paneli */}
+                {state.author && (
+                    <div className="absolute bottom-32 left-12 z-[70] min-w-[300px]">
+                        <div className="bg-black text-white px-8 py-3 skew-x-[-12deg] shadow-2xl border-b-8 border-yellow-400 border-2 border-white/10">
+                            <span className="text-3xl font-black uppercase italic tracking-tighter block skew-x-[12deg] leading-none">
+                                {state.author}
+                            </span>
+                            {state.authorTitle && (
+                                <span className="text-xs font-black opacity-60 block skew-x-[12deg] tracking-[0.2em] uppercase mt-2 italic">
+                                    {state.authorTitle}
+                                </span>
+                            )}
+                        </div>
+                    </div>
+                )}
+
+                {/* Maç Bilgisi & Marka Çubuğu (En Alt Sabit - T1 Standart) */}
+                <div className="absolute bottom-0 left-0 right-0 z-[80] flex flex-col items-center">
+                    {/* Maç Bilgisi Kutusu */}
+                    {state.showMatchInfo && (
+                        <div className={`${isExtremeLandscape ? 'mb-8 scale-[0.85]' : 'mb-6'} bg-white border-brutal border-black ${currentTheme.shadow} px-8 py-3 flex flex-col items-center rotate-1`}>
+                            <p className={`text-xl font-black uppercase tracking-widest text-center ${state.theme !== "default" ? currentTheme.text : 'text-black'}`}>
+                                {state.homeTeam} {state.score} {state.awayTeam}
+                            </p>
+                            <p className="text-[10px] font-bold opacity-40 text-center tracking-[0.3em] mt-1">
+                                {state.date} {state.separator} VARSAYIM LABS
+                            </p>
+                        </div>
+                    )}
+
+                    {/* Marka Çubuğu */}
+                    {state.showBrandingBar && (
+                        <div className="w-full bg-black text-white py-4 px-12 border-t-brutal border-white/20 flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                                <Globe size={18} className="text-v-yellow" />
+                                <span className="font-bold text-lg tracking-tight">{state.website}</span>
+                            </div>
+
+                            <div className="flex items-center gap-6">
+                                {state.handleInstagram && (
+                                    <div className="flex items-center gap-1.5 grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all">
+                                        <div className="bg-white/10 p-1 rounded">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                                        </div>
+                                        <span className="font-bold text-sm tracking-tight">{state.handleInstagram}</span>
+                                    </div>
+                                )}
+                                {state.handleX && (
+                                    <div className="flex items-center gap-1.5 grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all">
+                                        <div className="bg-white/10 p-1 rounded">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932 6.064-6.932zm-1.292 19.49h2.039L6.486 3.24H4.298l13.311 17.403z" /></svg>
+                                        </div>
+                                        <span className="font-bold text-sm tracking-tight">{state.handleX}</span>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </div>
         </div>
     );
 };

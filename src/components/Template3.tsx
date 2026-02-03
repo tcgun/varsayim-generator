@@ -2,6 +2,7 @@
 
 import React, { useMemo } from "react";
 import { AppState, PRESETS } from "../types";
+import { Globe } from "lucide-react";
 
 interface Props {
     state: AppState;
@@ -10,56 +11,56 @@ interface Props {
 
 const Template3: React.FC<Props> = ({ state, domRef }) => {
     const preset = PRESETS[state.currentPreset] || PRESETS["ig-square"];
+    const isLandscape = preset.width > preset.height;
+    const isExtremeLandscape = isLandscape && preset.height < 650;
 
-    const THEMES = {
-        default: { primary: "#FAFF00", bg: "#000000", border: "#FAFF00", text: "#FFFFFF" },
-        gs: { primary: "#FFB81C", bg: "#A32638", border: "#FFB81C", text: "#FFFFFF" },
-        fb: { primary: "#FEDD00", bg: "#002D72", border: "#FEDD00", text: "#FFFFFF" },
-        bjk: { primary: "#FFFFFF", bg: "#000000", border: "#FFFFFF", text: "#FFFFFF" },
-        ts: { primary: "#6BAEE3", bg: "#711628", border: "#6BAEE3", text: "#FFFFFF" },
-        basak: { primary: "#ED782F", bg: "#002D72", border: "#ED782F", text: "#FFFFFF" },
-        kasimpasa: { primary: "#002D72", bg: "#FFFFFF", border: "#002D72", text: "#002D72" },
-        eyup: { primary: "#FFD700", bg: "#5D3EBC", border: "#FFD700", text: "#FFFFFF" },
-        goztepe: { primary: "#FFD700", bg: "#FF0000", border: "#FFD700", text: "#FFFFFF" },
-        samsun: { primary: "#FFFFFF", bg: "#E30613", border: "#FFFFFF", text: "#FFFFFF" },
-        hatay: { primary: "#FFFFFF", bg: "#600000", border: "#FFFFFF", text: "#FFFFFF" },
-        rize: { primary: "#008000", bg: "#0000FF", border: "#008000", text: "#FFFFFF" },
-        sivas: { primary: "#FFFFFF", bg: "#FF0000", border: "#FFFFFF", text: "#FFFFFF" },
-        konya: { primary: "#FFFFFF", bg: "#006400", border: "#FFFFFF", text: "#FFFFFF" },
-        antalya: { primary: "#FFFFFF", bg: "#FF0000", border: "#FFFFFF", text: "#FFFFFF" },
-        alanya: { primary: "#FFA500", bg: "#008000", border: "#FFA500", text: "#FFFFFF" },
-        kayseri: { primary: "#FF0000", bg: "#FFFF00", border: "#FF0000", text: "#000000" },
-        bodrum: { primary: "#00FF00", bg: "#FFFFFF", border: "#00FF00", text: "#000000" },
-        gaziantep: { primary: "#FF0000", bg: "#000000", border: "#FF0000", text: "#FFFFFF" },
+    const THEMES: Record<string, any> = {
+        default: { primary: "#FAFF00", bg: "#000000", border: "#FAFF00", text: "#FFFFFF", shadow: "shadow-[8px_8px_0px_0px_rgba(250,255,0,0.5)]" },
+        gs: { primary: "#FDB912", bg: "#A90432", border: "#FDB912", text: "#FFFFFF", shadow: "shadow-[8px_8px_0px_0px_#FDB912]" },
+        fb: { primary: "#f9b517", bg: "#002d72", border: "#f9b517", text: "#FFFFFF", shadow: "shadow-[8px_8px_0px_0px_#f9b517]" },
+        bjk: { primary: "#FFFFFF", bg: "#000000", border: "#FFFFFF", text: "#FFFFFF", shadow: "shadow-[8px_8px_0px_0px_#FFFFFF]" },
+        ts: { primary: "#87CEEB", bg: "#A52A2A", border: "#87CEEB", text: "#FFFFFF", shadow: "shadow-[8px_8px_0px_0px_#87CEEB]" },
     };
 
     const currentTheme = THEMES[state.theme] || THEMES.default;
 
+    const fontSize = useMemo(() => {
+        const len = state.comment.length;
+        if (len > 500) return "text-base";
+        if (len > 400) return "text-lg";
+        if (len > 300) return "text-xl";
+        if (len > 250) return "text-2xl";
+        if (len > 200) return "text-3xl";
+        if (len > 150) return "text-5xl";
+        if (len > 100) return isLandscape ? "text-4xl" : "text-7xl";
+        if (len > 50) return isLandscape ? "text-5xl" : "text-8xl";
+        return isLandscape ? "text-6xl" : "text-[10rem]";
+    }, [state.comment, isLandscape]);
+
     const renderedComment = useMemo(() => {
-        if (!state.highlight || !state.comment.toLowerCase().includes(state.highlight.toLowerCase())) {
-            return state.comment;
+        const comment = state.comment.trim();
+        if (!state.highlight || !comment.toLowerCase().includes(state.highlight.toLowerCase())) {
+            return comment;
         }
 
-        const index = state.comment.toLowerCase().indexOf(state.highlight.toLowerCase());
-        const before = state.comment.substring(0, index);
-        const match = state.comment.substring(index, index + state.highlight.length);
-        const after = state.comment.substring(index + state.highlight.length);
+        const index = comment.toLowerCase().indexOf(state.highlight.toLowerCase());
+        const before = comment.substring(0, index);
+        const match = comment.substring(index, index + state.highlight.length);
+        const after = comment.substring(index + state.highlight.length);
 
         return (
             <>
                 {before}
-                <span style={{ color: currentTheme.primary }} className="underline decoration-4 underline-offset-8">{match}</span>
+                <span style={{ color: currentTheme.primary }} className="bg-white/10 px-2 py-0.5 rounded-sm">{match}</span>
                 {after}
             </>
         );
     }, [state.comment, state.highlight, currentTheme]);
 
-    const isLandscape = preset.width > preset.height;
-
     return (
         <div
             ref={domRef}
-            className={`relative flex flex-col justify-between overflow-hidden box-border`}
+            className="relative flex flex-col justify-between overflow-hidden box-border font-sans transition-all duration-300"
             style={{
                 width: preset.width,
                 height: preset.height,
@@ -68,101 +69,100 @@ const Template3: React.FC<Props> = ({ state, domRef }) => {
             }}
             id="capture-area"
         >
-            {/* Minimalist Background Decoration */}
-            <div className="absolute top-0 left-0 w-full h-1" style={{ backgroundColor: currentTheme.primary }} />
-            <div className="absolute top-0 left-0 w-1 h-full" style={{ backgroundColor: currentTheme.primary }} />
+            {/* Arka Plan Deseni */}
+            <div className={`absolute inset-0 z-0 opacity-10 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]`} />
 
-            {/* Sticker (Arka Plan Filigranı) */}
-            {state.sticker !== "none" && (
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-5 select-none pointer-events-none">
-                    <span className="text-[12rem] md:text-[20rem] font-black uppercase italic tracking-tighter">{state.sticker}</span>
-                </div>
-            )}
+            {/* Üst Kenarlık */}
+            <div className="absolute top-0 left-0 w-full h-2 z-[60]" style={{ backgroundColor: currentTheme.primary }} />
 
-            {/* --- HEADER SECTION --- */}
-            <div className={`w-full ${isLandscape ? 'p-6' : 'p-12'} flex flex-col items-center relative z-10 shrink-0`}>
-                {/* VARSAYIM Label (Top Left) */}
-                <div className={`absolute ${isLandscape ? 'top-6 left-6' : 'top-12 left-12'}`}>
-                    <span className="text-xl font-black italic tracking-widest opacity-30">VARSAYIM</span>
-                </div>
-
-                {/* Spacer for label */}
-                <div className={`${isLandscape ? 'h-4' : 'h-8'}`}></div>
-
-                {/* Üst Bilgi Bloğu */}
-                {state.showPositionBox && (
-                    <div className={`flex flex-col items-center ${isLandscape ? 'gap-2 mt-2' : 'gap-4 mt-4'}`}>
-                        {/* Dakika Kutusu */}
-                        <div className={`bg-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)] ${isLandscape ? 'px-4 py-1' : 'px-6 py-2'} rounded-brutal flex items-center gap-3 rotate-[1deg]`}>
-                            <span className="text-[10px] font-black tracking-[0.3em] uppercase text-black/40">DAKİKA</span>
-                            <span className={`${isLandscape ? 'text-2xl' : 'text-4xl'} font-black italic tracking-tighter text-black`}>{state.positionMinute}</span>
-                        </div>
-                        {/* Pozisyon Kutusu */}
-                        <div className="border-l-4 border-white pl-6 py-1 rotate-[-1deg]">
-                            <span className={`${isLandscape ? 'text-xl' : 'text-2xl'} font-black italic tracking-normal uppercase text-white/90 drop-shadow-lg text-center`}>
-                                {state.positionText}
-                            </span>
-                        </div>
-                    </div>
-                )}
-            </div>
-
-            {/* --- MAIN CONTENT SECTION --- */}
-            <div className={`flex-1 flex flex-col items-center justify-center ${isLandscape ? 'p-4 gap-4' : 'p-8'} z-10 min-h-0`}>
-                <div className={`max-w-4xl flex flex-col items-center text-center ${isLandscape ? 'gap-4' : 'gap-8'}`}>
-                    <p className={`${isLandscape ? 'text-4xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-black leading-tight tracking-normal uppercase whitespace-pre-wrap`}>
-                        {renderedComment}
-                    </p>
-
-                    <div className={`flex flex-col items-center ${isLandscape ? 'gap-2' : 'gap-6'}`}>
-                        {state.authorImage && (
-                            <div className={`${isLandscape ? 'w-16 h-16' : 'w-24 h-24'} rounded-full border-2 border-white overflow-hidden bg-v-gray shrink-0`}>
-                                <img src={state.authorImage} className="w-full h-full object-cover" />
+            {/* HEADER: Sponsor & Logo */}
+            <div className={`absolute ${isLandscape ? 'top-8 left-8 right-8' : 'top-12 left-12 right-12'} flex items-start justify-between z-50`}>
+                {state.showSponsor && (state.sponsorName || state.sponsorLogo) ? (
+                    <div className="bg-white text-black p-2 flex items-center gap-3 rounded-brutal shadow-2xl border-2 border-black rotate-[-1deg]">
+                        {state.sponsorLogo && <img src={state.sponsorLogo} alt="Sponsor" className="h-6 object-contain" />}
+                        {state.sponsorName && (
+                            <div className="flex flex-col items-start leading-none pr-2">
+                                <span className="text-[6px] font-black uppercase tracking-widest opacity-30 italic">DESTEĞİYLE</span>
+                                <span className="text-xs font-black italic uppercase tracking-tighter">{state.sponsorName}</span>
                             </div>
                         )}
-                        <h2 className={`${isLandscape ? 'text-2xl' : 'text-3xl md:text-4xl'} font-black italic uppercase tracking-tighter`} style={{ color: currentTheme.primary }}>
-                            — {state.author}
-                        </h2>
                     </div>
+                ) : <div />}
+
+                <div className="bg-white px-6 py-2 rounded-brutal shadow-2xl border-2 border-black rotate-[1deg]">
+                    <span className="text-3xl font-black tracking-tighter uppercase italic text-black leading-none">VARSAYIM</span>
                 </div>
             </div>
 
-            {/* --- FOOTER SECTION --- */}
-            <div className="w-full flex flex-col items-center relative z-10 shrink-0">
+            {/* MAIN CONTENT */}
+            <div className={`flex-1 flex flex-col items-center justify-center z-10 ${isLandscape ? 'px-16 pt-32 pb-48' : 'px-12 pt-64 pb-64'}`}>
+                <div className="max-w-6xl w-full flex flex-col items-center gap-16">
+                    <p className={`${fontSize} font-black leading-[1] tracking-tighter uppercase italic text-center drop-shadow-[0_20px_40px_rgba(0,0,0,0.5)]`}>
+                        {renderedComment || "DRIES MERTENS"}
+                    </p>
 
-                {/* Match Info & Sponsor Container */}
-                <div className={`flex flex-col items-center ${isLandscape ? 'gap-2 pb-4' : 'gap-6 pb-8'}`}>
-                    {/* Match Info */}
-                    {state.showMatchInfo && (
-                        <div className="flex flex-col items-center gap-2">
-                            <div className="h-0.5 w-12 bg-white/20 mb-2" />
-                            <div className="px-8 py-3 bg-white/5 border border-white/10 rounded-full backdrop-blur-sm mx-4 text-center">
-                                <span className="text-sm font-black tracking-[0.2em] uppercase">
-                                    {state.homeTeam} {state.score} {state.awayTeam} // {state.date}
-                                </span>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Sponsor Alanı */}
-                    {state.showSponsor && state.sponsorName && (
-                        <div className="animate-in fade-in duration-1000">
-                            <div className="flex items-center gap-3 px-4 py-1 border-x border-white/20">
-                                <span className="text-[8px] font-black tracking-widest opacity-30 italic">DESTEĞİYLE</span>
-                                <span className="text-sm font-black italic tracking-widest" style={{ color: currentTheme.primary }}>
-                                    {state.sponsorName}
-                                </span>
+                    {/* Author Section */}
+                    {state.author && (
+                        <div className="flex flex-col items-center gap-5 animate-in fade-in duration-1000">
+                            {state.authorImage && (
+                                <div className="w-28 h-28 rounded-full border-4 border-white/20 overflow-hidden shadow-2xl scale-110">
+                                    <img src={state.authorImage} className="w-full h-full object-cover" />
+                                </div>
+                            )}
+                            <div className="text-center space-y-2">
+                                <h2 className="text-4xl font-black italic uppercase tracking-tighter bg-white text-black px-8 py-2 rounded-brutal border-2 border-black shadow-2xl">
+                                    {state.author}
+                                </h2>
+                                {state.authorTitle && (
+                                    <p className="text-xs font-black opacity-60 tracking-[0.4em] uppercase italic">
+                                        {state.authorTitle}
+                                    </p>
+                                )}
                             </div>
                         </div>
                     )}
                 </div>
+            </div>
 
-                {/* Branding Bar */}
+            {/* Maç Bilgisi & Marka Çubuğu (T1 Standart) */}
+            <div className="absolute bottom-0 left-0 right-0 z-50 flex flex-col items-center">
+                {/* Maç Bilgisi */}
+                {state.showMatchInfo && (
+                    <div className={`${isExtremeLandscape ? 'mb-8 scale-[0.85]' : 'mb-6'} bg-white border-brutal border-black ${currentTheme.shadow} px-8 py-3 flex flex-col items-center rotate-1`}>
+                        <p className={`text-xl font-black uppercase tracking-widest text-center ${state.theme !== "default" ? currentTheme.text : 'text-black'}`}>
+                            {state.homeTeam} {state.score} {state.awayTeam}
+                        </p>
+                        <p className="text-[10px] font-bold opacity-40 text-center tracking-[0.3em] mt-1">
+                            {state.date} {state.separator} VARSAYIM LABS
+                        </p>
+                    </div>
+                )}
+
+                {/* Marka Çubuğu */}
                 {state.showBrandingBar && (
-                    <div className="w-full h-12 bg-white/5 flex items-center justify-between px-8 md:px-12 border-t border-white/10 shrink-0">
-                        <span className="text-[10px] font-black tracking-widest opacity-50 uppercase truncate mr-4">VARSAYIM LABS // {state.website}</span>
-                        <div className="flex gap-4 opacity-50 text-[10px] font-bold shrink-0">
-                            {state.handleInstagram && <span>INSTAGRAM</span>}
+                    <div className="w-full bg-black text-white py-4 px-12 border-t-brutal border-white/20 flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                            <Globe size={18} className="text-v-yellow" />
+                            <span className="font-bold text-lg tracking-tight">{state.website}</span>
+                        </div>
+
+                        <div className="flex items-center gap-6">
+                            {state.handleInstagram && (
+                                <div className="flex items-center gap-1.5 grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all">
+                                    <div className="bg-white/10 p-1 rounded">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                                    </div>
+                                    <span className="font-bold text-sm tracking-tight">{state.handleInstagram}</span>
+                                </div>
+                            )}
+                            {state.handleX && (
+                                <div className="flex items-center gap-1.5 grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all">
+                                    <div className="bg-white/10 p-1 rounded">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932 6.064-6.932zm-1.292 19.49h2.039L6.486 3.24H4.298l13.311 17.403z" /></svg>
+                                    </div>
+                                    <span className="font-bold text-sm tracking-tight">{state.handleX}</span>
+                                </div>
+                            )}
                         </div>
                     </div>
                 )}
