@@ -82,16 +82,27 @@ const Template5: React.FC<Props> = ({ state, domRef }) => {
                 <div className="h-full bg-red-600 w-1/3" />
             </div>
 
-            {/* HEADER */}
+            {/* HEADER & SPONSOR */}
             <div className={`absolute ${isLandscape ? 'top-8 left-8 right-8' : 'top-12 left-12 right-12'} flex items-start justify-between z-50`}>
                 <div className="flex items-center gap-3">
-                    <div className="bg-red-600 text-white px-3 py-1 text-[10px] font-black tracking-[0.2em] flex items-center gap-2">
-                        <Bell size={12} className="animate-bounce" /> SON DAKİKA
-                    </div>
-                    <span className="text-white/40 text-[10px] font-bold tracking-widest">{state.date}</span>
+                    {state.showSponsor && (state.sponsorName || state.sponsorLogo) ? (
+                        <div className="bg-white border-brutal border-black p-2 flex items-center gap-3 shadow-brutal rotate-[-1deg] h-[60px] min-w-[150px]">
+                            {state.sponsorLogo && (
+                                <img src={state.sponsorLogo} alt="Sponsor" className="h-full object-contain" />
+                            )}
+                            <div className="flex flex-col items-start leading-none pr-4 text-black">
+                                <span className="text-[7px] font-black uppercase tracking-widest opacity-40 italic">DESTEĞİYLE</span>
+                                <span className="text-base font-black italic uppercase tracking-tighter">
+                                    {state.sponsorName || "SPONSOR"}
+                                </span>
+                            </div>
+                        </div>
+                    ) : (
+                        <span className="text-white/40 text-[10px] font-bold tracking-widest">{state.date}</span>
+                    )}
                 </div>
 
-                <div className="bg-white px-6 py-2 rounded-brutal shadow-2xl border-2 border-black rotate-[1deg]">
+                <div className="bg-white px-6 py-2 rounded-brutal shadow-brutal border-brutal border-black rotate-[2deg]">
                     <span className="text-3xl font-black tracking-tighter uppercase italic text-black leading-none">VARSAYIM</span>
                 </div>
             </div>
@@ -123,6 +134,11 @@ const Template5: React.FC<Props> = ({ state, domRef }) => {
 
                 {state.author && (
                     <div className="mt-12 flex items-center gap-6">
+                        {state.authorImage && (
+                            <div className="w-20 h-20 rounded-full border-brutal border-white bg-black overflow-hidden shadow-brutal shrink-0">
+                                <img src={state.authorImage} alt={state.author} className="w-full h-full object-cover" />
+                            </div>
+                        )}
                         <div className="flex flex-col">
                             <div className="flex items-center gap-2">
                                 <div className="w-1.5 h-6 bg-red-600" />
@@ -140,28 +156,32 @@ const Template5: React.FC<Props> = ({ state, domRef }) => {
                 )}
             </div>
 
-            {/* Maç Bilgisi & Marka Çubuğu (T1 Standart) */}
+            {/* Maç Bilgisi & Marka Çubuğu (Şablon 1 Standart) */}
             <div className="absolute bottom-0 left-0 right-0 z-50 flex flex-col items-center">
-                {/* Maç Bilgisi */}
+                {/* Maç Bilgisi Kutusu */}
                 {state.showMatchInfo && (
                     <div className={`${isExtremeLandscape ? 'mb-8 scale-[0.85]' : 'mb-6'} bg-white border-brutal border-black shadow-brutal px-8 py-3 flex flex-col items-center rotate-1`}>
                         <p className={`text-xl font-black uppercase tracking-widest text-center text-black`}>
                             {state.homeTeam} {state.score} {state.awayTeam}
                         </p>
-                        <p className="text-[10px] font-bold opacity-40 text-center tracking-[0.3em] mt-1 text-black">
-                            {state.date} {state.separator} VARSAYIM LABS
-                        </p>
+                        {state.matchWeek && (
+                            <p className="text-[10px] font-bold opacity-40 text-center tracking-[0.3em] mt-1 text-black">
+                                {state.matchWeek}
+                            </p>
+                        )}
                     </div>
                 )}
 
-                {/* Marka Çubuğu */}
+                {/* Marka Çubuğu (Branding Bar) */}
                 {state.showBrandingBar && (
                     <div className="w-full bg-black text-white py-4 px-12 border-t-brutal border-white/20 flex items-center justify-between">
+                        {/* Web Sitesi (Sol) */}
                         <div className="flex items-center gap-2">
                             <Globe size={18} className="text-v-yellow" />
                             <span className="font-bold text-lg tracking-tight">{state.website}</span>
                         </div>
 
+                        {/* Sosyal Medya Kanalları (Orta/Sağ) */}
                         <div className="flex items-center gap-6">
                             {state.handleInstagram && (
                                 <div className="flex items-center gap-1.5 grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all">
@@ -177,6 +197,22 @@ const Template5: React.FC<Props> = ({ state, domRef }) => {
                                         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932 6.064-6.932zm-1.292 19.49h2.039L6.486 3.24H4.298l13.311 17.403z" /></svg>
                                     </div>
                                     <span className="font-bold text-sm tracking-tight">{state.handleX}</span>
+                                </div>
+                            )}
+                            {state.handleFacebook && (
+                                <div className="flex items-center gap-1.5 grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all">
+                                    <div className="bg-white/10 p-1 rounded">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                                    </div>
+                                    <span className="font-bold text-sm tracking-tight">{state.handleFacebook}</span>
+                                </div>
+                            )}
+                            {state.handleYoutube && (
+                                <div className="flex items-center gap-1.5 grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all">
+                                    <div className="bg-white/10 p-1 rounded">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
+                                    </div>
+                                    <span className="font-bold text-sm tracking-tight">{state.handleYoutube}</span>
                                 </div>
                             )}
                         </div>

@@ -66,4 +66,5 @@ export interface AppState {
   showSponsor: boolean;
   sponsorName: string;
   sponsorLogo?: string;
+  matchWeek: string;
 }

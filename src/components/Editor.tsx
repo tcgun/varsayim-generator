@@ -338,6 +338,22 @@ const Editor: React.FC<Props> = ({ state, setState, onDownload, onSavePreset, is
                         />
                         <input
                             type="text"
+                            name="date"
+                            value={state.date || ""}
+                            onChange={handleChange}
+                            placeholder="01.01.2024"
+                            className="brutal-input text-xs"
+                        />
+                        <input
+                            type="text"
+                            name="matchWeek"
+                            value={state.matchWeek || ""}
+                            onChange={handleChange}
+                            placeholder="Örn: 21. HAFTA"
+                            className="brutal-input text-xs"
+                        />
+                        <input
+                            type="text"
                             name="score"
                             value={state.score || ""}
                             onChange={handleChange}
@@ -435,6 +451,21 @@ const Editor: React.FC<Props> = ({ state, setState, onDownload, onSavePreset, is
                 </div>
             </div>
 
+            {/* Sabit Aksiyon Butonları */}
+            <div className="fixed bottom-0 left-0 md:w-1/2 p-6 bg-white border-t-brutal border-r-brutal border-black flex gap-4 z-[100] animate-in slide-in-from-bottom duration-500">
+                <button
+                    onClick={onDownload}
+                    className="flex-1 brutal-button bg-v-yellow text-black flex items-center justify-center gap-2 py-4 font-black italic shadow-brutal hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all"
+                >
+                    <Download className="w-6 h-6" /> İNDİR (PNG)
+                </button>
+                <button
+                    onClick={onSavePreset}
+                    className="flex-1 brutal-button bg-black text-white flex items-center justify-center gap-2 py-4 font-black italic shadow-[4px_4px_0px_0px_rgba(250,255,0,0.5)] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_rgba(250,255,0,0.4)] transition-all"
+                >
+                    <Save className="w-6 h-6" /> KAYDET
+                </button>
+            </div>
         </div>
     );
 };
