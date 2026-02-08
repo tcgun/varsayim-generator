@@ -20,7 +20,7 @@ const Editor: React.FC<Props> = ({ state, setState, onDownload, onSavePreset, is
     };
 
     return (
-        <div className="flex-1 md:w-1/2 h-full overflow-y-auto p-6 space-y-8 bg-white border-r-brutal border-black min-w-0">
+        <div className="w-full md:w-[480px] md:flex-none h-full overflow-y-auto p-6 space-y-8 bg-white border-r-brutal border-black min-w-0">
             <div className="space-y-4">
                 <h3 className="text-xl font-black uppercase flex items-center gap-2">
                     <ImageIcon className="w-6 h-6" /> Görünüm & Tasarım

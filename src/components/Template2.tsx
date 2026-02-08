@@ -170,7 +170,7 @@ const Template2: React.FC<Props> = ({ state, domRef }) => {
 
                             {state.showPositionBox && state.positionText && (
                                 <div className="inline-block self-start">
-                                    <h1 className="bg-yellow-400 text-black px-10 py-4 text-5xl md:text-6xl font-black uppercase italic skew-x-[-5deg] shadow-[15px_15px_0px_0px_rgba(0,0,0,0.4)] leading-none text-left border-2 border-black">
+                                    <h1 className="bg-yellow-400 text-black px-10 py-4 text-5xl md:text-6xl font-black uppercase italic skew-x-[-5deg] shadow-[15px_15px_0px_0px_rgba(0,0,0,0.4)] leading-none text-left border-2 border-black max-w-[15ch] break-words">
                                         {state.positionText}
                                     </h1>
                                 </div>

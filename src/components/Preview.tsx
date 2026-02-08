@@ -98,7 +98,7 @@ const Preview: React.FC<Props> = ({ state, domRef }) => {
     return (
         <div
             ref={containerRef}
-            className="flex-1 md:w-1/2 bg-v-gray relative overflow-hidden flex flex-col"
+            className="flex-1 h-full bg-v-gray relative overflow-hidden flex flex-col"
         >
             {/* Zoom Controls Overlay */}
             <div className="absolute top-6 right-6 z-50 flex flex-col gap-2">

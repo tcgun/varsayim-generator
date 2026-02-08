@@ -59,22 +59,22 @@ const Template1: React.FC<Props> = ({ state, domRef }) => {
         );
     }, [state.comment, state.highlight, currentTheme, state.theme]);
 
-    // Beyaz alanı paralamak için çok daha agresif mikro font hesaplaması
+    // Beyaz alanı dolduran ama göz yormayan dengeli font hesaplaması
     const fontSize = useMemo(() => {
         const len = state.comment.length;
         const isStory = state.currentPreset.includes('story') || state.currentPreset.includes('portrait');
 
-        if (len > 450) return isStory ? "text-2xl" : "text-xl";
-        if (len > 350) return isStory ? "text-3xl" : "text-2xl";
-        if (len > 300) return isStory ? "text-4xl" : "text-3xl";
-        if (len > 250) return isStory ? "text-5xl" : "text-4xl";
-        if (len > 200) return isStory ? "text-6xl" : "text-5xl";
-        if (len > 160) return isStory ? "text-[5.5rem]" : "text-6xl";
-        if (len > 120) return isStory ? "text-[6.5rem]" : "text-7xl";
-        if (len > 90) return isStory ? "text-[8rem]" : "text-8xl";
-        if (len > 60) return isStory ? "text-[10rem]" : "text-9xl";
-        if (len > 30) return isStory ? "text-[12rem]" : "text-[11rem]";
-        return isStory ? "text-[16rem]" : "text-[14rem]";
+        if (len > 450) return isStory ? "text-xl" : "text-lg";
+        if (len > 350) return isStory ? "text-2xl" : "text-xl";
+        if (len > 300) return isStory ? "text-3xl" : "text-2xl";
+        if (len > 250) return isStory ? "text-4xl" : "text-3xl";
+        if (len > 200) return isStory ? "text-5xl" : "text-4xl";
+        if (len > 160) return isStory ? "text-6xl" : "text-5xl";
+        if (len > 120) return isStory ? "text-7xl" : "text-6xl";
+        if (len > 90) return isStory ? "text-8xl" : "text-7xl";
+        if (len > 60) return isStory ? "text-[6rem]" : "text-8xl";
+        if (len > 30) return isStory ? "text-[8rem]" : "text-[7rem]";
+        return isStory ? "text-[9rem]" : "text-[8rem]";
     }, [state.comment, state.currentPreset]);
 
 
@@ -103,7 +103,7 @@ const Template1: React.FC<Props> = ({ state, domRef }) => {
 
             {/* Sponsor Alanı (Sol Üst) */}
             {state.showSponsor && (state.sponsorName || state.sponsorLogo) && (
-                <div className={`absolute ${isLandscape ? 'top-6 left-6' : 'top-12 left-12'} z-50 animate-in slide-in-from-left-4 duration-500`}>
+                <div className={`absolute ${isLandscape ? 'top-2 left-2' : 'top-4 left-4'} z-50 animate-in slide-in-from-left-4 duration-500`}>
                     <div className={`bg-white border-brutal border-black p-2 flex items-center gap-3 shadow-brutal rotate-[-1deg] h-[60px] min-w-[150px]`}>
                         {state.sponsorLogo && (
                             <img src={state.sponsorLogo} alt="Sponsor" className="h-full object-contain" />
@@ -119,7 +119,7 @@ const Template1: React.FC<Props> = ({ state, domRef }) => {
             )}
 
             {/* VARSAYIM Logo (Sağ Üst - Orijinal Yer) */}
-            <div className={`absolute ${isLandscape ? 'top-6 right-6' : 'top-12 right-12'} z-50`}>
+            <div className={`absolute ${isLandscape ? 'top-2 right-2' : 'top-4 right-4'} z-50`}>
                 <div className={`${currentTheme.primary} border-brutal border-black shadow-brutal px-8 py-3 rotate-[2deg]`}>
                     <span className={`text-4xl font-black tracking-tighter uppercase italic ${state.theme === "default" ? 'text-black' : 'text-white'}`}>
                         VARSAYIM
@@ -127,9 +127,9 @@ const Template1: React.FC<Props> = ({ state, domRef }) => {
                 </div>
             </div>
 
-            {/* Pozisyon & Dakika Bilgi Bloğu (Sol Baş ve Büyük Font) */}
+            {/* Pozisyon & Dakika Bilgi Bloğu (Ortalı ve Geniş) */}
             {state.showPositionBox && (
-                <div className={`relative z-40 ${isExtremeLandscape ? 'mb-[-10px] scale-[0.55] mt-[-30px]' : (isLandscape ? 'mb-[-10px] scale-75' : 'mb-[-20px]')} origin-left rotate-[-1deg] flex flex-col items-start gap-2 w-full max-w-[90%]`}>
+                <div className={`relative z-40 ${isExtremeLandscape ? 'mb-[-10px] scale-[0.55] mt-[-30px]' : (isLandscape ? 'mb-[-10px] scale-75' : 'mb-[-20px]')} origin-center rotate-[-1deg] flex flex-col items-center gap-2 w-full max-w-[90%]`}>
                     <div className={`${currentTheme.primary} border-brutal border-black px-6 py-2 shadow-brutal flex items-center gap-4`}>
                         <span className="text-5xl font-black italic tracking-widest uppercase text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]">{state.positionLabel || "DAKİKA"}</span>
                         <span className="text-5xl font-black italic tracking-tighter text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]">
@@ -137,9 +137,9 @@ const Template1: React.FC<Props> = ({ state, domRef }) => {
                         </span>
                     </div>
 
-                    {/* Ana Pozisyon Kutusu (Altta - Sol Yaslı) */}
+                    {/* Ana Pozisyon Kutusu (Altta - Ortalı) */}
                     <div className={`${currentTheme.primary} border-brutal border-black ${isLandscape ? 'px-6 py-2' : 'px-10 py-3'} shadow-brutal flex items-center justify-center`}>
-                        <span className={`${isLandscape ? 'text-lg' : 'text-2xl'} font-black italic uppercase tracking-normal text-center text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]`}>
+                        <span className={`${isLandscape ? 'text-2xl' : 'text-3xl'} font-black italic uppercase tracking-normal text-left text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)] leading-none inline-block`}>
                             {state.positionText}
                         </span>
                     </div>
@@ -151,12 +151,12 @@ const Template1: React.FC<Props> = ({ state, domRef }) => {
                 <div
                     className={`bg-white border-brutal border-black ${currentTheme.shadow} rounded-brutal flex flex-col items-center justify-center relative`}
                     style={{
-                        height: isLandscape ? (isExtremeLandscape ? '250px' : '350px') : (state.currentPreset.includes('story') ? '760px' : '450px'),
+                        height: isLandscape ? (isExtremeLandscape ? '250px' : '350px') : (state.currentPreset.includes('story') ? '650px' : '400px'),
                         overflow: 'hidden'
                     }}
                 >
-                    <div className="relative z-10 w-full h-full flex flex-col items-center justify-center p-8 md:p-12 text-center">
-                        <p className={`${fontSize} font-black leading-[0.85] text-center whitespace-pre-wrap break-words w-full tracking-tighter ${state.theme !== "default" ? currentTheme.text : 'text-black'}`}>
+                    <div className="relative z-10 w-full h-full flex flex-col items-center justify-center p-8 md:p-14 text-center">
+                        <p className={`${fontSize} font-black leading-tight text-center whitespace-pre-wrap break-words w-full tracking-tight ${state.theme !== "default" ? currentTheme.text : 'text-black'}`}>
                             <span className="select-none text-black opacity-10 text-[1.2rem] absolute top-4 left-4">“</span>
                             {renderedComment}
                             <span className="select-none text-black opacity-10 text-[1.2rem] absolute bottom-4 right-4">”</span>
