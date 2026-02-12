@@ -64,17 +64,14 @@ const Template1: React.FC<Props> = ({ state, domRef }) => {
         const len = state.comment.length;
         const isStory = state.currentPreset.includes('story') || state.currentPreset.includes('portrait');
 
-        if (len > 450) return isStory ? "text-xl" : "text-lg";
-        if (len > 350) return isStory ? "text-2xl" : "text-xl";
-        if (len > 300) return isStory ? "text-3xl" : "text-2xl";
-        if (len > 250) return isStory ? "text-4xl" : "text-3xl";
-        if (len > 200) return isStory ? "text-5xl" : "text-4xl";
-        if (len > 160) return isStory ? "text-6xl" : "text-5xl";
-        if (len > 120) return isStory ? "text-7xl" : "text-6xl";
-        if (len > 90) return isStory ? "text-8xl" : "text-7xl";
-        if (len > 60) return isStory ? "text-[6rem]" : "text-8xl";
-        if (len > 30) return isStory ? "text-[8rem]" : "text-[7rem]";
-        return isStory ? "text-[9rem]" : "text-[8rem]";
+        if (len > 400) return isStory ? "text-lg" : "text-base";
+        if (len > 300) return isStory ? "text-xl" : "text-lg";
+        if (len > 200) return isStory ? "text-2xl" : "text-xl";
+        if (len > 150) return isStory ? "text-3xl" : "text-2xl";
+        if (len > 100) return isStory ? "text-4xl" : "text-3xl";
+        if (len > 50) return isStory ? "text-5xl" : "text-4xl";
+        if (len > 25) return isStory ? "text-6xl" : "text-5xl";
+        return isStory ? "text-7xl" : "text-6xl";
     }, [state.comment, state.currentPreset]);
 
 
@@ -146,17 +143,13 @@ const Template1: React.FC<Props> = ({ state, domRef }) => {
                 </div>
             )}
 
-            {/* Ana Konuşma Kutusu (SABİT YÜKSEKLİK - FULL FILL) */}
-            <div className={`w-full max-w-[92%] ${state.showMatchInfo ? (isExtremeLandscape ? 'mt-1' : (isLandscape ? 'mt-4' : 'mt-8')) : 'mt-0'} ${isLandscape ? 'mb-2' : 'mb-6'} relative z-10`}>
+            {/* Ana Konuşma Kutusu (DİNAMİK YÜKSEKLİK VE GENİŞLİK) */}
+            <div className={`w-full max-w-[92%] ${state.showMatchInfo ? (isExtremeLandscape ? 'mt-1' : (isLandscape ? 'mt-4' : 'mt-8')) : 'mt-0'} ${isLandscape ? 'mb-2' : 'mb-6'} relative z-10 flex flex-col items-center`}>
                 <div
-                    className={`bg-white border-brutal border-black ${currentTheme.shadow} rounded-brutal flex flex-col items-center justify-center relative`}
-                    style={{
-                        height: isLandscape ? (isExtremeLandscape ? '250px' : '350px') : (state.currentPreset.includes('story') ? '650px' : '400px'),
-                        overflow: 'hidden'
-                    }}
+                    className={`bg-white border-brutal border-black ${currentTheme.shadow} rounded-brutal flex flex-col items-center justify-center relative min-h-[150px] min-w-[200px] w-fit max-w-full`}
                 >
                     <div className="relative z-10 w-full h-full flex flex-col items-center justify-center p-8 md:p-14 text-center">
-                        <p className={`${fontSize} font-black leading-tight text-center whitespace-pre-wrap break-words w-full tracking-tight ${state.theme !== "default" ? currentTheme.text : 'text-black'}`}>
+                        <p className={`${fontSize} font-black leading-tight text-center whitespace-pre-wrap break-words w-full tracking-tight uppercase ${state.theme !== "default" ? currentTheme.text : 'text-black'}`}>
                             <span className="select-none text-black opacity-10 text-[1.2rem] absolute top-4 left-4">“</span>
                             {renderedComment}
                             <span className="select-none text-black opacity-10 text-[1.2rem] absolute bottom-4 right-4">”</span>
