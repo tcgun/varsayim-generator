@@ -25,6 +25,7 @@ const INITIAL_STATE: AppState = {
   handleInstagram: "varsayimcom",
   handleFacebook: "varsayimcom",
   handleYoutube: "varsayimcom",
+  handleTiktok: "varsayimcom",
   website: "varsayim.com",
   showMatchInfo: true,
   showBrandingBar: true,

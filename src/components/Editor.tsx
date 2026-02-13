@@ -390,6 +390,80 @@ const Editor: React.FC<Props> = ({ state, setState, onDownload, onSavePreset, is
                             ALT BİLGİ ÇUBUĞUNU GÖSTER
                         </label>
 
+                        {state.showBrandingBar && (
+                            <div className="animate-in fade-in slide-in-from-top-2 duration-300 space-y-3 border-t border-black/10 pt-3">
+                                <span className="font-bold text-[10px] uppercase opacity-60">Sosyal Medya Hesapları</span>
+                                <div className="grid grid-cols-2 gap-2">
+                                    <div className="space-y-1">
+                                        <span className="text-[8px] font-bold opacity-50 uppercase tracking-tighter">Instagram</span>
+                                        <input
+                                            type="text"
+                                            name="handleInstagram"
+                                            value={state.handleInstagram || ""}
+                                            onChange={handleChange}
+                                            placeholder="varsayimcom"
+                                            className="brutal-input text-[10px] h-8 py-1"
+                                        />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <span className="text-[8px] font-bold opacity-50 uppercase tracking-tighter">TikTok</span>
+                                        <input
+                                            type="text"
+                                            name="handleTiktok"
+                                            value={state.handleTiktok || ""}
+                                            onChange={handleChange}
+                                            placeholder="varsayimcom"
+                                            className="brutal-input text-[10px] h-8 py-1 border-v-pink"
+                                        />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <span className="text-[8px] font-bold opacity-50 uppercase tracking-tighter">X (Twitter)</span>
+                                        <input
+                                            type="text"
+                                            name="handleX"
+                                            value={state.handleX || ""}
+                                            onChange={handleChange}
+                                            placeholder="varsayimcom"
+                                            className="brutal-input text-[10px] h-8 py-1"
+                                        />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <span className="text-[8px] font-bold opacity-50 uppercase tracking-tighter">Facebook</span>
+                                        <input
+                                            type="text"
+                                            name="handleFacebook"
+                                            value={state.handleFacebook || ""}
+                                            onChange={handleChange}
+                                            placeholder="varsayimcom"
+                                            className="brutal-input text-[10px] h-8 py-1"
+                                        />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <span className="text-[8px] font-bold opacity-50 uppercase tracking-tighter">YouTube</span>
+                                        <input
+                                            type="text"
+                                            name="handleYoutube"
+                                            value={state.handleYoutube || ""}
+                                            onChange={handleChange}
+                                            placeholder="varsayimcom"
+                                            className="brutal-input text-[10px] h-8 py-1"
+                                        />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <span className="text-[8px] font-bold opacity-50 uppercase tracking-tighter">Web Sitesi</span>
+                                        <input
+                                            type="text"
+                                            name="website"
+                                            value={state.website || ""}
+                                            onChange={handleChange}
+                                            placeholder="varsayim.com"
+                                            className="brutal-input text-[10px] h-8 py-1"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
                         <label className="flex items-center gap-2 cursor-pointer font-bold text-xs border-t border-black/10 pt-3">
                             <input
                                 type="checkbox"

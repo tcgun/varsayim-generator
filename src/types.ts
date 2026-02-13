@@ -50,6 +50,7 @@ export interface AppState {
   handleInstagram: string;
   handleFacebook: string;
   handleYoutube: string;
+  handleTiktok: string;
   website: string;
   authorTitle: string;
   showMatchInfo: boolean;
