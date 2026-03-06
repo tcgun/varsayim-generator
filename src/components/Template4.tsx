@@ -132,7 +132,7 @@ const Template4: React.FC<Props> = ({ state, domRef }) => {
                     )}
 
                     {state.positionText && (
-                        <div className="bg-white text-black px-6 py-3 font-black text-xl border-2 border-black shadow-brutal w-fit rotate-[1deg] uppercase">
+                        <div className="bg-white/90 backdrop-blur-sm text-black px-6 py-3 font-black text-xl border-2 border-black shadow-brutal w-fit rotate-[1deg] uppercase text-center">
                             {state.positionText}
                         </div>
                     )}
