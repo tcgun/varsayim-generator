@@ -153,7 +153,7 @@ const Template2: React.FC<Props> = ({ state, domRef }) => {
                     </div>
 
                     {/* Sağ: Metin Alanı (%50) */}
-                    <div className={`flex-1 md:w-1/2 p-8 md:p-16 flex flex-col ${state.contentLayout === 'spread' ? 'justify-between pb-32' : 'justify-start pt-[28rem] pb-32'} gap-8 relative h-full shrink-0`}>
+                    <div className={`flex-1 md:w-1/2 p-8 md:p-16 flex flex-col ${state.contentLayout === 'spread' ? 'justify-between pb-32' : 'justify-start pt-[35rem] pb-32'} gap-8 relative h-full shrink-0`}>
 
                         {/* Başlık ve Dakika Alanı */}
                         <div className={`flex flex-col gap-4 ${state.contentLayout === 'spread' ? 'mt-24' : ''}`}>
