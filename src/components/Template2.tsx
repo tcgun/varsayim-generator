@@ -16,25 +16,25 @@ const Template2: React.FC<Props> = ({ state, domRef }) => {
 
     // Tema Renkleri (T1 ile tam uyumlu)
     const THEMES: Record<string, any> = {
-        default: { primary: "bg-v-yellow", bg: state.bgColor, border: "border-black", shadow: "shadow-brutal-pink", text: "text-black" },
-        gs: { primary: "bg-[#A90432]", bg: "#FDB912", border: "border-[#A90432]", shadow: "shadow-[8px_8px_0px_0px_#A90432]", text: "text-[#A90432]" },
-        fb: { primary: "bg-[#002d72]", bg: "#f9b517", border: "border-[#002d72]", shadow: "shadow-[8px_8px_0px_0px_#002d72]", text: "text-[#002d72]" },
-        bjk: { primary: "bg-black", bg: "#FFFFFF", border: "border-black", shadow: "shadow-[8px_8px_0px_0px_#000000]", text: "text-black" },
-        ts: { primary: "bg-[#A52A2A]", bg: "#87CEEB", border: "border-[#A52A2A]", shadow: "shadow-[8px_8px_0px_0px_#A52A2A]", text: "text-[#A52A2A]" },
-        basak: { primary: "bg-[#E56B25]", bg: "#163962", border: "border-[#E56B25]", shadow: "shadow-[8px_8px_0px_0px_#E56B25]", text: "text-[#E56B25]" },
-        kasimpasa: { primary: "bg-[#004A99]", bg: "#FFFFFF", border: "border-[#004A99]", shadow: "shadow-[8px_8px_0px_0px_#004A99]", text: "text-[#004A99]" },
-        eyup: { primary: "bg-[#800080]", bg: "#FFFF00", border: "border-[#800080]", shadow: "shadow-[8px_8px_0px_0px_#800080]", text: "#800080" },
-        goztepe: { primary: "bg-[#FFFF00]", bg: "#FF0000", border: "border-[#FFFF00]", shadow: "shadow-[8px_8px_0px_0px_#FFFF00]", text: "#FFFF00" },
-        samsun: { primary: "bg-[#CC0000]", bg: "#FFFFFF", border: "border-[#CC0000]", shadow: "shadow-[8px_8px_0px_0px_#CC0000]", text: "#CC0000" },
-        rize: { primary: "bg-[#008C45]", bg: "#163962", border: "border-[#008C45]", shadow: "shadow-[8px_8px_0px_0px_#008C45]", text: "#008C45" },
-        konya: { primary: "bg-[#008000]", bg: "#FFFFFF", border: "border-[#008000]", shadow: "shadow-[8px_8px_0px_0px_#008000]", text: "#008000" },
-        antalya: { primary: "bg-[#E30613]", bg: "#FFFFFF", border: "border-[#E30613]", shadow: "shadow-[8px_8px_0px_0px_#E30613]", text: "#E30613" },
-        alanya: { primary: "bg-[#F9B517]", bg: "#008C45", border: "border-[#F9B517]", shadow: "shadow-[8px_8px_0px_0px_#F9B517]", text: "#F9B517" },
-        kayseri: { primary: "bg-[#FFD700]", bg: "#CC0000", border: "border-[#FFD700]", shadow: "shadow-[8px_8px_0px_0px_#FFD700]", text: "#FFD700" },
-        gaziantep: { primary: "bg-[#DA291C]", bg: "#000000", border: "border-[#DA291C]", shadow: "shadow-[8px_8px_0px_0px_#DA291C]", text: "#DA291C" },
-        gencler: { primary: "bg-[#ff0000]", bg: "#000000", border: "border-[#ff0000]", shadow: "shadow-[8px_8px_0px_0px_#ff0000]", text: "#ff0000" },
-        kocaeli: { primary: "bg-[#008000]", bg: "#000000", border: "border-[#008000]", shadow: "shadow-[8px_8px_0px_0px_#008000]", text: "#008000" },
-        karagumruk: { primary: "bg-[#ff0000]", bg: "#000000", border: "border-[#ff0000]", shadow: "shadow-[8px_8px_0px_0px_#ff0000]", text: "#ff0000" },
+        default: { primary: "bg-[#FF5DAD]", bg: "#040404", cardBg: "bg-[#FFDD00]", border: "border-[#FF5DAD]", shadow: "shadow-[8px_8px_0px_0px_#FF5DAD]", text: "text-black", quote: "text-black" },
+        gs: { primary: "bg-[#A90432]", bg: "#FFCD00", cardBg: "bg-[#2D2D2D]", border: "border-[#A90432]", shadow: "shadow-[8px_8px_0px_0px_#A90432]", text: "text-[#FFCD00]", quote: "text-[#FFCD00]" },
+        fb: { primary: "bg-[#002D72]", bg: "#FFD100", cardBg: "bg-[#002D72]", border: "border-[#002D72]", shadow: "shadow-[8px_8px_0px_0px_#002D72]", text: "text-[#FFD100]", quote: "text-[#FFD100]" },
+        bjk: { primary: "bg-[#000000]", bg: "#E10600", cardBg: "bg-[#000000]", border: "border-[#000000]", shadow: "shadow-[8px_8px_0px_0px_#000000]", text: "text-[#FFFFFF]", quote: "text-[#FFFFFF]" },
+        ts: { primary: "bg-[#7A263A]", bg: "#4FA3D1", cardBg: "bg-[#7A263A]", border: "border-[#7A263A]", shadow: "shadow-[8px_8px_0px_0px_#7A263A]", text: "text-[#4FA3D1]", quote: "text-[#4FA3D1]" },
+        basak: { primary: "bg-[#0B3A82]", bg: "#FF6600", cardBg: "bg-[#0B3A82]", border: "border-[#0B3A82]", shadow: "shadow-[8px_8px_0px_0px_#0B3A82]", text: "text-[#FF6600]", quote: "text-[#FF6600]" },
+        kasimpasa: { primary: "bg-[#005BAC]", bg: "#00A3E0", cardBg: "bg-[#005BAC]", border: "border-[#005BAC]", shadow: "shadow-[8px_8px_0px_0px_#005BAC]", text: "text-[#00A3E0]", quote: "text-[#00A3E0]" },
+        eyup: { primary: "bg-[#5A2D81]", bg: "#FFD100", cardBg: "bg-[#5A2D81]", border: "border-[#5A2D81]", shadow: "shadow-[8px_8px_0px_0px_#5A2D81]", text: "text-[#FFD100]", quote: "text-[#FFD100]" },
+        goztepe: { primary: "bg-[#FFD100]", bg: "#C00000", cardBg: "bg-[#FFD100]", border: "border-[#FFD100]", shadow: "shadow-[8px_8px_0px_0px_#FFD100]", text: "text-[#C00000]", quote: "text-[#C00000]" },
+        samsun: { primary: "bg-[#E30613]", bg: "#000000", cardBg: "bg-[#E30613]", border: "border-[#E30613]", shadow: "shadow-[8px_8px_0px_0px_#E30613]", text: "text-[#000000]", quote: "text-[#000000]" },
+        rize: { primary: "bg-[#009639]", bg: "#003DA5", cardBg: "bg-[#009639]", border: "border-[#009639]", shadow: "shadow-[8px_8px_0px_0px_#009639]", text: "text-[#003DA5]", quote: "text-[#003DA5]" },
+        konya: { primary: "bg-[#009639]", bg: "#000000", cardBg: "bg-[#009639]", border: "border-[#009639]", shadow: "shadow-[8px_8px_0px_0px_#009639]", text: "text-[#000000]", quote: "text-[#000000]" },
+        antalya: { primary: "bg-[#E31E24]", bg: "#000000", cardBg: "bg-[#E31E24]", border: "border-[#E31E24]", shadow: "shadow-[8px_8px_0px_0px_#E31E24]", text: "text-[#000000]", quote: "text-[#000000]" },
+        alanya: { primary: "bg-[#F47A20]", bg: "#009A44", cardBg: "bg-[#F47A20]", border: "border-[#F47A20]", shadow: "shadow-[8px_8px_0px_0px_#F47A20]", text: "text-[#009A44]", quote: "text-[#009A44]" },
+        kayseri: { primary: "bg-[#FFB81C]", bg: "#D71920", cardBg: "bg-[#FFB81C]", border: "border-[#FFB81C]", shadow: "shadow-[8px_8px_0px_0px_#FFB81C]", text: "text-[#D71920]", quote: "text-[#D71920]" },
+        gaziantep: { primary: "bg-[#DA291C]", bg: "#000000", cardBg: "bg-[#DA291C]", border: "border-[#DA291C]", shadow: "shadow-[8px_8px_0px_0px_#DA291C]", text: "text-[#000000]", quote: "text-[#000000]" },
+        gencler: { primary: "bg-[#C8102E]", bg: "#000000", cardBg: "bg-[#C8102E]", border: "border-[#C8102E]", shadow: "shadow-[8px_8px_0px_0px_#C8102E]", text: "text-[#000000]", quote: "text-[#000000]" },
+        kocaeli: { primary: "bg-[#007A3D]", bg: "#000000", cardBg: "bg-[#007A3D]", border: "border-[#007A3D]", shadow: "shadow-[8px_8px_0px_0px_#007A3D]", text: "text-[#000000]", quote: "text-[#000000]" },
+        karagumruk: { primary: "bg-[#7A263A]", bg: "#000000", cardBg: "bg-[#7A263A]", border: "border-[#7A263A]", shadow: "shadow-[8px_8px_0px_0px_#7A263A]", text: "text-[#000000]", quote: "text-[#000000]" },
     };
 
     const currentTheme = THEMES[state.theme] || THEMES.default;
@@ -112,7 +112,7 @@ const Template2: React.FC<Props> = ({ state, domRef }) => {
             {/* HEADER: Sponsor & Logo Standardı */}
             <div className={`absolute ${isLandscape ? 'top-8 left-8 right-8' : 'top-12 left-12 right-12'} flex items-start justify-between z-50`}>
                 {state.showSponsor && (state.sponsorName || state.sponsorLogo) ? (
-                    <div className="bg-white text-black p-2 flex items-center gap-3 rounded-brutal shadow-2xl border-2 border-black rotate-[-1deg]">
+                    <div className={`${currentTheme.cardBg || 'bg-white'} text-black p-2 flex items-center gap-3 rounded-brutal shadow-2xl border-2 border-black rotate-[-1deg]`}>
                         {state.sponsorLogo && <img src={state.sponsorLogo} alt="Sponsor" className="h-6 object-contain" />}
                         {state.sponsorName && (
                             <div className="flex flex-col items-start leading-none pr-2">
@@ -161,7 +161,7 @@ const Template2: React.FC<Props> = ({ state, domRef }) => {
                                         </div>
                                     )}
                                     {state.showMinute && state.positionMinute && (
-                                        <div className="bg-white text-black px-6 py-3 font-black text-3xl skew-x-[-12deg] ml-[-12px] shadow-2xl border-2 border-black z-10">
+                                        <div className={`${currentTheme.cardBg || 'bg-white'} text-black px-6 py-3 font-black text-3xl skew-x-[-12deg] ml-[-12px] shadow-2xl border-2 border-black z-10`}>
                                             {state.positionMinute}
                                         </div>
                                     )}
@@ -170,7 +170,7 @@ const Template2: React.FC<Props> = ({ state, domRef }) => {
 
                             {state.showPositionBox && state.positionText && (
                                 <div className="inline-block self-start">
-                                    <h1 className="bg-yellow-400 text-black px-10 py-4 text-5xl md:text-6xl font-black uppercase italic skew-x-[-5deg] shadow-[15px_15px_0px_0px_rgba(0,0,0,0.4)] leading-none text-left border-2 border-black max-w-[15ch] break-words">
+                                    <h1 className="bg-yellow-400 text-black px-10 py-4 text-5xl md:text-6xl font-bold uppercase italic skew-x-[-5deg] shadow-[15px_15px_0px_0px_rgba(0,0,0,0.4)] leading-snug text-left border-2 border-black max-w-[15ch] break-words">
                                         {state.positionText}
                                     </h1>
                                 </div>
@@ -179,7 +179,7 @@ const Template2: React.FC<Props> = ({ state, domRef }) => {
 
                         {/* Orta: Ana Metin */}
                         <div className={`relative ${state.contentLayout === 'spread' ? 'flex-1 flex flex-col justify-center' : 'mt-4'} w-full`}>
-                            <p className={`${fontSize} text-white font-black leading-[1] tracking-tighter uppercase drop-shadow-[0_15px_30px_rgba(0,0,0,1)] relative z-10 italic w-full text-left`}>
+                            <p className={`${fontSize} text-white font-black leading-snug tracking-normal uppercase drop-shadow-[0_15px_30px_rgba(0,0,0,1)] relative z-10 w-full text-left`}>
                                 {renderedComment || "DRIES MERTENS"}
                             </p>
                         </div>
@@ -189,7 +189,7 @@ const Template2: React.FC<Props> = ({ state, domRef }) => {
                 {/* Yorumcu İsim Paneli */}
                 {state.author && (
                     <div className="absolute bottom-32 left-12 z-[70] min-w-[300px]">
-                        <div className="bg-black text-white px-8 py-3 skew-x-[-12deg] shadow-2xl border-b-8 border-yellow-400 border-2 border-white/10">
+                        <div className="bg-white text-black px-8 py-3 skew-x-[-12deg] shadow-2xl border-b-8 border-yellow-400 border-2 border-black">
                             <span className="text-3xl font-black uppercase italic tracking-tighter block skew-x-[12deg] leading-none">
                                 {state.author}
                             </span>
@@ -207,7 +207,7 @@ const Template2: React.FC<Props> = ({ state, domRef }) => {
                     {/* Maç Bilgisi Kutusu */}
                     {state.showMatchInfo && (
                         <div className={`${isExtremeLandscape ? 'mb-8 scale-[0.85]' : 'mb-6'} bg-white border-brutal border-black ${currentTheme.shadow} px-8 py-3 flex flex-col items-center rotate-1`}>
-                            <p className={`text-xl font-black uppercase tracking-widest text-center ${state.theme !== "default" ? currentTheme.text : 'text-black'}`}>
+                            <p className={`text-xl font-black uppercase tracking-widest text-center text-black`}>
                                 {state.homeTeam} {state.score} {state.awayTeam}
                             </p>
                             <p className="text-[10px] font-bold opacity-40 text-center tracking-[0.3em] mt-1">

@@ -16,9 +16,25 @@ const Template4: React.FC<Props> = ({ state, domRef }) => {
 
     // Tema Renkleri
     const THEMES: Record<string, any> = {
-        default: { primary: "bg-v-yellow", bg: "#040404", accent: "#3B82F6", secondary: "#1F2937", shadow: "shadow-[8px_8px_0px_0px_rgba(250,255,0,0.5)]", text: "text-black" },
-        gs: { primary: "bg-[#A90432]", bg: "#FDB912", accent: "#FFFFFF", secondary: "#7A0325", shadow: "shadow-[8px_8px_0px_0px_#A90432]", text: "text-[#A90432]" },
-        fb: { primary: "bg-[#002d72]", bg: "#f9b517", accent: "#FFFFFF", secondary: "#001D4A", shadow: "shadow-[8px_8px_0px_0px_#002d72]", text: "text-[#002d72]" },
+        default: { primary: "bg-[#FF5DAD]", bg: "#FFDD00", cardBg: "bg-[#FF5DAD]", accent: "#FF5DAD", secondary: "#FFDD00", shadow: "shadow-[8px_8px_0px_0px_#FF5DAD]", text: "text-black", quote: "text-black" },
+        gs: { primary: "bg-[#A90432]", bg: "#FFCD00", cardBg: "bg-[#2D2D2D]", accent: "#2D2D2D", secondary: "#A90432", shadow: "shadow-[8px_8px_0px_0px_#A90432]", text: "text-[#FFCD00]", quote: "text-[#FFCD00]" },
+        fb: { primary: "bg-[#002D72]", bg: "#FFD100", cardBg: "bg-[#002D72]", accent: "#E30A17", secondary: "#002D72", shadow: "shadow-[8px_8px_0px_0px_#002D72]", text: "text-[#FFD100]", quote: "text-[#FFD100]" },
+        bjk: { primary: "bg-[#000000]", bg: "#E10600", cardBg: "bg-[#000000]", accent: "#E10600", secondary: "#000000", shadow: "shadow-[8px_8px_0px_0px_#000000]", text: "text-[#FFFFFF]", quote: "text-[#FFFFFF]" },
+        ts: { primary: "bg-[#7A263A]", bg: "#4FA3D1", cardBg: "bg-[#7A263A]", accent: "#FFFFFF", secondary: "#7A263A", shadow: "shadow-[8px_8px_0px_0px_#7A263A]", text: "text-[#4FA3D1]", quote: "text-[#4FA3D1]" },
+        basak: { primary: "bg-[#0B3A82]", bg: "#FF6600", cardBg: "bg-[#0B3A82]", accent: "#FFFFFF", secondary: "#0B3A82", shadow: "shadow-[8px_8px_0px_0px_#0B3A82]", text: "text-[#FF6600]", quote: "text-[#FF6600]" },
+        kasimpasa: { primary: "bg-[#005BAC]", bg: "#00A3E0", cardBg: "bg-[#005BAC]", accent: "#00A3E0", secondary: "#005BAC", shadow: "shadow-[8px_8px_0px_0px_#005BAC]", text: "text-[#00A3E0]", quote: "text-[#00A3E0]" },
+        eyup: { primary: "bg-[#5A2D81]", bg: "#FFD100", cardBg: "bg-[#5A2D81]", accent: "#FFFFFF", secondary: "#5A2D81", shadow: "shadow-[8px_8px_0px_0px_#5A2D81]", text: "text-[#FFD100]", quote: "text-[#FFD100]" },
+        goztepe: { primary: "bg-[#FFD100]", bg: "#C00000", cardBg: "bg-[#FFD100]", accent: "#000000", secondary: "#FFD100", shadow: "shadow-[8px_8px_0px_0px_#FFD100]", text: "text-[#C00000]", quote: "text-[#C00000]" },
+        samsun: { primary: "bg-[#E30613]", bg: "#000000", cardBg: "bg-[#E30613]", accent: "#000000", secondary: "#E30613", shadow: "shadow-[8px_8px_0px_0px_#E30613]", text: "text-[#000000]", quote: "text-[#000000]" },
+        rize: { primary: "bg-[#009639]", bg: "#003DA5", cardBg: "bg-[#009639]", accent: "#FFFFFF", secondary: "#009639", shadow: "shadow-[8px_8px_0px_0px_#009639]", text: "text-[#003DA5]", quote: "text-[#003DA5]" },
+        konya: { primary: "bg-[#009639]", bg: "#000000", cardBg: "bg-[#009639]", accent: "#000000", secondary: "#009639", shadow: "shadow-[8px_8px_0px_0px_#009639]", text: "text-[#000000]", quote: "text-[#000000]" },
+        antalya: { primary: "bg-[#E31E24]", bg: "#000000", cardBg: "bg-[#E31E24]", accent: "#000000", secondary: "#E31E24", shadow: "shadow-[8px_8px_0px_0px_#E31E24]", text: "text-[#000000]", quote: "text-[#000000]" },
+        alanya: { primary: "bg-[#F47A20]", bg: "#009A44", cardBg: "bg-[#F47A20]", accent: "#FFFFFF", secondary: "#F47A20", shadow: "shadow-[8px_8px_0px_0px_#F47A20]", text: "text-[#009A44]", quote: "text-[#009A44]" },
+        kayseri: { primary: "bg-[#FFB81C]", bg: "#D71920", cardBg: "bg-[#FFB81C]", accent: "#000000", secondary: "#FFB81C", shadow: "shadow-[8px_8px_0px_0px_#FFB81C]", text: "text-[#D71920]", quote: "text-[#D71920]" },
+        gaziantep: { primary: "bg-[#DA291C]", bg: "#000000", cardBg: "bg-[#DA291C]", accent: "#FFFFFF", secondary: "#DA291C", shadow: "shadow-[8px_8px_0px_0px_#DA291C]", text: "text-[#000000]", quote: "text-[#000000]" },
+        gencler: { primary: "bg-[#C8102E]", bg: "#000000", cardBg: "bg-[#C8102E]", accent: "#FFFFFF", secondary: "#C8102E", shadow: "shadow-[8px_8px_0px_0px_#C8102E]", text: "text-[#000000]", quote: "text-[#000000]" },
+        kocaeli: { primary: "bg-[#007A3D]", bg: "#000000", cardBg: "bg-[#007A3D]", accent: "#FFFFFF", secondary: "#007A3D", shadow: "shadow-[8px_8px_0px_0px_#007A3D]", text: "text-[#000000]", quote: "text-[#000000]" },
+        karagumruk: { primary: "bg-[#7A263A]", bg: "#000000", cardBg: "bg-[#7A263A]", accent: "#FFFFFF", secondary: "#7A263A", shadow: "shadow-[8px_8px_0px_0px_#7A263A]", text: "text-[#000000]", quote: "text-[#000000]" },
     };
 
     const currentTheme = THEMES[state.theme] || THEMES.default;
@@ -94,7 +110,7 @@ const Template4: React.FC<Props> = ({ state, domRef }) => {
                     <span className="text-white/60 font-black text-sm tracking-[0.2em]">{state.date}</span>
                 </div>
 
-                <div className="bg-white px-6 py-2 rounded-brutal shadow-2xl border-2 border-black rotate-[1deg]">
+                <div className={`${currentTheme.cardBg || 'bg-white'} px-6 py-2 rounded-brutal shadow-2xl border-2 border-black rotate-[1deg]`}>
                     <span className="text-3xl font-black tracking-tighter uppercase italic text-black leading-none">VARSAYIM</span>
                 </div>
             </div>
@@ -103,7 +119,7 @@ const Template4: React.FC<Props> = ({ state, domRef }) => {
             <div className={`relative z-10 flex-1 flex flex-col justify-end ${isLandscape ? 'p-12 pb-48' : 'p-12 pb-64'} space-y-8`}>
                 <div className="flex flex-col items-start gap-4 max-w-[90%]">
                     {state.positionLabel && (
-                        <div className="bg-white text-black px-4 py-1 text-xs font-black uppercase tracking-widest rotate-[-1deg]">
+                        <div className={`${currentTheme.cardBg || 'bg-white'} text-black px-4 py-1 text-xs font-black uppercase tracking-widest rotate-[-1deg]`}>
                             {state.positionLabel}
                         </div>
                     )}
@@ -111,15 +127,15 @@ const Template4: React.FC<Props> = ({ state, domRef }) => {
                     {state.positionText && (
                         <div className="relative group">
                             <div className="absolute -inset-2 bg-red-600/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                            <h1 className={`${headlineFontSize} font-black text-white uppercase italic leading-[0.95] tracking-tight text-left drop-shadow-2xl max-w-[15ch] break-words`}>
+                            <h1 className={`${headlineFontSize} font-bold text-white uppercase italic leading-tight tracking-normal text-left drop-shadow-2xl max-w-[15ch] break-words`}>
                                 {state.positionText}
                             </h1>
                             <div className="mt-4 w-24 h-2 bg-red-600" />
                         </div>
                     )}
 
-                    <div className="bg-white/5 backdrop-blur-md border-l-4 border-white/20 p-8 mt-4 w-full text-left">
-                        <p className={`${commentFontSize} text-white/90 font-bold leading-relaxed tracking-normal text-left`}>
+                    <div className={`bg-white text-black shadow-brutal border-2 border-black p-8 mt-4 w-full text-left`}>
+                        <p className={`${commentFontSize} text-black font-black leading-relaxed tracking-normal text-left uppercase`}>
                             {renderedComment || "İçerik bekleniyor..."}
                         </p>
                     </div>
@@ -127,12 +143,12 @@ const Template4: React.FC<Props> = ({ state, domRef }) => {
 
                 {state.author && (
                     <div className="flex items-center gap-4 animate-in slide-in-from-left-10 duration-700">
-                        <div className="flex flex-col border-l-2 border-red-600 pl-4">
-                            <span className="text-xl font-black text-white uppercase italic tracking-tighter leading-none">
+                        <div className="flex flex-col bg-white text-black px-6 py-3 border-2 border-black shadow-brutal rotate-[-1deg]">
+                            <span className="text-xl font-black text-black uppercase italic tracking-tighter leading-none">
                                 {state.author}
                             </span>
                             {state.authorTitle && (
-                                <span className="text-[10px] font-black text-white/40 uppercase tracking-[0.3em] mt-1">
+                                <span className="text-[10px] font-black text-black/40 uppercase tracking-[0.3em] mt-1">
                                     {state.authorTitle}
                                 </span>
                             )}
@@ -145,7 +161,7 @@ const Template4: React.FC<Props> = ({ state, domRef }) => {
             <div className="absolute bottom-0 left-0 right-0 z-50 flex flex-col items-center">
                 {/* Maç Bilgisi */}
                 {state.showMatchInfo && (
-                    <div className={`${isExtremeLandscape ? 'mb-8 scale-[0.85]' : 'mb-6'} bg-white border-brutal border-black shadow-brutal px-8 py-3 flex flex-col items-center rotate-1`}>
+                    <div className={`${isExtremeLandscape ? 'mb-8 scale-[0.85]' : 'mb-6'} bg-white border-brutal border-black ${currentTheme.shadow} px-8 py-3 flex flex-col items-center rotate-1`}>
                         <p className={`text-xl font-black uppercase tracking-widest text-center text-black`}>
                             {state.homeTeam} {state.score} {state.awayTeam}
                         </p>

@@ -35,10 +35,12 @@ const INITIAL_STATE: AppState = {
   positionText: "Ceza Sahası İçi",
   positionMinute: "57'",
   positionLabel: "DAKİKA",
+  refereeDecision: "PENALTI",
   showMinute: true,
   contentLayout: "compact",
   showSponsor: false,
   sponsorName: "Sponsorunuz",
+  showAuthorImage: true,
 };
 
 type Tab = 'editor' | 'preview';

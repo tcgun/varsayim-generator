@@ -58,12 +58,14 @@ export interface AppState {
   showMinute: boolean;
   contentLayout?: "compact" | "spread";
   authorImage?: string;
+  showAuthorImage: boolean;
   template: "template1" | "template2" | "template3" | "template4" | "template5";
   theme: "default" | "bjk" | "konya" | "gs" | "goztepe" | "basak" | "antalya" | "samsun" | "ts" | "alanya" | "fb" | "gencler" | "kasimpasa" | "kocaeli" | "karagumruk" | "eyup" | "rize" | "gaziantep" | "kayseri";
   showPositionBox: boolean;
   positionText: string;
   positionMinute: string;
   positionLabel: string;
+  refereeDecision: string;
   showSponsor: boolean;
   sponsorName: string;
   sponsorLogo?: string;

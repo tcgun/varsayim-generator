@@ -16,45 +16,53 @@ const Template1: React.FC<Props> = ({ state, domRef }) => {
 
     // Tema Renkleri (18 Takım)
     const THEMES: Record<string, any> = {
-        default: { primary: "bg-v-yellow", bg: state.bgColor, border: "border-black", shadow: "shadow-brutal-pink", text: "text-black" },
-        gs: { primary: "bg-[#A90432]", bg: "#FDB912", border: "border-[#A90432]", shadow: "shadow-[8px_8px_0px_0px_#A90432]", text: "text-[#A90432]" },
-        fb: { primary: "bg-[#002d72]", bg: "#f9b517", border: "border-[#002d72]", shadow: "shadow-[8px_8px_0px_0px_#002d72]", text: "text-[#002d72]" },
-        bjk: { primary: "bg-black", bg: "#FFFFFF", border: "border-black", shadow: "shadow-[8px_8px_0px_0px_#000000]", text: "text-black" },
-        ts: { primary: "bg-[#A52A2A]", bg: "#87CEEB", border: "border-[#A52A2A]", shadow: "shadow-[8px_8px_0px_0px_#A52A2A]", text: "text-[#A52A2A]" },
-        basak: { primary: "bg-[#E56B25]", bg: "#163962", border: "border-[#E56B25]", shadow: "shadow-[8px_8px_0px_0px_#E56B25]", text: "text-[#E56B25]" },
-        kasimpasa: { primary: "bg-[#004A99]", bg: "#FFFFFF", border: "border-[#004A99]", shadow: "shadow-[8px_8px_0px_0px_#004A99]", text: "text-[#004A99]" },
-        eyup: { primary: "bg-[#800080]", bg: "#FFFF00", border: "border-[#800080]", shadow: "shadow-[8px_8px_0px_0px_#800080]", text: "text-[#800080]" },
-        goztepe: { primary: "bg-[#FFFF00]", bg: "#FF0000", border: "border-[#FFFF00]", shadow: "shadow-[8px_8px_0px_0px_#FFFF00]", text: "text-[#FFFF00]" },
-        samsun: { primary: "bg-[#CC0000]", bg: "#FFFFFF", border: "border-[#CC0000]", shadow: "shadow-[8px_8px_0px_0px_#CC0000]", text: "text-[#CC0000]" },
-        rize: { primary: "bg-[#008C45]", bg: "#163962", border: "border-[#008C45]", shadow: "shadow-[8px_8px_0px_0px_#008C45]", text: "text-[#008C45]" },
-        konya: { primary: "bg-[#008000]", bg: "#FFFFFF", border: "border-[#008000]", shadow: "shadow-[8px_8px_0px_0px_#008000]", text: "text-[#008000]" },
-        antalya: { primary: "bg-[#E30613]", bg: "#FFFFFF", border: "border-[#E30613]", shadow: "shadow-[8px_8px_0px_0px_#E30613]", text: "text-[#E30613]" },
-        alanya: { primary: "bg-[#F9B517]", bg: "#008C45", border: "border-[#F9B517]", shadow: "shadow-[8px_8px_0px_0px_#F9B517]", text: "text-[#F9B517]" },
-        kayseri: { primary: "bg-[#FFD700]", bg: "#CC0000", border: "border-[#FFD700]", shadow: "shadow-[8px_8px_0px_0px_#FFD700]", text: "text-[#FFD700]" },
-        gaziantep: { primary: "bg-[#DA291C]", bg: "#000000", border: "border-[#DA291C]", shadow: "shadow-[8px_8px_0px_0px_#DA291C]", text: "text-[#DA291C]" },
-        gencler: { primary: "bg-[#ff0000]", bg: "#000000", border: "border-[#ff0000]", shadow: "shadow-[8px_8px_0px_0px_#ff0000]", text: "text-[#ff0000]" },
-        kocaeli: { primary: "bg-[#008000]", bg: "#000000", border: "border-[#008000]", shadow: "shadow-[8px_8px_0px_0px_#008000]", text: "text-[#008000]" },
-        karagumruk: { primary: "bg-[#ff0000]", bg: "#000000", border: "border-[#ff0000]", shadow: "shadow-[8px_8px_0px_0px_#ff0000]", text: "text-[#ff0000]" },
+        default: { primary: "bg-[#FF5DAD]", bg: "#040404", cardBg: "bg-[#FFDD00]", border: "border-[#FF5DAD]", shadow: "shadow-[8px_8px_0px_0px_#FF5DAD]", text: "text-black", quote: "text-black" },
+        gs: { primary: "bg-[#A90432]", bg: "#FFCD00", cardBg: "bg-[#2D2D2D]", border: "border-[#A90432]", shadow: "shadow-[8px_8px_0px_0px_#A90432]", text: "text-[#FFCD00]", quote: "text-[#FFCD00]" },
+        fb: { primary: "bg-[#002D72]", bg: "#FFD100", cardBg: "bg-[#002D72]", border: "border-[#002D72]", shadow: "shadow-[8px_8px_0px_0px_#002D72]", text: "text-[#FFD100]", quote: "text-[#FFD100]" },
+        bjk: { primary: "bg-[#000000]", bg: "#E10600", cardBg: "bg-[#000000]", border: "border-[#000000]", shadow: "shadow-[8px_8px_0px_0px_#000000]", text: "text-[#FFFFFF]", quote: "text-[#FFFFFF]" },
+        ts: { primary: "bg-[#7A263A]", bg: "#4FA3D1", cardBg: "bg-[#7A263A]", border: "border-[#7A263A]", shadow: "shadow-[8px_8px_0px_0px_#7A263A]", text: "text-[#4FA3D1]", quote: "text-[#4FA3D1]" },
+        basak: { primary: "bg-[#0B3A82]", bg: "#FF6600", cardBg: "bg-[#0B3A82]", border: "border-[#0B3A82]", shadow: "shadow-[8px_8px_0px_0px_#0B3A82]", text: "text-[#FF6600]", quote: "text-[#FF6600]" },
+        kasimpasa: { primary: "bg-[#005BAC]", bg: "#00A3E0", cardBg: "bg-[#005BAC]", border: "border-[#005BAC]", shadow: "shadow-[8px_8px_0px_0px_#005BAC]", text: "text-[#00A3E0]", quote: "text-[#00A3E0]" },
+        eyup: { primary: "bg-[#5A2D81]", bg: "#FFD100", cardBg: "bg-[#5A2D81]", border: "border-[#5A2D81]", shadow: "shadow-[8px_8px_0px_0px_#5A2D81]", text: "text-[#FFD100]", quote: "text-[#FFD100]" },
+        goztepe: { primary: "bg-[#FFD100]", bg: "#C00000", cardBg: "bg-[#FFD100]", border: "border-[#FFD100]", shadow: "shadow-[8px_8px_0px_0px_#FFD100]", text: "text-[#C00000]", quote: "text-[#C00000]" },
+        samsun: { primary: "bg-[#E30613]", bg: "#000000", cardBg: "bg-[#E30613]", border: "border-[#E30613]", shadow: "shadow-[8px_8px_0px_0px_#E30613]", text: "text-[#000000]", quote: "text-[#000000]" },
+        rize: { primary: "bg-[#009639]", bg: "#003DA5", cardBg: "bg-[#009639]", border: "border-[#009639]", shadow: "shadow-[8px_8px_0px_0px_#009639]", text: "text-[#003DA5]", quote: "text-[#003DA5]" },
+        konya: { primary: "bg-[#009639]", bg: "#000000", cardBg: "bg-[#009639]", border: "border-[#009639]", shadow: "shadow-[8px_8px_0px_0px_#009639]", text: "text-[#000000]", quote: "text-[#000000]" },
+        antalya: { primary: "bg-[#E31E24]", bg: "#000000", cardBg: "bg-[#E31E24]", border: "border-[#E31E24]", shadow: "shadow-[8px_8px_0px_0px_#E31E24]", text: "text-[#000000]", quote: "text-[#000000]" },
+        alanya: { primary: "bg-[#F47A20]", bg: "#009A44", cardBg: "bg-[#F47A20]", border: "border-[#F47A20]", shadow: "shadow-[8px_8px_0px_0px_#F47A20]", text: "text-[#009A44]", quote: "text-[#009A44]" },
+        kayseri: { primary: "bg-[#FFB81C]", bg: "#D71920", cardBg: "bg-[#FFB81C]", border: "border-[#FFB81C]", shadow: "shadow-[8px_8px_0px_0px_#FFB81C]", text: "text-[#D71920]", quote: "text-[#D71920]" },
+        gaziantep: { primary: "bg-[#DA291C]", bg: "#000000", cardBg: "bg-[#DA291C]", border: "border-[#DA291C]", shadow: "shadow-[8px_8px_0px_0px_#DA291C]", text: "text-[#000000]", quote: "text-[#000000]" },
+        gencler: { primary: "bg-[#C8102E]", bg: "#000000", cardBg: "bg-[#C8102E]", border: "border-[#C8102E]", shadow: "shadow-[8px_8px_0px_0px_#C8102E]", text: "text-[#000000]", quote: "text-[#000000]" },
+        kocaeli: { primary: "bg-[#007A3D]", bg: "#000000", cardBg: "bg-[#007A3D]", border: "border-[#007A3D]", shadow: "shadow-[8px_8px_0px_0px_#007A3D]", text: "text-[#000000]", quote: "text-[#000000]" },
+        karagumruk: { primary: "bg-[#7A263A]", bg: "#000000", cardBg: "bg-[#7A263A]", border: "border-[#7A263A]", shadow: "shadow-[8px_8px_0px_0px_#7A263A]", text: "text-[#000000]", quote: "text-[#000000]" },
     };
 
     const currentTheme = THEMES[state.theme] || THEMES.default;
 
     const renderedComment = useMemo(() => {
         const comment = state.comment.trim();
-        if (!state.highlight || !comment.toLowerCase().includes(state.highlight.toLowerCase())) {
-            return comment;
-        }
+        if (!state.highlight) return comment;
 
-        const index = comment.toLowerCase().indexOf(state.highlight.toLowerCase());
-        const before = comment.substring(0, index);
-        const match = comment.substring(index, index + state.highlight.length);
-        const after = comment.substring(index + state.highlight.length);
+        const highlights = state.highlight.split(',').map(h => h.trim()).filter(h => h !== "");
+        if (highlights.length === 0) return comment;
+
+        const escapedHighlights = highlights.map(h => h.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+        const regex = new RegExp(`(${escapedHighlights.join('|')})`, 'gi');
+        const parts = comment.split(regex);
 
         return (
             <>
-                {before}
-                <span className={`${currentTheme.primary} ${state.theme === 'default' ? 'text-black' : 'text-white'} px-1`}>{match}</span>
-                {after}
+                {parts.map((part, i) => {
+                    const isMatch = highlights.some(h => h.toLowerCase() === part.toLowerCase());
+                    if (isMatch) {
+                        return (
+                            <span key={i} className={`${currentTheme.primary} ${state.theme === 'default' ? 'text-black' : 'text-white'} px-1`}>
+                                {part}
+                            </span>
+                        );
+                    }
+                    return part;
+                })}
             </>
         );
     }, [state.comment, state.highlight, currentTheme, state.theme]);
@@ -64,14 +72,14 @@ const Template1: React.FC<Props> = ({ state, domRef }) => {
         const len = state.comment.length;
         const isStory = state.currentPreset.includes('story') || state.currentPreset.includes('portrait');
 
-        if (len > 400) return isStory ? "text-lg" : "text-base";
-        if (len > 300) return isStory ? "text-xl" : "text-lg";
-        if (len > 200) return isStory ? "text-2xl" : "text-xl";
-        if (len > 150) return isStory ? "text-3xl" : "text-2xl";
-        if (len > 100) return isStory ? "text-4xl" : "text-3xl";
-        if (len > 50) return isStory ? "text-5xl" : "text-4xl";
-        if (len > 25) return isStory ? "text-6xl" : "text-5xl";
-        return isStory ? "text-7xl" : "text-6xl";
+        if (len > 400) return isStory ? "text-xl" : "text-lg";
+        if (len > 300) return isStory ? "text-2xl" : "text-xl";
+        if (len > 200) return isStory ? "text-3xl" : "text-2xl";
+        if (len > 150) return isStory ? "text-4xl" : "text-3xl";
+        if (len > 100) return isStory ? "text-5xl" : "text-4xl";
+        if (len > 50) return isStory ? "text-6xl" : "text-5xl";
+        if (len > 25) return isStory ? "text-7xl" : "text-6xl";
+        return isStory ? "text-8xl" : "text-7xl";
     }, [state.comment, state.currentPreset]);
 
 
@@ -101,7 +109,7 @@ const Template1: React.FC<Props> = ({ state, domRef }) => {
             {/* Sponsor Alanı (Sol Üst) */}
             {state.showSponsor && (state.sponsorName || state.sponsorLogo) && (
                 <div className={`absolute ${isLandscape ? 'top-2 left-2' : 'top-4 left-4'} z-50 animate-in slide-in-from-left-4 duration-500`}>
-                    <div className={`bg-white border-brutal border-black p-2 flex items-center gap-3 shadow-brutal rotate-[-1deg] h-[60px] min-w-[150px]`}>
+                    <div className={`${currentTheme.cardBg || 'bg-white'} border-brutal border-black p-2 flex items-center gap-3 shadow-brutal rotate-[-1deg] h-[60px] min-w-[150px]`}>
                         {state.sponsorLogo && (
                             <img src={state.sponsorLogo} alt="Sponsor" className="h-full object-contain" />
                         )}
@@ -127,19 +135,32 @@ const Template1: React.FC<Props> = ({ state, domRef }) => {
             {/* Pozisyon & Dakika Bilgi Bloğu (Ortalı ve Geniş) */}
             {state.showPositionBox && (
                 <div className={`relative z-40 ${isExtremeLandscape ? 'mb-2 scale-[0.55] mt-[-30px]' : (isLandscape ? 'mb-4 scale-75' : 'mb-8')} origin-center rotate-[-1deg] flex flex-col items-center gap-4 w-full max-w-[90%]`}>
-                    <div className={`${currentTheme.primary} border-brutal border-black px-6 py-2 shadow-brutal flex items-center gap-8`}>
-                        <span className="text-5xl font-black italic tracking-widest uppercase text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]">{state.positionLabel || "DAKİKA"}</span>
-                        <span className="text-5xl font-black italic tracking-tighter text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]">
-                            {state.positionMinute}
-                        </span>
-                    </div>
+                    {(state.positionLabel || (state.showMinute && state.positionMinute)) && (
+                        <div className={`${currentTheme.primary} border-brutal border-black px-6 py-2 shadow-brutal flex items-center gap-8`}>
+                            <span className="text-4xl font-black italic tracking-widest uppercase text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]">{state.positionLabel || "DAKİKA"}</span>
+                            <span className="text-4xl font-black italic tracking-tighter text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]">
+                                {state.positionMinute}
+                            </span>
+                        </div>
+                    )}
 
                     {/* Ana Pozisyon Kutusu (Altta - Ortalı) */}
-                    <div className={`${currentTheme.primary} border-brutal border-black ${isLandscape ? 'px-6 py-2' : 'px-10 py-3'} shadow-brutal flex items-center justify-center`}>
-                        <span className={`${isLandscape ? 'text-2xl' : 'text-3xl'} font-black italic uppercase tracking-normal text-left text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)] leading-none inline-block`}>
-                            {state.positionText}
-                        </span>
-                    </div>
+                    {state.positionText && (
+                        <div className={`${currentTheme.primary} border-brutal border-black ${isLandscape ? 'px-6 py-2' : 'px-10 py-3'} shadow-brutal flex items-center justify-center`}>
+                            <span className={`${isLandscape ? 'text-xl' : 'text-2xl'} font-bold italic uppercase tracking-normal text-left text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)] leading-snug inline-block`}>
+                                {state.positionText}
+                            </span>
+                        </div>
+                    )}
+
+                    {/* Hakemin Kararı Kutusu */}
+                    {state.refereeDecision && (
+                        <div className={`bg-slate-800 border-brutal border-black ${isLandscape ? 'px-6 py-2' : 'px-10 py-3'} shadow-brutal flex items-center justify-center rotate-[1deg]`}>
+                            <span className={`${isLandscape ? 'text-2xl' : 'text-3xl'} font-bold italic uppercase tracking-normal text-center text-slate-100 leading-snug`}>
+                                {state.refereeDecision}
+                            </span>
+                        </div>
+                    )}
                 </div>
             )}
 
@@ -149,28 +170,30 @@ const Template1: React.FC<Props> = ({ state, domRef }) => {
                     className={`bg-white border-brutal border-black ${currentTheme.shadow} rounded-brutal flex flex-col items-center justify-center relative min-h-[150px] min-w-[200px] w-fit max-w-full`}
                 >
                     <div className="relative z-10 w-full h-full flex flex-col items-center justify-center p-8 md:p-14 text-center">
-                        <p className={`${fontSize} font-black leading-tight text-center whitespace-pre-wrap break-words w-full tracking-tight uppercase ${state.theme !== "default" ? currentTheme.text : 'text-black'}`}>
-                            <span className="select-none text-black opacity-10 text-[1.2rem] absolute top-4 left-4">“</span>
+                        <p className={`${fontSize} font-black leading-relaxed text-center whitespace-pre-wrap break-words w-full tracking-normal uppercase text-black`}>
+                            <span className={`select-none text-black opacity-10 text-[1.2rem] absolute top-4 left-4`}>“</span>
                             {renderedComment}
-                            <span className="select-none text-black opacity-10 text-[1.2rem] absolute bottom-4 right-4">”</span>
+                            <span className={`select-none text-black opacity-10 text-[1.2rem] absolute bottom-4 right-4`}>”</span>
                         </p>
                     </div>
-
-                    {/* Konuşma Balonu Kuyruğu (Sabit Yerleşim) */}
-                    <div className={`absolute -bottom-6 right-20 w-12 h-12 bg-white border-r-brutal border-b-brutal border-black rotate-45 ${currentTheme.shadow} z-10`}></div>
                 </div>
             </div>
 
             <div className={`${isExtremeLandscape ? 'mt-1 mb-1 scale-[0.6]' : (isLandscape ? 'mt-4 mb-4' : 'mt-8 mb-12')} z-10 flex items-center gap-6`}>
-                {state.authorImage && (
+                {state.showAuthorImage && state.authorImage && (
                     <div className={`${isExtremeLandscape ? 'w-20 h-20' : (isLandscape ? 'w-24 h-24' : 'w-36 h-36')} rounded-full border-brutal border-black bg-white overflow-hidden ${currentTheme.shadow} shrink-0`}>
                         <img src={state.authorImage} alt={state.author} className="w-full h-full object-cover" />
                     </div>
                 )}
-                <div className="bg-white border-brutal border-black px-6 py-2 shadow-brutal rotate-[-1deg]">
+                <div className={`bg-white border-brutal border-black px-6 py-2 shadow-brutal rotate-[-1deg] flex flex-col items-center`}>
                     <h2 className={`${isExtremeLandscape ? 'text-2xl' : (isLandscape ? 'text-3xl' : 'text-5xl')} font-black uppercase tracking-tighter text-center text-black`}>
                         {state.author}
                     </h2>
+                    {state.authorTitle && (
+                        <span className="text-[10px] font-bold opacity-40 uppercase tracking-[0.3em] mt-1 text-black">
+                            {state.authorTitle}
+                        </span>
+                    )}
                 </div>
             </div>
 
@@ -185,7 +208,7 @@ const Template1: React.FC<Props> = ({ state, domRef }) => {
                 {/* Maç Bilgisi Kutusu (Yeni Belirgin Stil) */}
                 {state.showMatchInfo && (
                     <div className={`${isExtremeLandscape ? 'mb-8 scale-[0.85]' : 'mb-6'} bg-white border-brutal border-black ${currentTheme.shadow} px-8 py-3 flex flex-col items-center rotate-1`}>
-                        <p className={`text-xl font-black uppercase tracking-widest text-center ${state.theme !== "default" ? currentTheme.text : 'text-black'}`}>
+                        <p className={`text-xl font-black uppercase tracking-widest text-center text-black`}>
                             {state.homeTeam} {state.score} {state.awayTeam}
                         </p>
                         {state.matchWeek && (
