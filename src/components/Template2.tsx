@@ -55,15 +55,15 @@ const Template2: React.FC<Props> = ({ state, domRef }) => {
             return "text-[12rem]";
         }
 
-        if (len > 500) return "text-xs";
-        if (len > 400) return "text-sm";
-        if (len > 300) return "text-base";
-        if (len > 250) return "text-lg";
-        if (len > 200) return "text-xl";
-        if (len > 150) return "text-2xl";
-        if (len > 100) return isExtremeLandscape ? "text-lg" : "text-4xl";
-        if (len > 50) return isExtremeLandscape ? "text-xl" : "text-5xl";
-        return isExtremeLandscape ? "text-2xl" : "text-6xl";
+        if (len > 500) return "text-lg";
+        if (len > 400) return "text-xl";
+        if (len > 300) return "text-2xl";
+        if (len > 250) return "text-3xl";
+        if (len > 200) return "text-4xl";
+        if (len > 150) return "text-5xl";
+        if (len > 100) return isExtremeLandscape ? "text-3xl" : "text-6xl";
+        if (len > 50) return isExtremeLandscape ? "text-4xl" : "text-[5rem]";
+        return isExtremeLandscape ? "text-5xl" : "text-[6rem]";
     }, [state.comment, isExtremeLandscape, state.contentLayout]);
 
     const renderedComment = useMemo(() => {
@@ -153,7 +153,7 @@ const Template2: React.FC<Props> = ({ state, domRef }) => {
                     </div>
 
                     {/* Sağ: Metin Alanı (%50) */}
-                    <div className={`flex-1 md:w-1/2 p-8 md:p-16 flex flex-col ${state.contentLayout === 'spread' ? 'justify-between pb-32' : 'justify-end pb-32'} gap-8 relative h-full shrink-0`}>
+                    <div className={`flex-1 md:w-1/2 p-8 md:p-16 flex flex-col ${state.contentLayout === 'spread' ? 'justify-between pb-32' : 'justify-start pt-32 pb-32'} gap-8 relative h-full shrink-0`}>
 
                         {/* Başlık ve Dakika Alanı */}
                         <div className={`flex flex-col gap-4 ${state.contentLayout === 'spread' ? 'mt-24' : ''}`}>
@@ -174,7 +174,7 @@ const Template2: React.FC<Props> = ({ state, domRef }) => {
 
                             {state.showPositionBox && state.positionText && (
                                 <div className="inline-block self-start">
-                                    <h1 className="bg-yellow-400 text-black px-10 py-4 text-5xl md:text-6xl font-bold uppercase italic skew-x-[-5deg] shadow-[15px_15px_0px_0px_rgba(0,0,0,0.4)] leading-snug text-left border-2 border-black max-w-[15ch] break-words">
+                                    <h1 className="bg-yellow-400 text-black px-6 py-3 text-3xl md:text-5xl font-bold uppercase italic skew-x-[-5deg] shadow-[15px_15px_0px_0px_rgba(0,0,0,0.4)] leading-snug text-left border-2 border-black max-w-[15ch] break-words">
                                         {state.positionText}
                                     </h1>
                                 </div>
