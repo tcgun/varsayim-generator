@@ -68,22 +68,26 @@ const Template2: React.FC<Props> = ({ state, domRef }) => {
 
     const renderedComment = useMemo(() => {
         const comment = state.comment.trim();
-        if (!state.highlight || !comment.toLowerCase().includes(state.highlight.toLowerCase())) {
-            return comment;
-        }
+        if (!state.highlight) return comment;
 
-        const index = comment.toLowerCase().indexOf(state.highlight.toLowerCase());
-        const before = comment.substring(0, index);
-        const match = comment.substring(index, index + state.highlight.length);
-        const after = comment.substring(index + state.highlight.length);
+        const highlights = state.highlight.split('*').map(h => h.trim()).filter(h => h !== "");
+        if (highlights.length === 0) return comment;
 
-        return (
-            <>
-                {before}
-                <span className={`${currentTheme.primary} ${state.theme === 'default' ? 'text-black' : 'text-white'} px-2 py-0.5 mx-1 inline-block skew-x-[-12deg] font-black`}>{match}</span>
-                {after}
-            </>
-        );
+        const escapedHighlights = highlights.map(h => h.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+        const regex = new RegExp(`(${escapedHighlights.join('|')})`, 'gi');
+
+        const parts = comment.split(regex);
+        return parts.map((part, i) => {
+            const isMatch = highlights.some(h => h.toLowerCase() === part.toLowerCase());
+            if (isMatch) {
+                return (
+                    <span key={i} className={`${currentTheme.primary} ${state.theme === 'default' ? 'text-black' : 'text-white'} px-2 py-0.5 mx-1 inline-block skew-x-[-12deg] font-black`}>
+                        {part}
+                    </span>
+                );
+            }
+            return part;
+        });
     }, [state.comment, state.highlight, currentTheme, state.theme]);
 
     return (

@@ -7,14 +7,16 @@ import Template2 from "./Template2";
 import Template3 from "./Template3";
 import Template4 from "./Template4";
 import Template5 from "./Template5";
-import { ZoomIn, ZoomOut, RotateCcw } from "lucide-react";
+import { ZoomIn, ZoomOut, RotateCcw, Download, Save } from "lucide-react";
 
 interface Props {
     state: AppState;
     domRef: React.RefObject<HTMLDivElement | null>;
+    onSavePreset: () => void;
+    onDownload: () => void;
 }
 
-const Preview: React.FC<Props> = ({ state, domRef }) => {
+const Preview: React.FC<Props> = ({ state, domRef, onSavePreset, onDownload }) => {
     const [autoScale, setAutoScale] = useState(0.2);
     const [manualScaleOffset, setManualScaleOffset] = useState(0); // Offset from autoScale
     const containerRef = useRef<HTMLDivElement>(null);
@@ -134,19 +136,37 @@ const Preview: React.FC<Props> = ({ state, domRef }) => {
                 onMouseMove={handleMouseMove}
                 className={`flex-1 overflow-auto p-12 flex items-center justify-center scrollbar-hide select-none ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
             >
-                <div
-                    style={{
-                        transform: `scale(${currentScale})`,
-                        transformOrigin: "center center",
-                        transition: (manualScaleOffset === 0 && !isDragging) ? "transform 0.2s ease-out" : "none",
-                        width: preset.width,
-                        height: preset.height,
-                        minWidth: preset.width,
-                        minHeight: preset.height,
-                    }}
-                    className="shrink-0 pointer-events-none"
-                >
-                    {renderTemplate()}
+                <div className="flex flex-col items-center gap-6">
+                    <div
+                        style={{
+                            transform: `scale(${currentScale})`,
+                            transformOrigin: "center center",
+                            transition: (manualScaleOffset === 0 && !isDragging) ? "transform 0.2s ease-out" : "none",
+                            width: preset.width,
+                            height: preset.height,
+                            minWidth: preset.width,
+                            minHeight: preset.height,
+                        }}
+                        className="shrink-0 pointer-events-none"
+                    >
+                        {renderTemplate()}
+                    </div>
+
+                    {/* Action Buttons (Download & Save) */}
+                    <div className="flex gap-4 w-full max-w-md justify-center shrink-0 z-50">
+                        <button
+                            onClick={onDownload}
+                            className="flex-1 brutal-button bg-v-yellow text-black flex items-center justify-center gap-2 py-4 font-black italic shadow-brutal hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all"
+                        >
+                            <Download className="w-6 h-6" /> İNDİR (PNG)
+                        </button>
+                        <button
+                            onClick={onSavePreset}
+                            className="flex-1 brutal-button bg-black text-white flex items-center justify-center gap-2 py-4 font-black italic shadow-[4px_4px_0px_0px_rgba(250,250,0,0.5)] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_rgba(250,250,0,0.4)] transition-all border-2 border-white/20"
+                        >
+                            <Save className="w-6 h-6" /> KAYDET
+                        </button>
+                    </div>
                 </div>
             </div>
 

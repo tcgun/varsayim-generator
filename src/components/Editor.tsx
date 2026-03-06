@@ -7,12 +7,10 @@ import { Download, Save, Image as ImageIcon } from "lucide-react";
 interface Props {
     state: AppState;
     setState: React.Dispatch<React.SetStateAction<AppState>>;
-    onDownload: () => void;
-    onSavePreset: () => void;
     isMobile?: boolean;
 }
 
-const Editor: React.FC<Props> = ({ state, setState, onDownload, onSavePreset, isMobile }) => {
+const Editor: React.FC<Props> = ({ state, setState, isMobile }) => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value, type } = e.target as HTMLInputElement;
         const val = type === "checkbox" ? (e.target as HTMLInputElement).checked : value;
@@ -197,20 +195,20 @@ const Editor: React.FC<Props> = ({ state, setState, onDownload, onSavePreset, is
                                     name="comment"
                                     value={state.comment || ""}
                                     onChange={handleChange}
-                                    rows={3}
-                                    className="brutal-input resize-none"
+                                    rows={8}
+                                    className="brutal-input resize-y text-lg"
                                     placeholder="Yorum veya görüş metni..."
                                 />
                             </label>
 
                             <label className="block space-y-1 text-v-pink">
-                                <span className="font-bold text-sm">Vurgulanacak Kelimeler (Virgülle Ayırın)</span>
+                                <span className="font-bold text-sm">Vurgulanacak Kelimeler (Yıldız * ile Ayırın)</span>
                                 <input
                                     type="text"
                                     name="highlight"
                                     value={state.highlight || ""}
                                     onChange={handleChange}
-                                    placeholder="örn: kelime1, kelime2"
+                                    placeholder="örn: kelime1 * kelime2"
                                     className="brutal-input border-v-pink"
                                 />
                             </label>
@@ -225,19 +223,20 @@ const Editor: React.FC<Props> = ({ state, setState, onDownload, onSavePreset, is
                                     name="comment"
                                     value={state.comment || ""}
                                     onChange={handleChange}
-                                    rows={3}
-                                    className="brutal-input resize-none"
+                                    rows={8}
+                                    className="brutal-input resize-y text-lg"
                                     placeholder={state.template === 'template2' ? 'Flaas haber veya detaylı metni buraya yazın...' : 'Yorum veya görüş metni...'}
                                 />
                             </label>
 
                             <label className="block space-y-1 text-v-pink">
-                                <span className="font-bold text-sm">Vurgulanacak Kelimeler</span>
+                                <span className="font-bold text-sm">Vurgulanacak Kelimeler (Yıldız * ile Ayırın)</span>
                                 <input
                                     type="text"
                                     name="highlight"
                                     value={state.highlight || ""}
                                     onChange={handleChange}
+                                    placeholder="örn: kelime1 * kelime2"
                                     className="brutal-input border-v-pink"
                                 />
                             </label>
@@ -628,21 +627,6 @@ const Editor: React.FC<Props> = ({ state, setState, onDownload, onSavePreset, is
                 </div>
             </div>
 
-            {/* Sabit Aksiyon Butonları */}
-            <div className="fixed bottom-0 left-0 md:w-1/2 p-6 bg-white border-t-brutal border-r-brutal border-black flex gap-4 z-[100] animate-in slide-in-from-bottom duration-500">
-                <button
-                    onClick={onDownload}
-                    className="flex-1 brutal-button bg-v-yellow text-black flex items-center justify-center gap-2 py-4 font-black italic shadow-brutal hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all"
-                >
-                    <Download className="w-6 h-6" /> İNDİR (PNG)
-                </button>
-                <button
-                    onClick={onSavePreset}
-                    className="flex-1 brutal-button bg-black text-white flex items-center justify-center gap-2 py-4 font-black italic shadow-[4px_4px_0px_0px_rgba(250,250,0,0.5)] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_rgba(250,250,0,0.4)] transition-all"
-                >
-                    <Save className="w-6 h-6" /> KAYDET
-                </button>
-            </div>
         </div>
     );
 };

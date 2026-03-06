@@ -57,22 +57,26 @@ const Template5: React.FC<Props> = ({ state, domRef }) => {
 
     const renderedComment = useMemo(() => {
         const comment = state.comment.trim();
-        if (!state.highlight || !comment.toLowerCase().includes(state.highlight.toLowerCase())) {
-            return comment;
-        }
+        if (!state.highlight) return comment;
 
-        const index = comment.toLowerCase().indexOf(state.highlight.toLowerCase());
-        const before = comment.substring(0, index);
-        const match = comment.substring(index, index + state.highlight.length);
-        const after = comment.substring(index + state.highlight.length);
+        const highlights = state.highlight.split('*').map(h => h.trim()).filter(h => h !== "");
+        if (highlights.length === 0) return comment;
 
-        return (
-            <>
-                {before}
-                <span style={{ color: currentTheme.primary }} className="font-extrabold uppercase italic">{match}</span>
-                {after}
-            </>
-        );
+        const escapedHighlights = highlights.map(h => h.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+        const regex = new RegExp(`(${escapedHighlights.join('|')})`, 'gi');
+
+        const parts = comment.split(regex);
+        return parts.map((part, i) => {
+            const isMatch = highlights.some(h => h.toLowerCase() === part.toLowerCase());
+            if (isMatch) {
+                return (
+                    <mark key={i} className="bg-red-600 text-white px-2 py-0.5 rounded-sm mx-1">
+                        {part}
+                    </mark>
+                );
+            }
+            return part;
+        });
     }, [state.comment, state.highlight, currentTheme]);
 
     return (

@@ -43,7 +43,7 @@ const Template1: React.FC<Props> = ({ state, domRef }) => {
         const comment = state.comment.trim();
         if (!state.highlight) return comment;
 
-        const highlights = state.highlight.split(',').map(h => h.trim()).filter(h => h !== "");
+        const highlights = state.highlight.split('*').map(h => h.trim()).filter(h => h !== "");
         if (highlights.length === 0) return comment;
 
         const escapedHighlights = highlights.map(h => h.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));

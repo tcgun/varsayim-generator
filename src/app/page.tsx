@@ -108,12 +108,12 @@ export default function Home() {
       <Editor
         state={state}
         setState={setState}
-        onSavePreset={handleSavePreset}
-        onDownload={handleDownload}
       />
       <Preview
         state={state}
         domRef={captureRef}
+        onSavePreset={handleSavePreset}
+        onDownload={handleDownload}
       />
     </main>
   );
