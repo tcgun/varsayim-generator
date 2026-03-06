@@ -153,7 +153,7 @@ const Template2: React.FC<Props> = ({ state, domRef }) => {
                     </div>
 
                     {/* Sağ: Metin Alanı (%50) */}
-                    <div className={`flex-1 md:w-1/2 p-8 md:p-16 flex flex-col ${state.contentLayout === 'spread' ? 'justify-between pb-32' : 'justify-start pt-32 pb-32'} gap-8 relative h-full shrink-0`}>
+                    <div className={`flex-1 md:w-1/2 p-8 md:p-16 flex flex-col ${state.contentLayout === 'spread' ? 'justify-between pb-32' : 'justify-start pt-48 pb-32'} gap-8 relative h-full shrink-0`}>
 
                         {/* Başlık ve Dakika Alanı */}
                         <div className={`flex flex-col gap-4 ${state.contentLayout === 'spread' ? 'mt-24' : ''}`}>
@@ -174,7 +174,7 @@ const Template2: React.FC<Props> = ({ state, domRef }) => {
 
                             {state.showPositionBox && state.positionText && (
                                 <div className="inline-block self-start">
-                                    <h1 className="bg-yellow-400 text-black px-6 py-3 text-2xl md:text-3xl font-bold uppercase italic skew-x-[-5deg] shadow-[15px_15px_0px_0px_rgba(0,0,0,0.4)] leading-snug text-left border-2 border-black max-w-[15ch] break-words">
+                                    <h1 className="bg-yellow-400 text-black px-6 py-3 text-2xl md:text-3xl font-bold uppercase italic skew-x-[-5deg] shadow-[15px_15px_0px_0px_rgba(0,0,0,0.4)] leading-snug text-left border-2 border-black">
                                         {state.positionText}
                                     </h1>
                                 </div>
@@ -183,7 +183,7 @@ const Template2: React.FC<Props> = ({ state, domRef }) => {
 
                         {/* Orta: Ana Metin */}
                         <div className={`relative ${state.contentLayout === 'spread' ? 'flex-1 flex flex-col justify-center' : 'mt-4'} w-full`}>
-                            <p className={`${fontSize} text-white font-black leading-snug tracking-normal uppercase relative z-10 w-full text-left`}>
+                            <p className={`${fontSize} text-white font-black leading-relaxed tracking-normal uppercase relative z-10 w-full text-left`}>
                                 {renderedComment || "DRIES MERTENS"}
                             </p>
                         </div>
