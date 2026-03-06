@@ -1,8 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { AppState, PRESETS } from "../types";
-import { Download, Save, Image as ImageIcon } from "lucide-react";
+import { Download, Save, Image as ImageIcon, ChevronDown, ChevronUp } from "lucide-react";
 
 interface Props {
     state: AppState;
@@ -11,6 +11,8 @@ interface Props {
 }
 
 const Editor: React.FC<Props> = ({ state, setState, isMobile }) => {
+    const [isThemeOpen, setIsThemeOpen] = useState(false);
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value, type } = e.target as HTMLInputElement;
         const val = type === "checkbox" ? (e.target as HTMLInputElement).checked : value;
@@ -57,69 +59,81 @@ const Editor: React.FC<Props> = ({ state, setState, isMobile }) => {
                         </select>
                     </div>
 
-                    <div className="space-y-2">
-                        <span className="font-bold text-xs uppercase opacity-70">Takım Teması (18 Takım)</span>
-                        <div className="grid grid-cols-6 gap-2">
-                            {[
-                                { id: "default", name: "VARSAYIM", colors: "bg-[#FF5DAD]" },
-                                { id: "gs", name: "GS", colors: "bg-[#A90432]" },
-                                { id: "fb", name: "FB", colors: "bg-[#002d72]" },
-                                { id: "bjk", name: "BJK", colors: "bg-black" },
-                                { id: "ts", name: "TS", colors: "bg-[#A52A2A]" },
-                                { id: "basak", name: "IBFK", colors: "bg-[#E56B25]" },
-                                { id: "kasimpasa", name: "KASM", colors: "bg-[#004A99]" },
-                                { id: "eyup", name: "EYUP", colors: "bg-[#800080]" },
-                                { id: "goztepe", name: "GOZ", colors: "bg-[#FFFF00]" },
-                                { id: "samsun", name: "SAM", colors: "bg-[#CC0000]" },
-                                { id: "rize", name: "RIZE", colors: "bg-[#008C45]" },
-                                { id: "konya", name: "KON", colors: "bg-[#008000]" },
-                                { id: "antalya", name: "ANT", colors: "bg-[#E30613]" },
-                                { id: "alanya", name: "ALN", colors: "bg-[#F9B517]" },
-                                { id: "kayseri", name: "KAY", colors: "bg-[#FFD700]" },
-                                { id: "gaziantep", name: "GFK", colors: "bg-[#DA291C]" },
-                                { id: "gencler", name: "GB", colors: "bg-[#ff0000]" },
-                                { id: "kocaeli", name: "KOCA", colors: "bg-[#008000]" },
-                                { id: "karagumruk", name: "FKG", colors: "bg-[#ff0000]" }
-                            ].map((t) => (
-                                <button
-                                    key={t.id}
-                                    onClick={() => setState(prev => ({ ...prev, theme: t.id as any }))}
-                                    className={`h-12 border-2 border-black rounded-brutal flex flex-col items-center justify-center transition-all ${state.theme === t.id ? 'scale-110 shadow-brutal translate-y-[-2px] z-10' : 'opacity-60 hover:opacity-100'}`}
-                                    title={t.name}
-                                >
-                                    <div className={`w-full h-1/2 ${t.colors} rounded-t-sm`} />
-                                    <span className="text-[8px] font-black">{t.name}</span>
-                                </button>
-                            ))}
-                        </div>
-                    </div>
+                    <div className="space-y-4 border-2 border-black p-4 rounded-brutal bg-v-gray/20">
+                        <button
+                            onClick={() => setIsThemeOpen(!isThemeOpen)}
+                            className="w-full flex items-center justify-between font-bold text-xs uppercase opacity-80 hover:opacity-100 transition-opacity"
+                            title="Temaları Göster/Gizle"
+                        >
+                            <span>Takım Teması (18 Takım)</span>
+                            {isThemeOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                        </button>
 
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="space-y-1">
-                            <span className="font-bold text-xs uppercase">Renk</span>
-                            <input
-                                type="color"
-                                name="bgColor"
-                                value={state.bgColor}
-                                onChange={handleChange}
-                                disabled={state.theme !== "default"}
-                                className="w-full h-10 border-brutal border-black rounded-brutal cursor-pointer disabled:opacity-30"
-                            />
-                        </div>
-                        <div className="space-y-1">
-                            <span className="font-bold text-xs uppercase">Desen</span>
-                            <select
-                                name="pattern"
-                                value={state.pattern}
-                                onChange={handleChange}
-                                className="brutal-input text-xs font-bold"
-                            >
-                                <option value="none">Düz</option>
-                                <option value="dots">Noktalı</option>
-                                <option value="grid">Izgara</option>
-                                <option value="noise">Noise</option>
-                            </select>
-                        </div>
+                        {isThemeOpen && (
+                            <div className="space-y-4 animate-in slide-in-from-top-2 duration-200">
+                                <div className="grid grid-cols-6 gap-2">
+                                    {[
+                                        { id: "default", name: "VARSAYIM", colors: "bg-[#FF5DAD]" },
+                                        { id: "gs", name: "GS", colors: "bg-[#A90432]" },
+                                        { id: "fb", name: "FB", colors: "bg-[#002d72]" },
+                                        { id: "bjk", name: "BJK", colors: "bg-black" },
+                                        { id: "ts", name: "TS", colors: "bg-[#A52A2A]" },
+                                        { id: "basak", name: "IBFK", colors: "bg-[#E56B25]" },
+                                        { id: "kasimpasa", name: "KASM", colors: "bg-[#004A99]" },
+                                        { id: "eyup", name: "EYUP", colors: "bg-[#800080]" },
+                                        { id: "goztepe", name: "GOZ", colors: "bg-[#FFFF00]" },
+                                        { id: "samsun", name: "SAM", colors: "bg-[#CC0000]" },
+                                        { id: "rize", name: "RIZE", colors: "bg-[#008C45]" },
+                                        { id: "konya", name: "KON", colors: "bg-[#008000]" },
+                                        { id: "antalya", name: "ANT", colors: "bg-[#E30613]" },
+                                        { id: "alanya", name: "ALN", colors: "bg-[#F9B517]" },
+                                        { id: "kayseri", name: "KAY", colors: "bg-[#FFD700]" },
+                                        { id: "gaziantep", name: "GFK", colors: "bg-[#DA291C]" },
+                                        { id: "gencler", name: "GB", colors: "bg-[#ff0000]" },
+                                        { id: "kocaeli", name: "KOCA", colors: "bg-[#008000]" },
+                                        { id: "karagumruk", name: "FKG", colors: "bg-[#ff0000]" }
+                                    ].map((t) => (
+                                        <button
+                                            key={t.id}
+                                            onClick={() => setState(prev => ({ ...prev, theme: t.id as any }))}
+                                            className={`h-12 border-2 border-black rounded-brutal flex flex-col items-center justify-center transition-all ${state.theme === t.id ? 'scale-110 shadow-brutal translate-y-[-2px] z-10' : 'opacity-60 hover:opacity-100'}`}
+                                            title={t.name}
+                                        >
+                                            <div className={`w-full h-1/2 ${t.colors} rounded-t-sm`} />
+                                            <span className="text-[8px] font-black">{t.name}</span>
+                                        </button>
+                                    ))}
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-4 mt-4">
+                                    <div className="space-y-1">
+                                        <span className="font-bold text-xs uppercase">Renk</span>
+                                        <input
+                                            type="color"
+                                            name="bgColor"
+                                            value={state.bgColor}
+                                            onChange={handleChange}
+                                            disabled={state.theme !== "default"}
+                                            className="w-full h-10 border-brutal border-black rounded-brutal cursor-pointer disabled:opacity-30"
+                                        />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <span className="font-bold text-xs uppercase">Desen</span>
+                                        <select
+                                            name="pattern"
+                                            value={state.pattern}
+                                            onChange={handleChange}
+                                            className="brutal-input text-xs font-bold"
+                                        >
+                                            <option value="none">Düz</option>
+                                            <option value="dots">Noktalı</option>
+                                            <option value="grid">Izgara</option>
+                                            <option value="noise">Noise</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

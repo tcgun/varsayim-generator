@@ -107,15 +107,18 @@ const Template4: React.FC<Props> = ({ state, domRef }) => {
             </div>
 
             {/* HEADER: News Source & Branding */}
-            <div className={`absolute ${isLandscape ? 'top-8 left-8 right-8' : 'top-12 left-12 right-12'} flex items-start justify-between z-50`}>
+            <div className={`absolute ${isLandscape ? 'top-8 left-8 right-8' : 'top-12 left-12 right-12'} flex items-start z-50`}>
                 <div className="flex items-center gap-4">
-                    <div className="bg-red-600 text-white px-4 py-1 font-black text-sm italic animate-pulse">SON DAKİKA</div>
-                    <div className="h-6 w-[2px] bg-white/20" />
-                    <span className="text-white/60 font-black text-sm tracking-[0.2em]">{state.date}</span>
+                    <span className="text-white/80 font-black text-sm tracking-[0.2em] bg-black/50 px-3 py-1">{state.date}</span>
                 </div>
+            </div>
 
-                <div className={`${currentTheme.cardBg || 'bg-white'} px-6 py-2 rounded-brutal shadow-2xl border-2 border-black rotate-[1deg]`}>
-                    <span className="text-3xl font-black tracking-tighter uppercase italic text-black leading-none">VARSAYIM</span>
+            {/* VARSAYIM Logo (Template 1 Style) */}
+            <div className={`absolute ${isLandscape ? 'top-2 right-2' : 'top-4 right-4'} z-50`}>
+                <div className={`${currentTheme.primary} border-brutal border-black shadow-brutal px-8 py-3 rotate-[2deg]`}>
+                    <span className={`text-4xl font-black tracking-tighter uppercase italic ${state.theme === "default" ? 'text-black' : 'text-white'}`}>
+                        VARSAYIM
+                    </span>
                 </div>
             </div>
 
@@ -129,12 +132,8 @@ const Template4: React.FC<Props> = ({ state, domRef }) => {
                     )}
 
                     {state.positionText && (
-                        <div className="relative group">
-                            <div className="absolute -inset-2 bg-red-600/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                            <h1 className={`${headlineFontSize} font-bold text-white uppercase italic leading-tight tracking-normal text-left max-w-[15ch] break-words`}>
-                                {state.positionText}
-                            </h1>
-                            <div className="mt-4 w-24 h-2 bg-red-600" />
+                        <div className="bg-white text-black px-6 py-3 font-black text-xl border-2 border-black shadow-brutal w-fit rotate-[1deg] uppercase">
+                            {state.positionText}
                         </div>
                     )}
 
