@@ -136,9 +136,9 @@ const Template1: React.FC<Props> = ({ state, domRef }) => {
             {state.showPositionBox && (
                 <div className={`relative z-40 ${isExtremeLandscape ? 'mb-2 scale-[0.55] mt-[-30px]' : (isLandscape ? 'mb-4 scale-75' : 'mb-8')} origin-center rotate-[-1deg] flex flex-col items-center gap-4 w-full max-w-[90%]`}>
                     {(state.positionLabel || (state.showMinute && state.positionMinute)) && (
-                        <div className={`${currentTheme.primary} border-brutal border-black px-6 py-2 shadow-brutal flex items-center gap-8`}>
-                            <span className="text-4xl font-black italic tracking-widest uppercase text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]">{state.positionLabel || "DAKİKA"}</span>
-                            <span className="text-4xl font-black italic tracking-tighter text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]">
+                        <div className="bg-slate-800 border-brutal border-black px-6 py-2 shadow-brutal flex items-center justify-center gap-3 rotate-[-1deg] min-w-[120px]">
+                            <span className="text-4xl font-black italic tracking-widest uppercase text-white">{state.positionLabel || "DAKİKA"}</span>
+                            <span className="text-4xl font-black italic tracking-tighter text-white">
                                 {state.positionMinute}
                             </span>
                         </div>
@@ -147,7 +147,7 @@ const Template1: React.FC<Props> = ({ state, domRef }) => {
                     {/* Ana Pozisyon Kutusu (Altta - Ortalı) */}
                     {state.positionText && (
                         <div className={`${currentTheme.primary} border-brutal border-black ${isLandscape ? 'px-6 py-2' : 'px-10 py-3'} shadow-brutal flex items-center justify-center`}>
-                            <span className={`${isLandscape ? 'text-xl' : 'text-2xl'} font-bold italic uppercase tracking-normal text-left text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)] leading-snug inline-block`}>
+                            <span className={`${isLandscape ? 'text-xl' : 'text-2xl'} font-bold italic uppercase tracking-normal text-left text-white leading-snug inline-block`}>
                                 {state.positionText}
                             </span>
                         </div>

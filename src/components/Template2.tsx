@@ -179,7 +179,7 @@ const Template2: React.FC<Props> = ({ state, domRef }) => {
 
                         {/* Orta: Ana Metin */}
                         <div className={`relative ${state.contentLayout === 'spread' ? 'flex-1 flex flex-col justify-center' : 'mt-4'} w-full`}>
-                            <p className={`${fontSize} text-white font-black leading-snug tracking-normal uppercase drop-shadow-[0_15px_30px_rgba(0,0,0,1)] relative z-10 w-full text-left`}>
+                            <p className={`${fontSize} text-white font-black leading-snug tracking-normal uppercase relative z-10 w-full text-left`}>
                                 {renderedComment || "DRIES MERTENS"}
                             </p>
                         </div>

@@ -129,7 +129,7 @@ const Template5: React.FC<Props> = ({ state, domRef }) => {
                 <div className="flex flex-col gap-12 w-full">
                     {state.positionText && (
                         <div className="flex flex-col gap-4 max-w-[95%]">
-                            <h1 className={`${headlineFontSize} font-bold leading-tight tracking-normal uppercase italic text-left text-white drop-shadow-2xl max-w-[15ch] break-words`}>
+                            <h1 className={`${headlineFontSize} font-bold leading-tight tracking-normal uppercase italic text-left text-white max-w-[15ch] break-words`}>
                                 {state.positionText}
                             </h1>
                             <div className="flex items-center gap-4">

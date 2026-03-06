@@ -127,7 +127,7 @@ const Template4: React.FC<Props> = ({ state, domRef }) => {
                     {state.positionText && (
                         <div className="relative group">
                             <div className="absolute -inset-2 bg-red-600/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                            <h1 className={`${headlineFontSize} font-bold text-white uppercase italic leading-tight tracking-normal text-left drop-shadow-2xl max-w-[15ch] break-words`}>
+                            <h1 className={`${headlineFontSize} font-bold text-white uppercase italic leading-tight tracking-normal text-left max-w-[15ch] break-words`}>
                                 {state.positionText}
                             </h1>
                             <div className="mt-4 w-24 h-2 bg-red-600" />
