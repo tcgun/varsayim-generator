@@ -14,30 +14,12 @@ const Template4: React.FC<Props> = ({ state, domRef }) => {
     const isLandscape = preset.width > preset.height;
     const isExtremeLandscape = isLandscape && preset.height < 650;
 
-    // Tema Renkleri
+    // Tema Renkleri (Sade / Göz Yormayan)
     const THEMES: Record<string, any> = {
-        default: { primary: "bg-[#FF5DAD]", bg: "#FFDD00", cardBg: "bg-[#FF5DAD]", accent: "#FF5DAD", secondary: "#FFDD00", shadow: "shadow-[8px_8px_0px_0px_#FF5DAD]", text: "text-black", quote: "text-black" },
-        gs: { primary: "bg-[#A90432]", bg: "#FFCD00", cardBg: "bg-[#2D2D2D]", accent: "#2D2D2D", secondary: "#A90432", shadow: "shadow-[8px_8px_0px_0px_#A90432]", text: "text-[#FFCD00]", quote: "text-[#FFCD00]" },
-        fb: { primary: "bg-[#002D72]", bg: "#FFD100", cardBg: "bg-[#002D72]", accent: "#E30A17", secondary: "#002D72", shadow: "shadow-[8px_8px_0px_0px_#002D72]", text: "text-[#FFD100]", quote: "text-[#FFD100]" },
-        bjk: { primary: "bg-[#000000]", bg: "#E10600", cardBg: "bg-[#000000]", accent: "#E10600", secondary: "#000000", shadow: "shadow-[8px_8px_0px_0px_#000000]", text: "text-[#FFFFFF]", quote: "text-[#FFFFFF]" },
-        ts: { primary: "bg-[#7A263A]", bg: "#4FA3D1", cardBg: "bg-[#7A263A]", accent: "#FFFFFF", secondary: "#7A263A", shadow: "shadow-[8px_8px_0px_0px_#7A263A]", text: "text-[#4FA3D1]", quote: "text-[#4FA3D1]" },
-        basak: { primary: "bg-[#0B3A82]", bg: "#FF6600", cardBg: "bg-[#0B3A82]", accent: "#FFFFFF", secondary: "#0B3A82", shadow: "shadow-[8px_8px_0px_0px_#0B3A82]", text: "text-[#FF6600]", quote: "text-[#FF6600]" },
-        kasimpasa: { primary: "bg-[#005BAC]", bg: "#00A3E0", cardBg: "bg-[#005BAC]", accent: "#00A3E0", secondary: "#005BAC", shadow: "shadow-[8px_8px_0px_0px_#005BAC]", text: "text-[#00A3E0]", quote: "text-[#00A3E0]" },
-        eyup: { primary: "bg-[#5A2D81]", bg: "#FFD100", cardBg: "bg-[#5A2D81]", accent: "#FFFFFF", secondary: "#5A2D81", shadow: "shadow-[8px_8px_0px_0px_#5A2D81]", text: "text-[#FFD100]", quote: "text-[#FFD100]" },
-        goztepe: { primary: "bg-[#FFD100]", bg: "#C00000", cardBg: "bg-[#FFD100]", accent: "#000000", secondary: "#FFD100", shadow: "shadow-[8px_8px_0px_0px_#FFD100]", text: "text-[#C00000]", quote: "text-[#C00000]" },
-        samsun: { primary: "bg-[#E30613]", bg: "#000000", cardBg: "bg-[#E30613]", accent: "#000000", secondary: "#E30613", shadow: "shadow-[8px_8px_0px_0px_#E30613]", text: "text-[#000000]", quote: "text-[#000000]" },
-        rize: { primary: "bg-[#009639]", bg: "#003DA5", cardBg: "bg-[#009639]", accent: "#FFFFFF", secondary: "#009639", shadow: "shadow-[8px_8px_0px_0px_#009639]", text: "text-[#003DA5]", quote: "text-[#003DA5]" },
-        konya: { primary: "bg-[#009639]", bg: "#000000", cardBg: "bg-[#009639]", accent: "#000000", secondary: "#009639", shadow: "shadow-[8px_8px_0px_0px_#009639]", text: "text-[#000000]", quote: "text-[#000000]" },
-        antalya: { primary: "bg-[#E31E24]", bg: "#000000", cardBg: "bg-[#E31E24]", accent: "#000000", secondary: "#E31E24", shadow: "shadow-[8px_8px_0px_0px_#E31E24]", text: "text-[#000000]", quote: "text-[#000000]" },
-        alanya: { primary: "bg-[#F47A20]", bg: "#009A44", cardBg: "bg-[#F47A20]", accent: "#FFFFFF", secondary: "#F47A20", shadow: "shadow-[8px_8px_0px_0px_#F47A20]", text: "text-[#009A44]", quote: "text-[#009A44]" },
-        kayseri: { primary: "bg-[#FFB81C]", bg: "#D71920", cardBg: "bg-[#FFB81C]", accent: "#000000", secondary: "#FFB81C", shadow: "shadow-[8px_8px_0px_0px_#FFB81C]", text: "text-[#D71920]", quote: "text-[#D71920]" },
-        gaziantep: { primary: "bg-[#DA291C]", bg: "#000000", cardBg: "bg-[#DA291C]", accent: "#FFFFFF", secondary: "#DA291C", shadow: "shadow-[8px_8px_0px_0px_#DA291C]", text: "text-[#000000]", quote: "text-[#000000]" },
-        gencler: { primary: "bg-[#C8102E]", bg: "#000000", cardBg: "bg-[#C8102E]", accent: "#FFFFFF", secondary: "#C8102E", shadow: "shadow-[8px_8px_0px_0px_#C8102E]", text: "text-[#000000]", quote: "text-[#000000]" },
-        kocaeli: { primary: "bg-[#007A3D]", bg: "#000000", cardBg: "bg-[#007A3D]", accent: "#FFFFFF", secondary: "#007A3D", shadow: "shadow-[8px_8px_0px_0px_#007A3D]", text: "text-[#000000]", quote: "text-[#000000]" },
-        karagumruk: { primary: "bg-[#7A263A]", bg: "#000000", cardBg: "bg-[#7A263A]", accent: "#FFFFFF", secondary: "#7A263A", shadow: "shadow-[8px_8px_0px_0px_#7A263A]", text: "text-[#000000]", quote: "text-[#000000]" },
+        varsayim: { primary: "bg-[#E2E8F0]", bg: "#FDF6E3", cardBg: "bg-[#FFFFFF]", accent: "#94A3B8", secondary: "#FDF6E3", shadow: "shadow-[8px_8px_0px_0px_#CBD5E1]", text: "text-slate-800", quote: "text-slate-300" },
     };
 
-    const currentTheme = THEMES[state.theme] || THEMES.default;
+    const currentTheme = THEMES[state.theme] || THEMES.varsayim;
 
     // Metin Hiyerarşisi Font Boyutları
     const headlineFontSize = useMemo(() => {
@@ -94,7 +76,7 @@ const Template4: React.FC<Props> = ({ state, domRef }) => {
                 {state.authorImage ? (
                     <img src={state.authorImage} className="w-full h-full object-cover opacity-20 blur-[2px]" />
                 ) : (
-                    <div className="w-full h-full bg-slate-900" />
+                    <div className="w-full h-full" style={{ backgroundColor: currentTheme.bg }} />
                 )}
                 <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0c0c0c] via-[#0c0c0c]/80 to-transparent" />
@@ -115,29 +97,25 @@ const Template4: React.FC<Props> = ({ state, domRef }) => {
 
             {/* VARSAYIM Logo (Template 1 Style) */}
             <div className={`absolute ${isLandscape ? 'top-2 right-2' : 'top-4 right-4'} z-50`}>
-                <div className={`${currentTheme.primary} border-brutal border-black shadow-brutal px-8 py-3 rotate-[2deg]`}>
-                    <span className={`text-4xl font-black tracking-tighter uppercase italic ${state.theme === "default" ? 'text-black' : 'text-white'}`}>
+                <div className="bg-[#FFD700] text-black border-[3px] border-black shadow-[4px_4px_15px_rgba(255,0,150,0.6)] px-8 py-3">
+                    <span className="text-4xl font-black tracking-tighter uppercase text-black">
                         VARSAYIM
                     </span>
                 </div>
             </div>
 
             {/* MAIN CONTENT */}
-            <div className={`relative z-10 flex-1 flex flex-col justify-end ${isLandscape ? 'p-12 pb-48' : 'p-12 pb-64'} space-y-8`}>
+            <div className={`relative z-10 flex-1 flex flex-col justify-end ${isLandscape ? 'p-12 pb-48' : 'p-12 pb-56'} space-y-8`}>
                 <div className="flex flex-col items-start gap-4 max-w-[90%]">
-                    {state.positionLabel && (
-                        <div className={`${currentTheme.cardBg || 'bg-white'} text-black px-4 py-1 text-xs font-black uppercase tracking-widest rotate-[-1deg]`}>
-                            {state.positionLabel}
-                        </div>
-                    )}
+
 
                     {state.positionText && (
-                        <div className="bg-white/90 backdrop-blur-sm text-black px-6 py-3 font-black text-xl border-2 border-black shadow-brutal w-fit rotate-[1deg] uppercase text-center">
+                        <div className="bg-white/90 backdrop-blur-sm text-black px-6 py-3 font-black text-xl border-2 border-black shadow-brutal w-fit uppercase text-center">
                             {state.positionText}
                         </div>
                     )}
 
-                    <div className={`bg-white text-black shadow-brutal border-2 border-black p-8 mt-4 w-full text-left`}>
+                    <div className={`${currentTheme.cardBg || 'bg-white'} text-black ${currentTheme.shadow} border-2 border-black p-8 mt-4 w-full text-left`}>
                         <p className={`${commentFontSize} text-black font-black leading-relaxed tracking-normal text-left uppercase`}>
                             {renderedComment || "İçerik bekleniyor..."}
                         </p>
@@ -146,15 +124,10 @@ const Template4: React.FC<Props> = ({ state, domRef }) => {
 
                 {state.author && (
                     <div className="flex items-center gap-4 animate-in slide-in-from-left-10 duration-700">
-                        <div className="flex flex-col bg-white text-black px-6 py-3 border-2 border-black shadow-brutal rotate-[-1deg]">
+                        <div className={`flex flex-col ${currentTheme.cardBg || 'bg-white'} text-black px-6 py-3 border-2 border-black shadow-brutal`}>
                             <span className="text-xl font-black text-black uppercase italic tracking-tighter leading-none">
                                 {state.author}
                             </span>
-                            {state.authorTitle && (
-                                <span className="text-[10px] font-black text-black/40 uppercase tracking-[0.3em] mt-1">
-                                    {state.authorTitle}
-                                </span>
-                            )}
                         </div>
                     </div>
                 )}
@@ -164,7 +137,7 @@ const Template4: React.FC<Props> = ({ state, domRef }) => {
             <div className="absolute bottom-0 left-0 right-0 z-50 flex flex-col items-center">
                 {/* Maç Bilgisi */}
                 {state.showMatchInfo && (
-                    <div className={`${isExtremeLandscape ? 'mb-8 scale-[0.85]' : 'mb-6'} bg-white border-brutal border-black ${currentTheme.shadow} px-8 py-3 flex flex-col items-center rotate-1`}>
+                    <div className={`${isExtremeLandscape ? 'mb-8 scale-[0.85]' : 'mb-6'} bg-white border-brutal border-black ${currentTheme.shadow} px-8 py-3 flex flex-col items-center`}>
                         <p className={`text-xl font-black uppercase tracking-widest text-center text-black`}>
                             {state.homeTeam} {state.score} {state.awayTeam}
                         </p>

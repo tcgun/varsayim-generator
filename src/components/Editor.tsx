@@ -60,80 +60,22 @@ const Editor: React.FC<Props> = ({ state, setState, isMobile }) => {
                     </div>
 
                     <div className="space-y-4 border-2 border-black p-4 rounded-brutal bg-v-gray/20">
-                        <button
-                            onClick={() => setIsThemeOpen(!isThemeOpen)}
-                            className="w-full flex items-center justify-between font-bold text-xs uppercase opacity-80 hover:opacity-100 transition-opacity"
-                            title="Temaları Göster/Gizle"
-                        >
-                            <span>Takım Teması (18 Takım)</span>
-                            {isThemeOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                        </button>
-
-                        {isThemeOpen && (
-                            <div className="space-y-4 animate-in slide-in-from-top-2 duration-200">
-                                <div className="grid grid-cols-6 gap-2">
-                                    {[
-                                        { id: "default", name: "VARSAYIM", colors: "bg-[#FF5DAD]" },
-                                        { id: "gs", name: "GS", colors: "bg-[#A90432]" },
-                                        { id: "fb", name: "FB", colors: "bg-[#002d72]" },
-                                        { id: "bjk", name: "BJK", colors: "bg-black" },
-                                        { id: "ts", name: "TS", colors: "bg-[#A52A2A]" },
-                                        { id: "basak", name: "IBFK", colors: "bg-[#E56B25]" },
-                                        { id: "kasimpasa", name: "KASM", colors: "bg-[#004A99]" },
-                                        { id: "eyup", name: "EYUP", colors: "bg-[#800080]" },
-                                        { id: "goztepe", name: "GOZ", colors: "bg-[#FFFF00]" },
-                                        { id: "samsun", name: "SAM", colors: "bg-[#CC0000]" },
-                                        { id: "rize", name: "RIZE", colors: "bg-[#008C45]" },
-                                        { id: "konya", name: "KON", colors: "bg-[#008000]" },
-                                        { id: "antalya", name: "ANT", colors: "bg-[#E30613]" },
-                                        { id: "alanya", name: "ALN", colors: "bg-[#F9B517]" },
-                                        { id: "kayseri", name: "KAY", colors: "bg-[#FFD700]" },
-                                        { id: "gaziantep", name: "GFK", colors: "bg-[#DA291C]" },
-                                        { id: "gencler", name: "GB", colors: "bg-[#ff0000]" },
-                                        { id: "kocaeli", name: "KOCA", colors: "bg-[#008000]" },
-                                        { id: "karagumruk", name: "FKG", colors: "bg-[#ff0000]" }
-                                    ].map((t) => (
-                                        <button
-                                            key={t.id}
-                                            onClick={() => setState(prev => ({ ...prev, theme: t.id as any }))}
-                                            className={`h-12 border-2 border-black rounded-brutal flex flex-col items-center justify-center transition-all ${state.theme === t.id ? 'scale-110 shadow-brutal translate-y-[-2px] z-10' : 'opacity-60 hover:opacity-100'}`}
-                                            title={t.name}
-                                        >
-                                            <div className={`w-full h-1/2 ${t.colors} rounded-t-sm`} />
-                                            <span className="text-[8px] font-black">{t.name}</span>
-                                        </button>
-                                    ))}
-                                </div>
-
-                                <div className="grid grid-cols-2 gap-4 mt-4">
-                                    <div className="space-y-1">
-                                        <span className="font-bold text-xs uppercase">Renk</span>
-                                        <input
-                                            type="color"
-                                            name="bgColor"
-                                            value={state.bgColor}
-                                            onChange={handleChange}
-                                            disabled={state.theme !== "default"}
-                                            className="w-full h-10 border-brutal border-black rounded-brutal cursor-pointer disabled:opacity-30"
-                                        />
-                                    </div>
-                                    <div className="space-y-1">
-                                        <span className="font-bold text-xs uppercase">Desen</span>
-                                        <select
-                                            name="pattern"
-                                            value={state.pattern}
-                                            onChange={handleChange}
-                                            className="brutal-input text-xs font-bold"
-                                        >
-                                            <option value="none">Düz</option>
-                                            <option value="dots">Noktalı</option>
-                                            <option value="grid">Izgara</option>
-                                            <option value="noise">Noise</option>
-                                        </select>
-                                    </div>
-                                </div>
+                        <div className="grid grid-cols-1 gap-4">
+                            <div className="space-y-1">
+                                <span className="font-bold text-xs uppercase">Arka Plan Deseni</span>
+                                <select
+                                    name="pattern"
+                                    value={state.pattern}
+                                    onChange={handleChange}
+                                    className="brutal-input text-xs font-bold w-full"
+                                >
+                                    <option value="none">Düz (Krem Rengi)</option>
+                                    <option value="dots">Noktalı</option>
+                                    <option value="grid">Izgara</option>
+                                    <option value="noise">Noise</option>
+                                </select>
                             </div>
-                        )}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -141,346 +83,463 @@ const Editor: React.FC<Props> = ({ state, setState, isMobile }) => {
             {/* İçerik Editörü */}
             <div className="space-y-4">
                 <h3 className="text-xl font-black uppercase text-v-pink underline decoration-4">İçerik Editörü</h3>
-                <div className="space-y-4">
-                    {state.template === 'template1' ? (
-                        <>
-                            <div className="grid grid-cols-3 gap-3">
-                                <div className="space-y-1">
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-[10px] font-bold uppercase opacity-50">Dakika</span>
-                                        <input
-                                            type="checkbox"
-                                            name="showMinute"
-                                            checked={!!state.showMinute}
-                                            onChange={handleChange}
-                                            className="w-3 h-3 accent-black"
-                                        />
-                                    </div>
-                                    <input
-                                        type="text"
-                                        name="positionMinute"
-                                        value={state.positionMinute || ""}
-                                        onChange={handleChange}
-                                        placeholder="DK"
-                                        disabled={!state.showMinute}
-                                        className="brutal-input text-center font-black disabled:opacity-30"
-                                    />
-                                </div>
-                                <div className="col-span-2 space-y-1">
-                                    <span className="text-[10px] font-bold uppercase opacity-50">Olay</span>
-                                    <input
-                                        type="text"
-                                        name="positionLabel"
-                                        value={state.positionLabel || ""}
-                                        onChange={handleChange}
-                                        placeholder="Örn: FAUL / GOL"
-                                        className="brutal-input text-xs uppercase font-black"
-                                    />
-                                </div>
-                            </div>
 
-                            <div className="space-y-1">
-                                <span className="text-[10px] font-bold uppercase opacity-50">Pozisyon Bilgisi</span>
-                                <input
-                                    type="text"
-                                    name="positionText"
-                                    value={state.positionText || ""}
-                                    onChange={handleChange}
-                                    placeholder="Örn: Ceza Sahası İçi"
-                                    className="brutal-input text-xs w-full"
-                                />
-                            </div>
+                {state.template === 'template1' ? (
+                    /* TEMPLATE 1: VAR / HAKEM ANALİZİ FORMU */
+                    <div className="space-y-6">
+                        <div className="space-y-1">
+                            <span className="text-[10px] font-bold uppercase opacity-50">Pozisyon Bilgisi</span>
+                            <input
+                                type="text"
+                                name="positionText"
+                                value={state.positionText || ""}
+                                onChange={handleChange}
+                                placeholder="Örn: Ceza Sahası İçi"
+                                className="brutal-input text-xs w-full"
+                            />
+                        </div>
 
-                            <div className="space-y-1">
-                                <span className="text-[10px] font-bold uppercase opacity-50">Hakemin Kararı</span>
-                                <input
-                                    type="text"
-                                    name="refereeDecision"
-                                    value={state.refereeDecision || ""}
-                                    onChange={handleChange}
-                                    placeholder="Örn: PENALTI"
-                                    className="brutal-input text-xs w-full font-black"
-                                />
-                            </div>
+                        <div className="space-y-1">
+                            <span className="text-[10px] font-bold uppercase opacity-50">Hakemin Kararı</span>
+                            <input
+                                type="text"
+                                name="refereeDecision"
+                                value={state.refereeDecision || ""}
+                                onChange={handleChange}
+                                placeholder="Örn: PENALTI"
+                                className="brutal-input text-xs w-full font-black"
+                            />
+                        </div>
 
-                            <label className="block space-y-1">
-                                <span className="font-bold text-sm">Yorumcuların Yorumu</span>
-                                <textarea
-                                    name="comment"
-                                    value={state.comment || ""}
-                                    onChange={handleChange}
-                                    rows={8}
-                                    className="brutal-input resize-y text-lg"
-                                    placeholder="Yorum veya görüş metni..."
-                                />
-                            </label>
+                        <label className="block space-y-1">
+                            <span className="font-bold text-sm">Yorumcuların Yorumu</span>
+                            <textarea
+                                name="comment"
+                                value={state.comment || ""}
+                                onChange={handleChange}
+                                rows={8}
+                                className="brutal-input resize-y text-lg"
+                                placeholder="Yorum veya görüş metni..."
+                            />
+                        </label>
 
-                            <label className="block space-y-1 text-v-pink">
-                                <span className="font-bold text-sm">Vurgulanacak Kelimeler (Yıldız * ile Ayırın)</span>
-                                <input
-                                    type="text"
-                                    name="highlight"
-                                    value={state.highlight || ""}
-                                    onChange={handleChange}
-                                    placeholder="örn: kelime1 * kelime2"
-                                    className="brutal-input border-v-pink"
-                                />
-                            </label>
-                        </>
-                    ) : (
-                        <>
-                            <label className="block space-y-1">
-                                <span className="font-bold text-sm">
-                                    {state.template === 'template2' ? 'Haber İçeriği' : 'Yorum Metni'}
-                                </span>
-                                <textarea
-                                    name="comment"
-                                    value={state.comment || ""}
-                                    onChange={handleChange}
-                                    rows={8}
-                                    className="brutal-input resize-y text-lg"
-                                    placeholder={state.template === 'template2' ? 'Flaas haber veya detaylı metni buraya yazın...' : 'Yorum veya görüş metni...'}
-                                />
-                            </label>
+                        <label className="block space-y-1 text-v-pink">
+                            <span className="font-bold text-sm">Vurgulanacak Kelimeler (Yıldız * ile Ayırın)</span>
+                            <input
+                                type="text"
+                                name="highlight"
+                                value={state.highlight || ""}
+                                onChange={handleChange}
+                                placeholder="örn: kelime1 * kelime2"
+                                className="brutal-input border-v-pink"
+                            />
+                        </label>
 
-                            <label className="block space-y-1 text-v-pink">
-                                <span className="font-bold text-sm">Vurgulanacak Kelimeler (Yıldız * ile Ayırın)</span>
-                                <input
-                                    type="text"
-                                    name="highlight"
-                                    value={state.highlight || ""}
-                                    onChange={handleChange}
-                                    placeholder="örn: kelime1 * kelime2"
-                                    className="brutal-input border-v-pink"
-                                />
-                            </label>
-                        </>
-                    )}
+                        <label className="block space-y-1">
+                            <span className="font-bold text-[10px] uppercase opacity-60">KİM DEDİ?</span>
+                            <input
+                                type="text"
+                                name="author"
+                                value={state.author || ""}
+                                onChange={handleChange}
+                                className="brutal-input h-12 text-lg font-black uppercase"
+                                placeholder="İSİM YAZIN"
+                            />
+                        </label>
 
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="space-y-2">
+                        {/* Maç Bilgileri - Sadece Template 1 için */}
+                        <div className="space-y-4 pt-4 border-t border-black/10">
                             <div className="flex items-center justify-between">
-                                <span className="font-bold text-xs uppercase">Yorumcu Fotoğrafı</span>
-                                <label className="flex items-center gap-1 cursor-pointer font-bold text-[8px] bg-black text-white px-1 rounded">
+                                <h3 className="text-xl font-black uppercase inline-flex items-center gap-2">
+                                    Maç Bilgileri <span className="bg-black text-white text-[8px] px-1 rounded">ŞABLON 1</span>
+                                </h3>
+                                <label className="flex items-center gap-2 cursor-pointer font-bold text-xs bg-black text-white px-2 py-1 rounded-brutal">
                                     <input
                                         type="checkbox"
-                                        name="showAuthorImage"
-                                        checked={!!state.showAuthorImage}
+                                        name="showMatchInfo"
+                                        checked={state.showMatchInfo}
                                         onChange={handleChange}
-                                        className="w-3 h-3 accent-v-yellow"
+                                        className="w-4 h-4 accent-v-yellow"
                                     />
                                     GÖSTER
                                 </label>
                             </div>
-                            <div className="h-24 w-full border-2 border-dashed border-black/30 rounded-brutal relative flex items-center justify-center overflow-hidden hover:border-v-pink transition-colors">
-                                {state.authorImage ? (
-                                    <img src={state.authorImage} className="w-full h-full object-cover" />
-                                ) : (
-                                    <span className="text-[10px] text-center font-bold px-4">Foto Yükle</span>
-                                )}
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={(e) => {
-                                        const file = e.target.files?.[0];
-                                        if (file) {
-                                            const reader = new FileReader();
-                                            reader.onloadend = () => {
-                                                setState(prev => ({ ...prev, authorImage: reader.result as string }));
-                                            };
-                                            reader.readAsDataURL(file);
-                                        }
-                                    }}
-                                    className="absolute inset-0 opacity-0 cursor-pointer"
-                                />
+
+                            {state.showMatchInfo && (
+                                <div className="grid grid-cols-2 gap-3 animate-in fade-in slide-in-from-top-2 duration-300">
+                                    <input
+                                        type="text"
+                                        name="homeTeam"
+                                        value={state.homeTeam || ""}
+                                        onChange={handleChange}
+                                        placeholder="Ev Sahibi"
+                                        className="brutal-input text-xs"
+                                    />
+                                    <input
+                                        type="text"
+                                        name="awayTeam"
+                                        value={state.awayTeam || ""}
+                                        onChange={handleChange}
+                                        placeholder="Deplasman"
+                                        className="brutal-input text-xs"
+                                    />
+                                    <input
+                                        type="text"
+                                        name="date"
+                                        value={state.date || ""}
+                                        onChange={handleChange}
+                                        placeholder="01.01.2024"
+                                        className="brutal-input text-xs"
+                                    />
+                                    <input
+                                        type="text"
+                                        name="matchWeek"
+                                        value={state.matchWeek || ""}
+                                        onChange={handleChange}
+                                        placeholder="Örn: 21. HAFTA"
+                                        className="brutal-input text-xs"
+                                    />
+                                    <input
+                                        type="text"
+                                        name="score"
+                                        value={state.score || ""}
+                                        onChange={handleChange}
+                                        placeholder="0-0"
+                                        className="brutal-input text-center font-black text-lg col-span-2"
+                                    />
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                ) : state.template === 'template2' ? (
+                    /* TEMPLATE 2: HAKEM İSTATİSTİKLERİ FORMU */
+                    <div className="space-y-6">
+                        <div className="bg-v-yellow p-4 border-2 border-black rounded-brutal shadow-brutal flex items-center gap-3">
+                            <div className="bg-black text-white p-2 rounded-full">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+                            </div>
+                            <h4 className="font-black text-black uppercase tracking-tighter">HAKEM İSTATİSTİKLERİ</h4>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <span className="font-bold text-xs uppercase">Hakem Fotoğrafı</span>
+                                <div className="h-28 w-full border-2 border-dashed border-black/30 rounded-brutal relative flex items-center justify-center overflow-hidden hover:border-black transition-colors bg-white">
+                                    {state.authorImage ? (
+                                        <img src={state.authorImage} className="w-full h-full object-cover" />
+                                    ) : (
+                                        <span className="text-[10px] text-center font-bold px-4 opacity-40">Hakem Fotosu Yükle</span>
+                                    )}
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={(e) => {
+                                            const file = e.target.files?.[0];
+                                            if (file) {
+                                                const reader = new FileReader();
+                                                reader.onloadend = () => {
+                                                    setState(prev => ({
+                                                        ...prev,
+                                                        authorImage: reader.result as string,
+                                                        authorImageX: 50,
+                                                        authorImageY: 50
+                                                    }));
+                                                };
+                                                reader.readAsDataURL(file);
+                                            }
+                                        }}
+                                        className="absolute inset-0 opacity-0 cursor-pointer"
+                                    />
+                                </div>
+
+                                {/* Fotoğraf Konumlandırma Kontrolleri */}
                                 {state.authorImage && (
-                                    <button
-                                        onClick={() => setState(prev => ({ ...prev, authorImage: undefined }))}
-                                        className="absolute top-1 right-1 bg-red-500 text-white w-5 h-5 rounded-full text-[10px] font-black z-20"
-                                    >X</button>
+                                    <div className="mt-4 pt-4 border-t border-black/5 animate-in fade-in slide-in-from-top-2">
+                                        <div className="flex items-center justify-between mb-3">
+                                            <span className="font-bold text-[10px] uppercase opacity-60">Fotoğrafı Konumlandır</span>
+                                            <button
+                                                onClick={() => setState(prev => ({ ...prev, authorImageX: 50, authorImageY: 50 }))}
+                                                className="text-[10px] font-black underline hover:text-v-yellow transition-colors"
+                                            >
+                                                SIFIRLA
+                                            </button>
+                                        </div>
+
+                                        {/* İnteraktif Sürükleme Alanı */}
+                                        <div
+                                            className="h-32 w-full bg-slate-100 rounded-brutal border-2 border-black relative cursor-move overflow-hidden"
+                                            onMouseMove={(e) => {
+                                                if (e.buttons === 1) {
+                                                    const rect = e.currentTarget.getBoundingClientRect();
+                                                    const x = Math.round(((e.clientX - rect.left) / rect.width) * 100);
+                                                    const y = Math.round(((e.clientY - rect.top) / rect.height) * 100);
+                                                    setState(prev => ({
+                                                        ...prev,
+                                                        authorImageX: Math.min(Math.max(x, 0), 100),
+                                                        authorImageY: Math.min(Math.max(y, 0), 100)
+                                                    }));
+                                                }
+                                            }}
+                                            onMouseDown={(e) => {
+                                                const rect = e.currentTarget.getBoundingClientRect();
+                                                const x = Math.round(((e.clientX - rect.left) / rect.width) * 100);
+                                                const y = Math.round(((e.clientY - rect.top) / rect.height) * 100);
+                                                setState(prev => ({
+                                                    ...prev,
+                                                    authorImageX: Math.min(Math.max(x, 0), 100),
+                                                    authorImageY: Math.min(Math.max(y, 0), 100)
+                                                }));
+                                            }}
+                                        >
+                                            {/* Küçük Görsel Önizleme */}
+                                            <img
+                                                src={state.authorImage}
+                                                className="w-full h-full object-cover opacity-20 pointer-events-none"
+                                            />
+                                            {/* Hedef Göstergesi */}
+                                            <div
+                                                className="absolute w-6 h-6 border-2 border-black bg-v-yellow rounded-full -translate-x-1/2 -translate-y-1/2 shadow-brutal pointer-events-none flex items-center justify-center after:content-[''] after:w-1 after:h-1 after:bg-black after:rounded-full"
+                                                style={{ left: `${state.authorImageX}%`, top: `${state.authorImageY}%` }}
+                                            />
+                                        </div>
+
+                                        {/* Slider Kontrolleri */}
+                                        <div className="space-y-4 mt-6">
+                                            <div className="space-y-1">
+                                                <div className="flex justify-between text-[9px] font-black italic">
+                                                    <span>YATAY (X)</span>
+                                                    <span>%{state.authorImageX}</span>
+                                                </div>
+                                                <input
+                                                    type="range"
+                                                    min="0"
+                                                    max="100"
+                                                    value={state.authorImageX || 50}
+                                                    onChange={(e) => setState(prev => ({ ...prev, authorImageX: parseInt(e.target.value) }))}
+                                                    className="w-full accent-v-yellow cursor-pointer"
+                                                />
+                                            </div>
+                                            <div className="space-y-1">
+                                                <div className="flex justify-between text-[9px] font-black italic">
+                                                    <span>DİKEY (Y)</span>
+                                                    <span>%{state.authorImageY}</span>
+                                                </div>
+                                                <input
+                                                    type="range"
+                                                    min="0"
+                                                    max="100"
+                                                    value={state.authorImageY || 50}
+                                                    onChange={(e) => setState(prev => ({ ...prev, authorImageY: parseInt(e.target.value) }))}
+                                                    className="w-full accent-v-yellow cursor-pointer"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
                                 )}
+                            </div>
+                            <div className="space-y-4">
+                                <label className="block space-y-1">
+                                    <span className="font-bold text-[10px] uppercase opacity-60">HAKEM ADI</span>
+                                    <input
+                                        type="text"
+                                        name="author"
+                                        value={state.author || ""}
+                                        onChange={handleChange}
+                                        className="brutal-input h-10 text-sm font-black uppercase"
+                                        placeholder="HAKEM İSMİ"
+                                    />
+                                </label>
+                                <label className="block space-y-1">
+                                    <span className="font-bold text-[10px] uppercase opacity-60">MAÇ SAYISI (HAKEM)</span>
+                                    <input
+                                        type="text"
+                                        name="refMatches"
+                                        value={state.refMatches || ""}
+                                        onChange={handleChange}
+                                        className="brutal-input h-10 text-sm font-black"
+                                        placeholder="Örn: 12"
+                                    />
+                                </label>
+                                <div className="grid grid-cols-2 gap-2">
+                                    <label className="block space-y-1">
+                                        <span className="font-bold text-[8px] uppercase opacity-60">VAR GÖREVİ</span>
+                                        <input
+                                            type="text"
+                                            name="refVarMatches"
+                                            value={state.refVarMatches || ""}
+                                            onChange={handleChange}
+                                            className="brutal-input h-8 text-xs font-bold"
+                                            placeholder="Örn: 5"
+                                        />
+                                    </label>
+                                    <label className="block space-y-1">
+                                        <span className="font-bold text-[8px] uppercase opacity-60">AVAR GÖREVİ</span>
+                                        <input
+                                            type="text"
+                                            name="refAvarMatches"
+                                            value={state.refAvarMatches || ""}
+                                            onChange={handleChange}
+                                            className="brutal-input h-8 text-xs font-bold"
+                                            placeholder="Örn: 3"
+                                        />
+                                    </label>
+                                </div>
                             </div>
                         </div>
 
-                        <div className="space-y-2 w-full">
-                            <label className="block space-y-1">
-                                <span className="font-bold text-[10px] uppercase opacity-60">Yorumcu İsmi</span>
-                                <input
-                                    type="text"
-                                    name="author"
-                                    value={state.author || ""}
-                                    onChange={handleChange}
-                                    className="brutal-input h-9 text-sm"
-                                />
-                            </label>
-                            <label className="block space-y-1">
-                                <span className="font-bold text-[10px] uppercase opacity-60">Yorumcu Ünvanı</span>
-                                <input
-                                    type="text"
-                                    name="authorTitle"
-                                    value={state.authorTitle || ""}
-                                    onChange={handleChange}
-                                    className="brutal-input h-9 text-xs"
-                                    placeholder="Örn: VARSAYIM ÖZEL YORUMCU"
-                                />
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Pozisyon & Dakika (Template 1 dışındakiler için) */}
-            {state.template !== 'template1' && (
-                <div className="space-y-4">
-                    <div className="flex items-center justify-between pt-4 border-t border-black/5">
-                        <h3 className="text-xl font-black uppercase">
-                            {state.template === 'template2' ? 'Haber Detayları' : 'Pozisyon & Dakika'}
-                        </h3>
-                        <label className="flex items-center gap-2 cursor-pointer font-bold text-xs bg-black text-white px-2 py-1 rounded-brutal">
-                            <input
-                                type="checkbox"
-                                name="showPositionBox"
-                                checked={!!state.showPositionBox}
-                                onChange={handleChange}
-                                className="w-4 h-4 accent-v-yellow"
-                            />
-                            AKTİF
-                        </label>
-                    </div>
-
-                    {state.showPositionBox && (
-                        <div className="space-y-3 animate-in fade-in slide-in-from-top-2 duration-300">
-                            <div className="grid grid-cols-3 gap-3">
-                                <div className="col-span-2 space-y-1">
-                                    <span className="text-[10px] font-bold uppercase opacity-50">
-                                        {state.template === 'template2' ? 'HABER ETİKETİ (Örn: FLAŞ)' : 'KUTU ETİKETİ (Örn: DAKİKA)'}
-                                    </span>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <div className="space-y-1">
+                                    <span className="text-[9px] font-bold uppercase opacity-50">VAR'A GİTME (M.B)</span>
                                     <input
                                         type="text"
-                                        name="positionLabel"
-                                        value={state.positionLabel || ""}
+                                        name="refVarGo"
+                                        value={state.refVarGo || ""}
                                         onChange={handleChange}
-                                        placeholder="DAKİKA / FLAŞ"
-                                        className="brutal-input text-xs uppercase font-black"
+                                        placeholder="0.5"
+                                        className="brutal-input text-xs"
                                     />
                                 </div>
                                 <div className="space-y-1">
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-[10px] font-bold uppercase opacity-50">ZAMAN</span>
-                                        <input
-                                            type="checkbox"
-                                            name="showMinute"
-                                            checked={!!state.showMinute}
-                                            onChange={handleChange}
-                                            className="w-3 h-3 accent-black"
-                                        />
-                                    </div>
+                                    <span className="text-[9px] font-bold uppercase opacity-50 text-v-pink">VAR'A ÇAĞIRMA (TOPLAM)</span>
                                     <input
                                         type="text"
-                                        name="positionMinute"
-                                        value={state.positionMinute || ""}
+                                        name="refVarCalls"
+                                        value={state.refVarCalls || ""}
                                         onChange={handleChange}
-                                        placeholder="DK"
-                                        disabled={!state.showMinute}
-                                        className="brutal-input text-center font-black disabled:opacity-30"
+                                        placeholder="Örn: 8"
+                                        className="brutal-input text-xs border-v-pink"
                                     />
                                 </div>
                             </div>
                             <div className="space-y-1">
-                                <span className="text-[10px] font-bold uppercase opacity-50">
-                                    {state.template === 'template2' ? 'HABER BAŞLIĞI' : 'POZİSYON DETAYI'}
-                                </span>
+                                <span className="text-[9px] font-bold uppercase opacity-50">HATALI KARAR (YORUMCU)</span>
                                 <input
                                     type="text"
-                                    name="positionText"
-                                    value={state.positionText || ""}
+                                    name="refWrongDecision"
+                                    value={state.refWrongDecision || ""}
                                     onChange={handleChange}
-                                    placeholder={state.template === 'template2' ? 'ANA KONU VEYA BAŞLIK' : 'Pozisyon (Örn: Ceza Sahası)'}
-                                    className="brutal-input text-xs w-full"
+                                    placeholder="1.2"
+                                    className="brutal-input text-xs border-red-200"
                                 />
                             </div>
                         </div>
-                    )}
 
-                    {state.template === 'template2' && (
-                        <div className="pt-4 border-t border-black/5 animate-in fade-in slide-in-from-top-2 duration-300">
-                            <label className="block space-y-1">
-                                <span className="font-bold text-[10px] uppercase opacity-60">Haber Yerleşimi (Uzun Metin Ayarı)</span>
-                                <select
-                                    name="contentLayout"
-                                    value={state.contentLayout || "compact"}
+                        <div className="grid grid-cols-2 gap-2">
+                            <div className="space-y-1">
+                                <span className="text-[9px] font-bold uppercase opacity-50">SARI KART (ORT)</span>
+                                <input
+                                    type="text"
+                                    name="refYellowCards"
+                                    value={state.refYellowCards || ""}
                                     onChange={handleChange}
-                                    className="brutal-input text-xs font-bold w-full"
-                                >
-                                    <option value="compact">Altta Toplu (Standart)</option>
-                                    <option value="spread">Yukarı Taşı (Uzun Metin İçin)</option>
-                                </select>
-                            </label>
+                                    placeholder="4.2"
+                                    className="brutal-input text-xs border-yellow-400 bg-yellow-50"
+                                />
+                            </div>
+                            <div className="space-y-1">
+                                <span className="text-[9px] font-bold uppercase opacity-50">KIRMIZI KART (ORT)</span>
+                                <input
+                                    type="text"
+                                    name="refRedCards"
+                                    value={state.refRedCards || ""}
+                                    onChange={handleChange}
+                                    placeholder="0.3"
+                                    className="brutal-input text-xs border-red-500 bg-red-50"
+                                />
+                            </div>
+                            <div className="space-y-1">
+                                <span className="text-[9px] font-bold uppercase opacity-50">PENALTI (TOPLAM)</span>
+                                <input
+                                    type="text"
+                                    name="refPenalties"
+                                    value={state.refPenalties || ""}
+                                    onChange={handleChange}
+                                    placeholder="5"
+                                    className="brutal-input text-xs"
+                                />
+                            </div>
+                            <div className="space-y-1">
+                                <span className="text-[9px] font-bold uppercase opacity-50">FAUL (ORT)</span>
+                                <input
+                                    type="text"
+                                    name="refFouls"
+                                    value={state.refFouls || ""}
+                                    onChange={handleChange}
+                                    placeholder="22.5"
+                                    className="brutal-input text-xs"
+                                />
+                            </div>
                         </div>
-                    )}
-                </div>
-            )}
 
-            {/* Maç Bilgileri */}
-            <div className="space-y-4">
-                <div className="flex items-center justify-between pt-4 border-t border-black/5">
-                    <h3 className="text-xl font-black uppercase inline-flex items-center gap-2">
-                        Maç Bilgileri <span className="bg-black text-white text-[8px] px-1 rounded">OPSİYONEL</span>
-                    </h3>
-                    <label className="flex items-center gap-2 cursor-pointer font-bold text-xs bg-black text-white px-2 py-1 rounded-brutal">
-                        <input
-                            type="checkbox"
-                            name="showMatchInfo"
-                            checked={state.showMatchInfo}
-                            onChange={handleChange}
-                            className="w-4 h-4 accent-v-yellow"
-                        />
-                        GÖSTER
-                    </label>
-                </div>
+                        <div className="grid grid-cols-2 gap-4 pt-2 border-t border-black/5">
+                            <div className="space-y-2">
+                                <span className="text-[8px] font-black uppercase opacity-40">Sarı Kart Dağılımı</span>
+                                <div className="grid grid-cols-2 gap-2">
+                                    <input type="text" name="refHomeYellow" value={state.refHomeYellow || ""} onChange={handleChange} placeholder="EV SAHİBİ" className="brutal-input text-[10px] h-7" />
+                                    <input type="text" name="refAwayYellow" value={state.refAwayYellow || ""} onChange={handleChange} placeholder="DEPLASMAN" className="brutal-input text-[10px] h-7" />
+                                </div>
+                            </div>
+                            <div className="space-y-2">
+                                <span className="text-[8px] font-black uppercase opacity-40">Kırmızı Kart Dağılımı</span>
+                                <div className="grid grid-cols-2 gap-2">
+                                    <input type="text" name="refHomeRed" value={state.refHomeRed || ""} onChange={handleChange} placeholder="EV SAHİBİ" className="brutal-input text-[10px] h-7" />
+                                    <input type="text" name="refAwayRed" value={state.refAwayRed || ""} onChange={handleChange} placeholder="DEPLASMAN" className="brutal-input text-[10px] h-7" />
+                                </div>
+                            </div>
+                            <div className="space-y-2">
+                                <span className="text-[8px] font-black uppercase opacity-40">Penaltı Dağılımı</span>
+                                <div className="grid grid-cols-2 gap-2">
+                                    <input type="text" name="refHomePenalty" value={state.refHomePenalty || ""} onChange={handleChange} placeholder="EV SAHİBİ" className="brutal-input text-[10px] h-7" />
+                                    <input type="text" name="refAwayPenalty" value={state.refAwayPenalty || ""} onChange={handleChange} placeholder="DEPLASMAN" className="brutal-input text-[10px] h-7" />
+                                </div>
+                            </div>
+                            <div className="space-y-2">
+                                <span className="text-[8px] font-black uppercase opacity-40">Faul Dağılımı</span>
+                                <div className="grid grid-cols-2 gap-2">
+                                    <input type="text" name="refHomeFoul" value={state.refHomeFoul || ""} onChange={handleChange} placeholder="EV SAHİBİ" className="brutal-input text-[10px] h-7" />
+                                    <input type="text" name="refAwayFoul" value={state.refAwayFoul || ""} onChange={handleChange} placeholder="DEPLASMAN" className="brutal-input text-[10px] h-7" />
+                                </div>
+                            </div>
+                        </div>
 
-                {state.showMatchInfo && (
-                    <div className="grid grid-cols-2 gap-3 animate-in fade-in slide-in-from-top-2 duration-300">
-                        <input
-                            type="text"
-                            name="homeTeam"
-                            value={state.homeTeam || ""}
-                            onChange={handleChange}
-                            placeholder="Ev Sahibi"
-                            className="brutal-input text-xs"
-                        />
-                        <input
-                            type="text"
-                            name="awayTeam"
-                            value={state.awayTeam || ""}
-                            onChange={handleChange}
-                            placeholder="Deplasman"
-                            className="brutal-input text-xs"
-                        />
-                        <input
-                            type="text"
-                            name="date"
-                            value={state.date || ""}
-                            onChange={handleChange}
-                            placeholder="01.01.2024"
-                            className="brutal-input text-xs"
-                        />
-                        <input
-                            type="text"
-                            name="matchWeek"
-                            value={state.matchWeek || ""}
-                            onChange={handleChange}
-                            placeholder="Örn: 21. HAFTA"
-                            className="brutal-input text-xs"
-                        />
-                        <input
-                            type="text"
-                            name="score"
-                            value={state.score || ""}
-                            onChange={handleChange}
-                            placeholder="0-0"
-                            className="brutal-input text-center font-black text-lg col-span-2"
-                        />
+                        <div className="pt-4 border-t border-black/10">
+                            <span className="font-bold text-[10px] uppercase opacity-60 block mb-2">GALİBİYET / BERABERLİK YÜZDELERİ</span>
+                            <div className="grid grid-cols-3 gap-2">
+                                <input
+                                    type="text"
+                                    name="refHomeWin"
+                                    value={state.refHomeWin || ""}
+                                    onChange={handleChange}
+                                    placeholder="EV %45"
+                                    className="brutal-input text-[10px] h-8"
+                                />
+                                <input
+                                    type="text"
+                                    name="refDraw"
+                                    value={state.refDraw || ""}
+                                    onChange={handleChange}
+                                    placeholder="BER %25"
+                                    className="brutal-input text-[10px] h-8"
+                                />
+                                <input
+                                    type="text"
+                                    name="refAwayWin"
+                                    value={state.refAwayWin || ""}
+                                    onChange={handleChange}
+                                    placeholder="DEP %30"
+                                    className="brutal-input text-[10px] h-8"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                ) : (
+                    /* DİĞER ŞABLONLAR İÇİN BASİT FORM */
+                    <div className="space-y-6">
+                        <div className="bg-v-yellow/10 p-6 border-2 border-black rounded-brutal text-center space-y-2">
+                            <p className="text-sm font-black uppercase text-black">ÖZEL FORM HAZIRLANIYOR</p>
+                            <p className="text-[10px] font-bold uppercase text-black/50 italic">Bu şablon için dile getirdiğiniz özel form yapısı yakında eklenecektir.</p>
+                        </div>
                     </div>
                 )}
             </div>
@@ -641,7 +700,7 @@ const Editor: React.FC<Props> = ({ state, setState, isMobile }) => {
                 </div>
             </div>
 
-        </div>
+        </div >
     );
 };
 

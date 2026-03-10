@@ -14,30 +14,12 @@ const Template5: React.FC<Props> = ({ state, domRef }) => {
     const isLandscape = preset.width > preset.height;
     const isExtremeLandscape = isLandscape && preset.height < 650;
 
-    // News Theme (High Contrast)
+    // Tema Renkleri (Sade / Göz Yormayan)
     const THEMES: Record<string, any> = {
-        default: { primary: "bg-[#FF5DAD]", bg: "#FFDD00", cardBg: "bg-[#FF5DAD]", badge: "bg-[#FF5DAD]", border: "border-[#FF5DAD]", shadow: "shadow-[8px_8px_0px_0px_#FF5DAD]", text: "text-black", quote: "text-black" },
-        gs: { primary: "bg-[#A90432]", bg: "#FFCD00", cardBg: "bg-[#2D2D2D]", badge: "bg-[#2D2D2D]", border: "border-[#A90432]", shadow: "shadow-[8px_8px_0px_0px_#A90432]", text: "text-[#FFCD00]", quote: "text-[#FFCD00]" },
-        fb: { primary: "bg-[#002D72]", bg: "#FFD100", cardBg: "bg-[#002D72]", badge: "bg-[#E30A17]", border: "border-[#002D72]", shadow: "shadow-[8px_8px_0px_0px_#002D72]", text: "text-[#FFD100]", quote: "text-[#FFD100]" },
-        bjk: { primary: "bg-[#000000]", bg: "#E10600", cardBg: "bg-[#000000]", badge: "bg-[#E10600]", border: "border-[#000000]", shadow: "shadow-[8px_8px_0px_0px_#000000]", text: "text-[#FFFFFF]", quote: "text-[#FFFFFF]" },
-        ts: { primary: "bg-[#7A263A]", bg: "#4FA3D1", cardBg: "bg-[#7A263A]", badge: "bg-[#FFFFFF]", border: "border-[#7A263A]", shadow: "shadow-[8px_8px_0px_0px_#7A263A]", text: "text-[#4FA3D1]", quote: "text-[#4FA3D1]" },
-        basak: { primary: "bg-[#0B3A82]", bg: "#FF6600", cardBg: "bg-[#0B3A82]", badge: "bg-[#FFFFFF]", border: "border-[#0B3A82]", shadow: "shadow-[8px_8px_0px_0px_#0B3A82]", text: "text-[#FF6600]", quote: "text-[#FF6600]" },
-        kasimpasa: { primary: "bg-[#005BAC]", bg: "#00A3E0", cardBg: "bg-[#005BAC]", badge: "bg-[#00A3E0]", border: "border-[#005BAC]", shadow: "shadow-[8px_8px_0px_0px_#005BAC]", text: "text-[#00A3E0]", quote: "text-[#00A3E0]" },
-        eyup: { primary: "bg-[#5A2D81]", bg: "#FFD100", cardBg: "bg-[#5A2D81]", badge: "bg-[#FFFFFF]", border: "border-[#5A2D81]", shadow: "shadow-[8px_8px_0px_0px_#5A2D81]", text: "text-[#FFD100]", quote: "text-[#FFD100]" },
-        goztepe: { primary: "bg-[#FFD100]", bg: "#C00000", cardBg: "bg-[#FFD100]", badge: "bg-[#000000]", border: "border-[#FFD100]", shadow: "shadow-[8px_8px_0px_0px_#FFD100]", text: "text-[#C00000]", quote: "text-[#C00000]" },
-        samsun: { primary: "bg-[#E30613]", bg: "#000000", cardBg: "bg-[#E30613]", badge: "bg-[#000000]", border: "border-[#E30613]", shadow: "shadow-[8px_8px_0px_0px_#E30613]", text: "text-[#000000]", quote: "text-[#000000]" },
-        rize: { primary: "bg-[#009639]", bg: "#003DA5", cardBg: "bg-[#009639]", badge: "bg-[#FFFFFF]", border: "border-[#009639]", shadow: "shadow-[8px_8px_0px_0px_#009639]", text: "text-[#003DA5]", quote: "text-[#003DA5]" },
-        konya: { primary: "bg-[#009639]", bg: "#000000", cardBg: "bg-[#009639]", badge: "bg-[#000000]", border: "border-[#009639]", shadow: "shadow-[8px_8px_0px_0px_#009639]", text: "text-[#000000]", quote: "text-[#000000]" },
-        antalya: { primary: "bg-[#E31E24]", bg: "#000000", cardBg: "bg-[#E31E24]", badge: "bg-[#000000]", border: "border-[#E31E24]", shadow: "shadow-[8px_8px_0px_0px_#E31E24]", text: "text-[#000000]", quote: "text-[#000000]" },
-        alanya: { primary: "bg-[#F47A20]", bg: "#009A44", cardBg: "bg-[#F47A20]", badge: "bg-[#FFFFFF]", border: "border-[#F47A20]", shadow: "shadow-[8px_8px_0px_0px_#F47A20]", text: "text-[#009A44]", quote: "text-[#009A44]" },
-        kayseri: { primary: "bg-[#FFB81C]", bg: "#D71920", cardBg: "bg-[#FFB81C]", badge: "bg-[#000000]", border: "border-[#FFB81C]", shadow: "shadow-[8px_8px_0px_0px_#FFB81C]", text: "text-[#D71920]", quote: "text-[#D71920]" },
-        gaziantep: { primary: "bg-[#DA291C]", bg: "#000000", cardBg: "bg-[#DA291C]", badge: "bg-[#FFFFFF]", border: "border-[#DA291C]", shadow: "shadow-[8px_8px_0px_0px_#DA291C]", text: "text-[#000000]", quote: "text-[#000000]" },
-        gencler: { primary: "bg-[#C8102E]", bg: "#000000", cardBg: "bg-[#C8102E]", badge: "bg-[#FFFFFF]", border: "border-[#C8102E]", shadow: "shadow-[8px_8px_0px_0px_#C8102E]", text: "text-[#000000]", quote: "text-[#000000]" },
-        kocaeli: { primary: "bg-[#007A3D]", bg: "#000000", cardBg: "bg-[#007A3D]", badge: "bg-[#FFFFFF]", border: "border-[#007A3D]", shadow: "shadow-[8px_8px_0px_0px_#007A3D]", text: "text-[#000000]", quote: "text-[#000000]" },
-        karagumruk: { primary: "bg-[#7A263A]", bg: "#000000", cardBg: "bg-[#7A263A]", badge: "bg-[#FFFFFF]", border: "border-[#7A263A]", shadow: "shadow-[8px_8px_0px_0px_#7A263A]", text: "text-[#000000]", quote: "text-[#000000]" },
+        varsayim: { primary: "bg-[#E2E8F0]", bg: "#FDF6E3", cardBg: "bg-[#FFFFFF]", badge: "bg-[#E2E8F0]", highlight: "bg-[#94A3B8]", border: "border-slate-300", shadow: "shadow-[8px_8px_0px_0px_#CBD5E1]", text: "text-slate-800", quote: "text-slate-300" },
     };
 
-    const currentTheme = THEMES[state.theme] || THEMES.default;
+    const currentTheme = THEMES[state.theme] || THEMES.varsayim;
 
     const headlineFontSize = useMemo(() => {
         const text = (state.positionText || "").trim();
@@ -70,7 +52,7 @@ const Template5: React.FC<Props> = ({ state, domRef }) => {
             const isMatch = highlights.some(h => h.toLowerCase() === part.toLowerCase());
             if (isMatch) {
                 return (
-                    <mark key={i} className="bg-red-600 text-white px-2 py-0.5 rounded-sm mx-1">
+                    <mark key={i} className={`${currentTheme.highlight || 'bg-red-600'} text-white px-2 py-0.5 rounded-sm mx-1`}>
                         {part}
                     </mark>
                 );
@@ -82,7 +64,7 @@ const Template5: React.FC<Props> = ({ state, domRef }) => {
     return (
         <div
             ref={domRef}
-            className="relative flex flex-col p-0 overflow-hidden box-border font-sans bg-black text-white"
+            className="relative flex flex-col p-0 overflow-hidden box-border font-sans transition-all duration-300"
             style={{
                 width: preset.width,
                 height: preset.height,
@@ -91,11 +73,8 @@ const Template5: React.FC<Props> = ({ state, domRef }) => {
         >
             {/* Background Texture */}
             <div className="absolute inset-0 z-0">
-                <div className="absolute inset-0 bg-gradient-to-br from-[#111] via-black to-black" />
+                <div className="absolute inset-0" style={{ backgroundColor: currentTheme.bg }} />
                 <div className="absolute inset-0 opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
-                {state.authorImage && (
-                    <img src={state.authorImage} className="absolute right-0 top-0 h-full w-1/2 object-cover opacity-10 grayscale" />
-                )}
             </div>
 
             {/* Top Bar */}
@@ -107,7 +86,7 @@ const Template5: React.FC<Props> = ({ state, domRef }) => {
             <div className={`absolute ${isLandscape ? 'top-8 left-8 right-8' : 'top-12 left-12 right-12'} flex items-start justify-between z-50`}>
                 <div className="flex items-center gap-3">
                     {state.showSponsor && (state.sponsorName || state.sponsorLogo) ? (
-                        <div className={`${currentTheme.cardBg || 'bg-white'} border-brutal border-black p-2 flex items-center gap-3 shadow-brutal rotate-[-1deg] h-[60px] min-w-[150px]`}>
+                        <div className={`${currentTheme.cardBg || 'bg-white'} border-brutal border-black p-2 flex items-center gap-3 shadow-brutal h-[60px] min-w-[150px]`}>
                             {state.sponsorLogo && (
                                 <img src={state.sponsorLogo} alt="Sponsor" className="h-full object-contain" />
                             )}
@@ -123,13 +102,13 @@ const Template5: React.FC<Props> = ({ state, domRef }) => {
                     )}
                 </div>
 
-                <div className={`${currentTheme.cardBg || 'bg-white'} px-6 py-2 rounded-brutal shadow-brutal border-brutal border-black rotate-[2deg]`}>
-                    <span className="text-3xl font-black tracking-tighter uppercase italic text-black leading-none">VARSAYIM</span>
+                <div className="bg-[#FFD700] text-black px-6 py-2 rounded-brutal shadow-[4px_4px_15px_rgba(255,0,150,0.6)] border-[3px] border-black">
+                    <span className="text-3xl font-black tracking-tighter uppercase text-black leading-none">VARSAYIM</span>
                 </div>
             </div>
 
             {/* MAIN CONTENT */}
-            <div className={`relative z-10 flex-1 flex flex-col justify-center px-10 md:px-16 ${isLandscape ? 'pt-24 pb-48' : 'pt-32 pb-64'}`}>
+            <div className={`relative z-10 flex-1 flex flex-col justify-center px-10 md:px-16 ${isLandscape ? 'pt-24 pb-48' : 'pt-32 pb-56'}`}>
                 <div className="flex flex-col gap-12 w-full">
                     {state.positionText && (
                         <div className="flex flex-col gap-4 max-w-[95%]">
@@ -147,7 +126,7 @@ const Template5: React.FC<Props> = ({ state, domRef }) => {
                         <div className="inline-flex items-center gap-2 bg-white/5 px-3 py-1 border-l-2 border-red-600">
                             <span className="text-[10px] font-black tracking-widest text-white/60 uppercase">DİJİTAL ANALİZ</span>
                         </div>
-                        <div className="bg-white text-black shadow-brutal border-2 border-black p-6 max-w-[90%] w-fit mt-2">
+                        <div className={`${currentTheme.cardBg || 'bg-white'} text-black shadow-brutal border-2 border-black p-6 max-w-[90%] w-fit mt-2`}>
                             <p className={`${commentFontSize} font-black leading-relaxed text-left text-black uppercase`}>
                                 {renderedComment || "İçerik bekleniyor..."}
                             </p>
@@ -156,24 +135,12 @@ const Template5: React.FC<Props> = ({ state, domRef }) => {
                 </div>
 
                 {state.author && (
-                    <div className="mt-12 flex items-center gap-6">
-                        {state.authorImage && (
-                            <div className="w-20 h-20 rounded-full border-brutal border-white bg-black overflow-hidden shadow-brutal shrink-0">
-                                <img src={state.authorImage} alt={state.author} className="w-full h-full object-cover" />
-                            </div>
-                        )}
-                        <div className="flex flex-col bg-white text-black px-6 py-3 border-2 border-black shadow-brutal rotate-[-1deg] ml-4">
-                            <div className="flex items-center gap-2">
-                                <div className="w-1.5 h-6 bg-red-600" />
-                                <span className="text-2xl font-black italic uppercase tracking-tighter text-black">
-                                    {state.author}
-                                </span>
-                            </div>
-                            {state.authorTitle && (
-                                <span className="text-[10px] font-bold text-black/40 uppercase tracking-[0.4em] mt-1 ml-3">
-                                    {state.authorTitle}
-                                </span>
-                            )}
+                    <div className="flex flex-col bg-white text-black px-6 py-3 border-2 border-black shadow-brutal ml-4">
+                        <div className="flex items-center gap-2">
+                            <div className="w-1.5 h-6 bg-red-600" />
+                            <span className="text-2xl font-black italic uppercase tracking-tighter text-black">
+                                {state.author}
+                            </span>
                         </div>
                     </div>
                 )}
@@ -183,7 +150,7 @@ const Template5: React.FC<Props> = ({ state, domRef }) => {
             <div className="absolute bottom-0 left-0 right-0 z-50 flex flex-col items-center">
                 {/* Maç Bilgisi Kutusu */}
                 {state.showMatchInfo && (
-                    <div className={`${isExtremeLandscape ? 'mb-8 scale-[0.85]' : 'mb-6'} bg-white border-brutal border-black ${currentTheme.shadow} px-8 py-3 flex flex-col items-center rotate-1`}>
+                    <div className={`${isExtremeLandscape ? 'mb-8 scale-[0.85]' : 'mb-6'} bg-white border-brutal border-black ${currentTheme.shadow} px-8 py-3 flex flex-col items-center`}>
                         <p className={`text-xl font-black uppercase tracking-widest text-center text-black`}>
                             {state.homeTeam} {state.score} {state.awayTeam}
                         </p>

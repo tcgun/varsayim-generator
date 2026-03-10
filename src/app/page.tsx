@@ -18,7 +18,7 @@ const INITIAL_STATE: AppState = {
   matchWeek: "24. HAFTA",
   date: "02.02.2026",
   separator: "·",
-  bgColor: "#F3F4F6",
+  bgColor: "#FAF9F6",
   currentPreset: "ig-story",
   pattern: "dots",
   handleX: "varsayimcom",
@@ -30,7 +30,7 @@ const INITIAL_STATE: AppState = {
   showMatchInfo: true,
   showBrandingBar: true,
   template: "template2",
-  theme: "default",
+  theme: "varsayim",
   showPositionBox: true,
   positionText: "Ceza Sahası İçi",
   positionMinute: "57'",
@@ -41,6 +41,8 @@ const INITIAL_STATE: AppState = {
   showSponsor: false,
   sponsorName: "Sponsorunuz",
   showAuthorImage: true,
+  authorImageX: 50,
+  authorImageY: 50,
 };
 
 type Tab = 'editor' | 'preview';

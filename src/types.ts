@@ -60,7 +60,7 @@ export interface AppState {
   authorImage?: string;
   showAuthorImage: boolean;
   template: "template1" | "template2" | "template3" | "template4" | "template5";
-  theme: "default" | "bjk" | "konya" | "gs" | "goztepe" | "basak" | "antalya" | "samsun" | "ts" | "alanya" | "fb" | "gencler" | "kasimpasa" | "kocaeli" | "karagumruk" | "eyup" | "rize" | "gaziantep" | "kayseri";
+  theme: "varsayim";
   showPositionBox: boolean;
   positionText: string;
   positionMinute: string;
@@ -70,4 +70,29 @@ export interface AppState {
   sponsorName: string;
   sponsorLogo?: string;
   matchWeek: string;
+  // Referee Stats
+  refMatches?: string;
+  refYellowCards?: string;
+  refRedCards?: string;
+  refPenalties?: string;
+  refHomeWin?: string;
+  refAwayWin?: string;
+  refDraw?: string;
+  refVarGo?: string;
+  refWrongDecision?: string;
+  refHomeYellow?: string;
+  refAwayYellow?: string;
+  refHomeRed?: string;
+  refAwayRed?: string;
+  refHomePenalty?: string;
+  refAwayPenalty?: string;
+  refFouls?: string;
+  refHomeFoul?: string;
+  refAwayFoul?: string;
+  refVarMatches?: string;
+  refAvarMatches?: string;
+  refVarCalls?: string;
+  // Image Positioning
+  authorImageX?: number;
+  authorImageY?: number;
 }

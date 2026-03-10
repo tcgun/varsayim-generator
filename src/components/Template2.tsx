@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React from "react";
 import { AppState, PRESETS } from "../types";
-import { Globe } from "lucide-react";
+import { Globe, GraduationCap, AlertCircle, Copy } from "lucide-react";
 
 interface Props {
     state: AppState;
@@ -12,269 +12,364 @@ interface Props {
 const Template2: React.FC<Props> = ({ state, domRef }) => {
     const preset = PRESETS[state.currentPreset] || PRESETS["ig-square"];
     const isLandscape = preset.width > preset.height;
-    const isExtremeLandscape = isLandscape && preset.height < 650;
+    const isSquare = preset.width === preset.height;
+    const isPortrait = preset.height > preset.width;
 
-    // Tema Renkleri (T1 ile tam uyumlu)
-    const THEMES: Record<string, any> = {
-        default: { primary: "bg-[#FF5DAD]", bg: "#040404", cardBg: "bg-[#FFDD00]", border: "border-[#FF5DAD]", shadow: "shadow-[8px_8px_0px_0px_#FF5DAD]", text: "text-black", quote: "text-black" },
-        gs: { primary: "bg-[#A90432]", bg: "#FFCD00", cardBg: "bg-[#2D2D2D]", border: "border-[#A90432]", shadow: "shadow-[8px_8px_0px_0px_#A90432]", text: "text-[#FFCD00]", quote: "text-[#FFCD00]" },
-        fb: { primary: "bg-[#002D72]", bg: "#FFD100", cardBg: "bg-[#002D72]", border: "border-[#002D72]", shadow: "shadow-[8px_8px_0px_0px_#002D72]", text: "text-[#FFD100]", quote: "text-[#FFD100]" },
-        bjk: { primary: "bg-[#000000]", bg: "#E10600", cardBg: "bg-[#000000]", border: "border-[#000000]", shadow: "shadow-[8px_8px_0px_0px_#000000]", text: "text-[#FFFFFF]", quote: "text-[#FFFFFF]" },
-        ts: { primary: "bg-[#7A263A]", bg: "#4FA3D1", cardBg: "bg-[#7A263A]", border: "border-[#7A263A]", shadow: "shadow-[8px_8px_0px_0px_#7A263A]", text: "text-[#4FA3D1]", quote: "text-[#4FA3D1]" },
-        basak: { primary: "bg-[#0B3A82]", bg: "#FF6600", cardBg: "bg-[#0B3A82]", border: "border-[#0B3A82]", shadow: "shadow-[8px_8px_0px_0px_#0B3A82]", text: "text-[#FF6600]", quote: "text-[#FF6600]" },
-        kasimpasa: { primary: "bg-[#005BAC]", bg: "#00A3E0", cardBg: "bg-[#005BAC]", border: "border-[#005BAC]", shadow: "shadow-[8px_8px_0px_0px_#005BAC]", text: "text-[#00A3E0]", quote: "text-[#00A3E0]" },
-        eyup: { primary: "bg-[#5A2D81]", bg: "#FFD100", cardBg: "bg-[#5A2D81]", border: "border-[#5A2D81]", shadow: "shadow-[8px_8px_0px_0px_#5A2D81]", text: "text-[#FFD100]", quote: "text-[#FFD100]" },
-        goztepe: { primary: "bg-[#FFD100]", bg: "#C00000", cardBg: "bg-[#FFD100]", border: "border-[#FFD100]", shadow: "shadow-[8px_8px_0px_0px_#FFD100]", text: "text-[#C00000]", quote: "text-[#C00000]" },
-        samsun: { primary: "bg-[#E30613]", bg: "#000000", cardBg: "bg-[#E30613]", border: "border-[#E30613]", shadow: "shadow-[8px_8px_0px_0px_#E30613]", text: "text-[#000000]", quote: "text-[#000000]" },
-        rize: { primary: "bg-[#009639]", bg: "#003DA5", cardBg: "bg-[#009639]", border: "border-[#009639]", shadow: "shadow-[8px_8px_0px_0px_#009639]", text: "text-[#003DA5]", quote: "text-[#003DA5]" },
-        konya: { primary: "bg-[#009639]", bg: "#000000", cardBg: "bg-[#009639]", border: "border-[#009639]", shadow: "shadow-[8px_8px_0px_0px_#009639]", text: "text-[#000000]", quote: "text-[#000000]" },
-        antalya: { primary: "bg-[#E31E24]", bg: "#000000", cardBg: "bg-[#E31E24]", border: "border-[#E31E24]", shadow: "shadow-[8px_8px_0px_0px_#E31E24]", text: "text-[#000000]", quote: "text-[#000000]" },
-        alanya: { primary: "bg-[#F47A20]", bg: "#009A44", cardBg: "bg-[#F47A20]", border: "border-[#F47A20]", shadow: "shadow-[8px_8px_0px_0px_#F47A20]", text: "text-[#009A44]", quote: "text-[#009A44]" },
-        kayseri: { primary: "bg-[#FFB81C]", bg: "#D71920", cardBg: "bg-[#FFB81C]", border: "border-[#FFB81C]", shadow: "shadow-[8px_8px_0px_0px_#FFB81C]", text: "text-[#D71920]", quote: "text-[#D71920]" },
-        gaziantep: { primary: "bg-[#DA291C]", bg: "#000000", cardBg: "bg-[#DA291C]", border: "border-[#DA291C]", shadow: "shadow-[8px_8px_0px_0px_#DA291C]", text: "text-[#000000]", quote: "text-[#000000]" },
-        gencler: { primary: "bg-[#C8102E]", bg: "#000000", cardBg: "bg-[#C8102E]", border: "border-[#C8102E]", shadow: "shadow-[8px_8px_0px_0px_#C8102E]", text: "text-[#000000]", quote: "text-[#000000]" },
-        kocaeli: { primary: "bg-[#007A3D]", bg: "#000000", cardBg: "bg-[#007A3D]", border: "border-[#007A3D]", shadow: "shadow-[8px_8px_0px_0px_#007A3D]", text: "text-[#000000]", quote: "text-[#000000]" },
-        karagumruk: { primary: "bg-[#7A263A]", bg: "#000000", cardBg: "bg-[#7A263A]", border: "border-[#7A263A]", shadow: "shadow-[8px_8px_0px_0px_#7A263A]", text: "text-[#000000]", quote: "text-[#000000]" },
+    // Tema Renkleri (Varsayım Standardı)
+    const currentTheme = {
+        bg: "#000000",
+        accent: "#FACC15", // v-yellow
+        cardBg: "bg-white",
+        text: "text-white",
+        darkText: "text-black"
     };
-
-    const currentTheme = THEMES[state.theme] || THEMES.default;
-
-    const fontSize = useMemo(() => {
-        const len = state.comment.length;
-        const isSpread = state.contentLayout === 'spread';
-
-        if (isSpread) {
-            if (len > 500) return "text-2xl";
-            if (len > 400) return "text-3xl";
-            if (len > 300) return "text-4xl";
-            if (len > 250) return "text-5xl";
-            if (len > 200) return "text-6xl";
-            if (len > 150) return "text-7xl";
-            if (len > 100) return "text-[8rem]";
-            if (len > 50) return "text-[10rem]";
-            return "text-[12rem]";
-        }
-
-        if (len > 500) return "text-lg";
-        if (len > 400) return "text-xl";
-        if (len > 300) return "text-2xl";
-        if (len > 250) return "text-3xl";
-        if (len > 200) return "text-4xl";
-        if (len > 150) return "text-5xl";
-        if (len > 100) return isExtremeLandscape ? "text-3xl" : "text-6xl";
-        if (len > 50) return isExtremeLandscape ? "text-4xl" : "text-[5rem]";
-        return isExtremeLandscape ? "text-5xl" : "text-[6rem]";
-    }, [state.comment, isExtremeLandscape, state.contentLayout]);
-
-    const renderedComment = useMemo(() => {
-        const comment = state.comment.trim();
-        if (!state.highlight) return comment;
-
-        const highlights = state.highlight.split('*').map(h => h.trim()).filter(h => h !== "");
-        if (highlights.length === 0) return comment;
-
-        const escapedHighlights = highlights.map(h => h.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
-        const regex = new RegExp(`(${escapedHighlights.join('|')})`, 'gi');
-
-        const parts = comment.split(regex);
-        return parts.map((part, i) => {
-            const isMatch = highlights.some(h => h.toLowerCase() === part.toLowerCase());
-            if (isMatch) {
-                return (
-                    <span key={i} className={`${currentTheme.primary} ${state.theme === 'default' ? 'text-black' : 'text-white'} px-2 py-0.5 mx-1 inline-block skew-x-[-12deg] font-black`}>
-                        {part}
-                    </span>
-                );
-            }
-            return part;
-        });
-    }, [state.comment, state.highlight, currentTheme, state.theme]);
 
     return (
         <div
             ref={domRef}
-            className="relative flex flex-col p-0 overflow-hidden box-border font-sans bg-black"
+            className="relative flex flex-col p-0 overflow-hidden box-border font-sans transition-all duration-300 bg-black"
             style={{
                 width: preset.width,
                 height: preset.height,
             }}
             id="capture-area"
         >
-            {/* Arka Plan Görseli */}
-            <div className="absolute inset-0 z-0">
+            {/* HER TEMSİLİ ARKA PLAN (HAKEM FOTOĞRAFI) */}
+            <div className="absolute inset-0 z-0 select-none pointer-events-none">
                 {state.authorImage ? (
-                    <img src={state.authorImage} className="w-full h-full object-cover blur-sm opacity-30 scale-110" />
+                    <img
+                        src={state.authorImage}
+                        alt="Referee"
+                        className="w-full h-full object-cover opacity-90 grayscale-[0.3]"
+                        style={{
+                            objectPosition: `${state.authorImageX ?? 50}% ${state.authorImageY ?? 50}%`
+                        }}
+                    />
                 ) : (
-                    <div className="w-full h-full bg-slate-950" />
+                    <div className="w-full h-full bg-slate-900" />
                 )}
+                {/* Texture Pattern (Artistic Poster Feel) */}
+                <div className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay" style={{ backgroundImage: 'url("https://grainy-gradients.vercel.app/noise.svg")' }} />
+
+                {/* Görünürlük Gradyanı: Alttan Siyah, Yukarı Doğru Netleşen */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
             </div>
 
-            {/* TV Üst Bandı */}
-            <div className="absolute top-0 left-0 right-0 h-1 z-[60] bg-gradient-to-r from-red-600 via-yellow-400 to-red-600 animate-pulse" />
-
-            {/* HEADER: Sponsor & Logo Standardı */}
-            <div className={`absolute ${isLandscape ? 'top-8 left-8 right-8' : 'top-12 left-12 right-12'} flex items-start justify-between z-50`}>
-                {state.showSponsor && (state.sponsorName || state.sponsorLogo) ? (
-                    <div className={`${currentTheme.cardBg || 'bg-white'} text-black p-2 flex items-center gap-3 rounded-brutal shadow-2xl border-2 border-black rotate-[-1deg]`}>
-                        {state.sponsorLogo && <img src={state.sponsorLogo} alt="Sponsor" className="h-6 object-contain" />}
-                        {state.sponsorName && (
-                            <div className="flex flex-col items-start leading-none pr-2">
-                                <span className="text-[6px] font-black uppercase tracking-widest opacity-30 italic">DESTEĞİYLE</span>
-                                <span className="text-xs font-black italic uppercase tracking-tighter">{state.sponsorName}</span>
-                            </div>
-                        )}
+            {/* ÜST BİLGİLER: Header & İsim (SOL) & Logo (SAĞ) */}
+            <div className="absolute top-0 left-0 right-0 p-4 z-50 flex items-start justify-between">
+                {/* SOL ÜST: BAŞLIK VE HAKEM ADI */}
+                <div className="flex flex-col items-start gap-2">
+                    <div className="bg-v-yellow text-black border-[3px] border-black shadow-[4px_4px_0px_#000] px-6 py-2">
+                        <span className="text-xl md:text-2xl font-black tracking-tighter uppercase text-black leading-none">
+                            HAKEM İSTATİSTİKLERİ
+                        </span>
                     </div>
-                ) : <div />}
+                    {/* HAKEM ADI (BAŞLIK ALTINDA) */}
+                    <div className="bg-black/40 backdrop-blur-3xl px-4 py-2 border-l-8 border-v-yellow shadow-[4px_4px_20px_rgba(255,215,0,0.2)]">
+                        <span className="text-2xl md:text-4xl font-black uppercase tracking-tighter italic text-white drop-shadow-md">
+                            {state.author || "İSİMSİZ HAKEM"}
+                        </span>
+                    </div>
+                </div>
 
-                <div className={`${currentTheme.primary} border-brutal border-black shadow-brutal px-8 py-3 rotate-[1deg]`}>
-                    <span className={`text-4xl font-black tracking-tighter uppercase italic ${state.theme === "default" ? 'text-black' : 'text-white'} leading-none`}>VARSAYIM</span>
+                {/* VARSAYIM Logo (Sağ Üst) */}
+                <div className="bg-[#FFD700] text-black border-[3px] border-black shadow-[4px_4px_15px_rgba(255,0,150,0.6)] px-8 py-3">
+                    <span className="text-4xl font-black tracking-tighter uppercase text-black leading-none">
+                        VARSAYIM
+                    </span>
                 </div>
             </div>
 
-            {/* İçerik */}
-            <div className="relative z-10 flex-1 flex flex-col h-full">
-                <div className="flex-1 flex flex-col md:flex-row h-full">
-                    {/* Sol: Fotoğraf Alanı (%50) */}
-                    <div className="hidden md:flex md:w-1/2 h-full relative overflow-hidden">
-                        <div
-                            className="absolute inset-0 z-10"
-                            style={{
-                                clipPath: 'polygon(0 0, 100% 0, 90% 100%, 0% 100%)',
-                                borderRight: '12px solid #FACC15'
-                            }}
-                        >
-                            {state.authorImage ? (
-                                <img src={state.authorImage} className="w-full h-full object-cover" />
-                            ) : (
-                                <div className="w-full h-full bg-slate-800 flex items-center justify-center" />
-                            )}
+            {/* ANA İÇERİK KONTEYNERI */}
+            <div className={`relative z-10 flex-1 flex flex-col items-center ${isLandscape ? 'justify-center p-12' : isSquare ? 'justify-end pb-8 px-6' : 'justify-end pb-8 px-4'} text-white`}>
+
+                {/* 1:1 (KARE) TABLO DÜZENİ */}
+                {isSquare && (
+                    <div className="w-full flex flex-col gap-4 max-w-5xl">
+                        {/* 1. SATIR: TOPLAM GÖREV (FULL WIDTH - CAM) */}
+                        <div className="w-full bg-black/30 backdrop-blur-3xl border-t-4 border-white p-5 flex flex-col items-center shadow-2xl border-x border-b border-white/5">
+                            <span className="text-xs font-bold opacity-90 mb-4 uppercase tracking-[0.1em] text-white">TOPLAM GÖREV</span>
+                            <div className="flex w-full justify-around items-center">
+                                <div className="flex flex-col items-center">
+                                    <span className="text-[11px] font-bold opacity-80 uppercase mb-1">HAKEM</span>
+                                    <span className="text-5xl font-black text-white leading-none drop-shadow-xl">{state.refMatches || "0"}</span>
+                                </div>
+                                <div className="flex flex-col items-center border-l border-white/20 pl-12 pr-12">
+                                    <span className="text-[11px] font-bold opacity-80 uppercase mb-1">VAR</span>
+                                    <span className="text-5xl font-black text-white leading-none drop-shadow-xl">{state.refVarMatches || "0"}</span>
+                                </div>
+                                <div className="flex flex-col items-center">
+                                    <span className="text-[11px] font-bold opacity-80 uppercase mb-1">AVAR</span>
+                                    <span className="text-5xl font-black text-white leading-none drop-shadow-xl">{state.refAvarMatches || "0"}</span>
+                                </div>
+                            </div>
                         </div>
-                    </div>
 
-                    {/* Sağ: Metin Alanı (%50) */}
-                    <div className={`flex-1 md:w-1/2 p-8 md:p-16 flex flex-col ${state.contentLayout === 'spread' ? 'justify-between pb-32' : 'justify-start pt-[35rem] pb-32'} gap-8 relative h-full shrink-0`}>
-
-                        {/* Başlık ve Dakika Alanı */}
-                        <div className={`flex flex-col gap-4 ${state.contentLayout === 'spread' ? 'mt-24' : ''}`}>
-                            {state.showPositionBox && (state.positionLabel || (state.showMinute && state.positionMinute)) && (
-                                <div className="flex items-center gap-0">
-                                    {state.positionLabel && (
-                                        <div className="bg-red-600 text-white px-8 py-3 font-black italic text-3xl skew-x-[-12deg] shadow-2xl border-2 border-white/20 z-20">
-                                            {state.positionLabel}
-                                        </div>
-                                    )}
-                                    {state.showMinute && state.positionMinute && (
-                                        <div className={`${currentTheme.cardBg || 'bg-white'} text-black px-6 py-3 font-black text-3xl skew-x-[-12deg] ml-[-12px] shadow-2xl border-2 border-black z-10`}>
-                                            {state.positionMinute}
-                                        </div>
+                        {/* 1:1 DİKEY DÜZENİ UYARLAMASI (Dikey formattaki gibi hiyerarşik) */}
+                        <div className="space-y-4 w-full">
+                            {/* 1. SATIR: VAR VE HATALI KARAR (2 Kolon) */}
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="bg-black/30 backdrop-blur-3xl border-t-4 border-v-yellow p-5 flex flex-col items-center justify-center text-center shadow-[0px_0px_30px_rgba(250,204,21,0.2)] border-x border-b border-white/5">
+                                    <span className="text-xs font-bold opacity-90 mb-1 uppercase tracking-wider">VAR MÜDAHALESİ</span>
+                                    <span className="text-6xl font-black text-v-yellow leading-none tracking-tighter drop-shadow-2xl">{state.refVarGo || "0.0"}</span>
+                                    {state.refVarCalls && (
+                                        <div className="mt-2 text-xs font-bold opacity-80 text-white uppercase tracking-tighter">Çağrı: {state.refVarCalls}</div>
                                     )}
                                 </div>
-                            )}
-
-                            {state.showPositionBox && state.positionText && (
-                                <div className="inline-block self-start">
-                                    <h1 className="bg-yellow-400 text-black px-6 py-3 text-2xl md:text-3xl font-bold uppercase italic skew-x-[-5deg] shadow-[15px_15px_0px_0px_rgba(0,0,0,0.4)] leading-snug text-left border-2 border-black">
-                                        {state.positionText}
-                                    </h1>
+                                <div className="bg-black/30 backdrop-blur-3xl border-t-4 border-red-500 p-5 flex flex-col items-center justify-center text-center shadow-[0px_0px_30px_rgba(239,68,68,0.2)] border-x border-b border-white/5">
+                                    <span className="text-[9px] font-bold opacity-90 mb-1 uppercase tracking-tight leading-tight h-6 flex items-center justify-center">YORUMCU İSTATİSTİKLERİNE GÖRE</span>
+                                    <span className="text-6xl font-black text-red-500 leading-none tracking-tighter drop-shadow-2xl">{state.refWrongDecision || "0.0"}</span>
+                                    <span className="text-xs font-bold opacity-80 text-white uppercase tracking-tight mt-1">HATALI KARAR</span>
                                 </div>
-                            )}
-                        </div>
+                            </div>
 
-                        {/* Orta: Ana Metin */}
-                        <div className={`relative ${state.contentLayout === 'spread' ? 'flex-1 flex flex-col justify-center' : 'mt-4'} w-full`}>
-                            <p className={`${fontSize} text-white font-black leading-relaxed tracking-normal uppercase relative z-10 w-full text-left`}>
-                                {renderedComment || "DRIES MERTENS"}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Yorumcu İsim Paneli */}
-                {state.author && (
-                    <div className="absolute bottom-32 left-12 z-[70] min-w-[300px]">
-                        <div className="bg-white text-black px-8 py-3 skew-x-[-12deg] shadow-2xl border-b-8 border-yellow-400 border-2 border-black">
-                            <span className="text-3xl font-black uppercase italic tracking-tighter block skew-x-[12deg] leading-none">
-                                {state.author}
-                            </span>
-                            {state.authorTitle && (
-                                <span className="text-xs font-black opacity-60 block skew-x-[12deg] tracking-[0.2em] uppercase mt-2 italic">
-                                    {state.authorTitle}
-                                </span>
-                            )}
+                            {/* 2. SATIR: KARTLAR (2x2 Grid) */}
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="bg-yellow-400/10 backdrop-blur-3xl border-t-2 border-yellow-400 p-4 flex flex-col items-center border-x border-b border-white/5">
+                                    <span className="text-[11px] font-bold opacity-80 uppercase">SARI KART (M.B.O)</span>
+                                    <span className="text-4xl font-black text-yellow-400 drop-shadow-md">{state.refYellowCards || "0.0"}</span>
+                                    <div className="flex w-full justify-between items-center text-[11px] font-bold opacity-90 mt-2 border-t border-white/5 pt-1">
+                                        <span>EV: {state.refHomeYellow || "0"}</span>
+                                        <span>DEP: {state.refAwayYellow || "0"}</span>
+                                    </div>
+                                </div>
+                                <div className="bg-red-500/10 backdrop-blur-3xl border-t-2 border-red-500 p-4 flex flex-col items-center border-x border-b border-white/5">
+                                    <span className="text-[11px] font-bold opacity-80 uppercase">KIRMIZI KART (M.B.O)</span>
+                                    <span className="text-4xl font-black text-red-500 drop-shadow-md">{state.refRedCards || "0.0"}</span>
+                                    <div className="flex w-full justify-between items-center text-[11px] font-bold opacity-90 mt-2 border-t border-white/5 pt-1">
+                                        <span>EV: {state.refHomeRed || "0"}</span>
+                                        <span>DEP: {state.refAwayRed || "0"}</span>
+                                    </div>
+                                </div>
+                                <div className="bg-white/5 backdrop-blur-3xl border-t-2 border-white p-4 flex flex-col items-center border-x border-b border-white/5">
+                                    <span className="text-[11px] font-bold opacity-80 uppercase">PENALTI</span>
+                                    <span className="text-4xl font-black text-white drop-shadow-md">{state.refPenalties || "0"}</span>
+                                    <div className="flex w-full justify-between items-center text-[11px] font-bold opacity-90 mt-2 border-t border-white/5 pt-1">
+                                        <span>EV: {state.refHomePenalty || "0"}</span>
+                                        <span>DEP: {state.refAwayPenalty || "0"}</span>
+                                    </div>
+                                </div>
+                                <div className="bg-v-pink/10 backdrop-blur-3xl border-t-2 border-v-pink p-4 flex flex-col items-center border-x border-b border-white/5">
+                                    <span className="text-[11px] font-bold opacity-80 uppercase">FAUL (M.B.O)</span>
+                                    <span className="text-4xl font-black text-v-pink drop-shadow-md">{state.refFouls || "0.0"}</span>
+                                    <div className="flex w-full justify-between items-center text-[11px] font-bold opacity-90 mt-2 border-t border-white/5 pt-1">
+                                        <span>EV: {state.refHomeFoul || "0"}</span>
+                                        <span>DEP: {state.refAwayFoul || "0"}</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 )}
 
-                {/* Maç Bilgisi & Marka Çubuğu (En Alt Sabit - T1 Standart) */}
-                <div className="absolute bottom-0 left-0 right-0 z-[80] flex flex-col items-center">
-                    {/* Maç Bilgisi Kutusu */}
-                    {state.showMatchInfo && (
-                        <div className={`${isExtremeLandscape ? 'mb-8 scale-[0.85]' : 'mb-6'} bg-white border-brutal border-black ${currentTheme.shadow} px-8 py-3 flex flex-col items-center rotate-1`}>
-                            <p className={`text-xl font-black uppercase tracking-widest text-center text-black`}>
-                                {state.homeTeam} {state.score} {state.awayTeam}
-                            </p>
-                            <p className="text-[10px] font-bold opacity-40 text-center tracking-[0.3em] mt-1">
-                                {state.matchWeek} {state.separator} {state.date}
-                            </p>
-                        </div>
-                    )}
+                {/* YATAY (LANDSCAPE) DÜZENİ */}
+                {isLandscape && (
+                    <div className="flex flex-row items-center justify-between w-full max-w-full px-4 mt-8 flex-1">
+                        {/* SOL TARAFTA BOŞLUK (FOTOĞRAF ARTIK ARKA PLANDA) */}
+                        <div className="flex-1" />
 
-                    {/* Marka Çubuğu */}
-                    {state.showBrandingBar && (
-                        <div className="w-full bg-black text-white py-4 px-8 border-t-brutal border-white/20 flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                                <Globe size={16} className="text-v-yellow" />
-                                <span className="font-bold text-base tracking-tight">{state.website}</span>
+                        {/* SAĞ: İSTATİSTİK KOLONU (GÖREVLER, VAR, HATALI KARAR) */}
+                        <div className={`${isLandscape ? 'w-[30%]' : 'w-[40%]'} flex flex-col gap-4 items-center justify-center`}>
+                            {/* GÖREVLER KUTUSU */}
+                            <div className="w-full bg-black/30 backdrop-blur-3xl border-t-4 border-white p-5 flex flex-col items-center justify-center text-center shadow-2xl border-x border-b border-white/5">
+                                <span className="text-[10px] font-bold opacity-90 mb-2 uppercase tracking-wider text-white">TOPLAM GÖREV</span>
+                                <div className="flex flex-col w-full gap-2">
+                                    <div className="flex justify-between items-center border-b border-white/10 pb-1">
+                                        <span className="text-[9px] font-bold opacity-80 uppercase text-white">HAKEM</span>
+                                        <span className="text-2xl font-black text-white leading-none">{state.refMatches || "0"}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center border-b border-white/10 pb-1">
+                                        <span className="text-[9px] font-bold opacity-80 uppercase text-white">VAR</span>
+                                        <span className="text-2xl font-black text-white leading-none">{state.refVarMatches || "0"}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-[9px] font-bold opacity-80 uppercase text-white">AVAR</span>
+                                        <span className="text-2xl font-black text-white leading-none">{state.refAvarMatches || "0"}</span>
+                                    </div>
+                                </div>
                             </div>
 
-                            <div className="flex items-center gap-3">
-                                {state.handleInstagram && (
-                                    <div className="flex items-center gap-1 grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all">
-                                        <div className="bg-white/10 p-1 rounded">
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-                                        </div>
-                                        <span className="font-bold text-xs tracking-tight">{state.handleInstagram}</span>
-                                    </div>
-                                )}
-                                {state.handleTiktok && (
-                                    <div className="flex items-center gap-1 grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all">
-                                        <div className="bg-white/10 p-1 rounded">
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" /></svg>
-                                        </div>
-                                        <span className="font-bold text-xs tracking-tight">{state.handleTiktok}</span>
-                                    </div>
-                                )}
-                                {state.handleX && (
-                                    <div className="flex items-center gap-1 grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all">
-                                        <div className="bg-white/10 p-1 rounded">
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932 6.064-6.932zm-1.292 19.49h2.039L6.486 3.24H4.298l13.311 17.403z" /></svg>
-                                        </div>
-                                        <span className="font-bold text-xs tracking-tight">{state.handleX}</span>
-                                    </div>
-                                )}
-                                {state.handleFacebook && (
-                                    <div className="flex items-center gap-1 grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all">
-                                        <div className="bg-white/10 p-1 rounded">
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
-                                        </div>
-                                        <span className="font-bold text-xs tracking-tight">{state.handleFacebook}</span>
-                                    </div>
-                                )}
-                                {state.handleYoutube && (
-                                    <div className="flex items-center gap-1 grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all">
-                                        <div className="bg-white/10 p-1 rounded">
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
-                                        </div>
-                                        <span className="font-bold text-xs tracking-tight">{state.handleYoutube}</span>
+                            {/* VAR KUTUSU */}
+                            <div className="w-full bg-black/30 backdrop-blur-3xl border-t-4 border-v-yellow p-5 flex flex-col items-center justify-center text-center shadow-[0px_0px_30px_rgba(250,204,21,0.2)] border-x border-b border-white/5">
+                                <span className="text-[10px] font-bold opacity-90 mb-1 uppercase tracking-wider text-white">VAR MÜDAHALESİ</span>
+                                <span className="text-6xl font-black text-v-yellow leading-none tracking-tighter drop-shadow-2xl">{state.refVarGo || "0.0"}</span>
+                                {state.refVarCalls && (
+                                    <div className="mt-3 pt-2 border-t border-white/10 w-full flex flex-col items-center">
+                                        <span className="text-[8px] font-bold opacity-80 uppercase text-white">VAR'a Çağırma</span>
+                                        <span className="text-2xl font-black text-white">{state.refVarCalls}</span>
                                     </div>
                                 )}
                             </div>
+
+                            {/* HATALI KARAR KUTUSU */}
+                            <div className="w-full bg-black/30 backdrop-blur-3xl border-t-4 border-red-500 p-5 flex flex-col items-center justify-center text-center shadow-[0px_0px_30px_rgba(239,68,68,0.2)] border-x border-b border-white/5">
+                                <span className="text-[9px] font-bold opacity-90 mb-1 uppercase tracking-tight leading-tight h-6 flex items-center justify-center text-white text-center">YORUMCU İSTATİSTİKLERİNE GÖRE</span>
+                                <span className="text-6xl font-black text-red-500 leading-none tracking-tighter mt-2 drop-shadow-2xl">{state.refWrongDecision || "0.0"}</span>
+                                <span className="text-xs font-bold opacity-80 text-white uppercase tracking-tight mt-1">HATALI KARAR</span>
+                            </div>
                         </div>
-                    )}
-                </div>
+                    </div>
+                )}
+
+                {/* ALT: KARTLAR GRİDİ (SADECE LANDSCAPE İÇİN ALTTA) */}
+                {isLandscape && (
+                    <div className="w-full max-w-6xl mt-8 px-12">
+                        <div className="grid grid-cols-4 gap-4">
+                            <div className="bg-yellow-400/20 backdrop-blur-3xl border-t-4 border-yellow-400 p-4 flex flex-col items-center justify-center text-center shadow-[0px_0px_20px_rgba(250,204,21,0.2)] overflow-hidden border-x border-b border-white/5">
+                                <span className="text-[10px] font-bold opacity-90 mb-1 uppercase tracking-wider">SARI KART (M.B.O)</span>
+                                <span className="text-5xl font-black text-yellow-400 leading-none tracking-tighter drop-shadow-md">{state.refYellowCards || "0.0"}</span>
+                            </div>
+                            <div className="bg-red-500/20 backdrop-blur-3xl border-t-4 border-red-500 p-4 flex flex-col items-center justify-center text-center shadow-[0px_0px_20px_rgba(239,68,68,0.2)] overflow-hidden border-x border-b border-white/5">
+                                <span className="text-[10px] font-bold opacity-90 mb-1 uppercase tracking-wider">KIRMIZI KART (M.B.O)</span>
+                                <span className="text-5xl font-black text-red-500 leading-none tracking-tighter drop-shadow-md">{state.refRedCards || "0.0"}</span>
+                            </div>
+                            <div className="bg-white/10 backdrop-blur-3xl border-t-4 border-white p-4 flex flex-col items-center justify-center text-center shadow-2xl overflow-hidden border-x border-b border-white/5">
+                                <span className="text-[10px] font-bold opacity-90 mb-1 uppercase tracking-wider">PENALTI</span>
+                                <span className="text-5xl font-black text-white leading-none tracking-tighter drop-shadow-md">{state.refPenalties || "0"}</span>
+                            </div>
+                            <div className="bg-v-pink/20 backdrop-blur-3xl border-t-4 border-v-pink p-4 flex flex-col items-center justify-center text-center shadow-[0px_0px_20px_rgba(244,114,182,0.2)] overflow-hidden border-x border-b border-white/5">
+                                <span className="text-[10px] font-bold opacity-90 mb-1 uppercase tracking-wider">FAUL (M.B.O)</span>
+                                <span className="text-5xl font-black text-v-pink leading-none tracking-tighter drop-shadow-md">{state.refFouls || "0.0"}</span>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* DİKEY (PORTRAIT/STORY) DÜZENİ */}
+                {isPortrait && (
+                    <div className="w-full">
+                        <div className="space-y-6">
+                            {/* MOBİL GÖREVLER KUTUSU (ÜSTTE) */}
+                            <div className="bg-black/30 backdrop-blur-3xl border-t-4 border-white p-6 flex flex-col items-center justify-center text-center shadow-2xl border-x border-b border-white/5">
+                                <span className="text-xs font-bold opacity-90 mb-4 uppercase tracking-[0.2em]">TOPLAM GÖREV</span>
+                                <div className="flex w-full gap-4 justify-around">
+                                    <div className="flex flex-col items-center">
+                                        <span className="text-[11px] font-bold opacity-80 uppercase mb-1">HAKEM</span>
+                                        <span className="text-4xl font-black text-white leading-none drop-shadow-md">{state.refMatches || "0"}</span>
+                                    </div>
+                                    <div className="flex flex-col items-center border-l border-white/10 pl-4">
+                                        <span className="text-[11px] font-bold opacity-80 uppercase mb-1">VAR</span>
+                                        <span className="text-4xl font-black text-white leading-none drop-shadow-md">{state.refVarMatches || "0"}</span>
+                                    </div>
+                                    <div className="flex flex-col items-center border-l border-white/10 pl-4">
+                                        <span className="text-[11px] font-bold opacity-80 uppercase mb-1">AVAR</span>
+                                        <span className="text-4xl font-black text-white leading-none drop-shadow-md">{state.refAvarMatches || "0"}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* MOBİL VAR VE HATALI KARAR */}
+                            <div className="grid grid-cols-2 gap-6">
+                                <div className="bg-black/30 backdrop-blur-3xl border-t-4 border-v-yellow p-8 flex flex-col items-center justify-center text-center shadow-[0px_0px_30px_rgba(250,204,21,0.2)] border-x border-b border-white/5">
+                                    <span className="text-xs font-bold opacity-90 mb-2 uppercase tracking-wider">VAR MÜDAHALESİ</span>
+                                    <span className="text-7xl font-black text-v-yellow leading-none tracking-tighter drop-shadow-2xl">{state.refVarGo || "0.0"}</span>
+                                </div>
+                                <div className="bg-black/30 backdrop-blur-3xl border-t-4 border-red-500 p-8 flex flex-col items-center justify-center text-center shadow-[0px_0px_30px_rgba(239,68,68,0.2)] border-x border-b border-white/5">
+                                    <span className="text-[9px] font-bold opacity-90 mb-1 uppercase tracking-tight leading-tight h-6 flex items-center justify-center">YORUMCU İSTATİSTİKLERİNE GÖRE</span>
+                                    <span className="text-7xl font-black text-red-500 leading-none tracking-tighter drop-shadow-2xl">{state.refWrongDecision || "0.0"}</span>
+                                    <span className="text-xs font-bold opacity-80 text-white uppercase tracking-tight mt-1">HATALI KARAR</span>
+                                </div>
+                            </div>
+
+                            {/* ALT KARTLAR (2x2) */}
+                            <div className="grid grid-cols-2 gap-6">
+                                <div className="bg-yellow-400/10 backdrop-blur-3xl border-t-2 border-yellow-400 p-6 flex flex-col items-center border-x border-b border-white/5">
+                                    <span className="text-[11px] font-bold opacity-80 uppercase mb-1">SARI KART (M.B.O)</span>
+                                    <span className="text-5xl font-black text-yellow-400 drop-shadow-md leading-none">{state.refYellowCards || "0.0"}</span>
+                                    <div className="flex w-full justify-between items-center text-xs font-bold opacity-90 mt-3 border-t border-white/5 pt-2">
+                                        <span>EV SAHİBİ: {state.refHomeYellow || "0"}</span>
+                                        <span>DEPLASMAN: {state.refAwayYellow || "0"}</span>
+                                    </div>
+                                </div>
+                                <div className="bg-red-500/10 backdrop-blur-3xl border-t-2 border-red-500 p-6 flex flex-col items-center border-x border-b border-white/5">
+                                    <span className="text-[11px] font-bold opacity-80 uppercase mb-1">KIRMIZI KART (M.B.O)</span>
+                                    <span className="text-5xl font-black text-red-500 drop-shadow-md leading-none">{state.refRedCards || "0.0"}</span>
+                                    <div className="flex w-full justify-between items-center text-xs font-bold opacity-90 mt-3 border-t border-white/5 pt-2">
+                                        <span>EV SAHİBİ: {state.refHomeRed || "0"}</span>
+                                        <span>DEPLASMAN: {state.refAwayRed || "0"}</span>
+                                    </div>
+                                </div>
+                                <div className="bg-white/5 backdrop-blur-3xl border-t-2 border-white p-6 flex flex-col items-center border-x border-b border-white/5">
+                                    <span className="text-[11px] font-bold opacity-80 uppercase mb-1">PENALTI</span>
+                                    <span className="text-5xl font-black text-white drop-shadow-md leading-none">{state.refPenalties || "0"}</span>
+                                    <div className="flex w-full justify-between items-center text-xs font-bold opacity-90 mt-3 border-t border-white/5 pt-2">
+                                        <span>EV SAHİBİ: {state.refHomePenalty || "0"}</span>
+                                        <span>DEPLASMAN: {state.refAwayPenalty || "0"}</span>
+                                    </div>
+                                </div>
+                                <div className="bg-v-pink/10 backdrop-blur-3xl border-t-2 border-v-pink p-6 flex flex-col items-center border-x border-b border-white/5">
+                                    <span className="text-[11px] font-bold opacity-80 uppercase mb-1">FAUL (M.B.O)</span>
+                                    <span className="text-5xl font-black text-v-pink drop-shadow-md leading-none">{state.refFouls || "0.0"}</span>
+                                    <div className="flex w-full justify-between items-center text-xs font-bold opacity-90 mt-3 border-t border-white/5 pt-2">
+                                        <span>EV SAHİBİ: {state.refHomeFoul || "0"}</span>
+                                        <span>DEPLASMAN: {state.refAwayFoul || "0"}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
-        </div>
+
+            {/* ALT BİLGİ VE MARKA ALANI */}
+            <div className="relative z-50 flex flex-col items-center">
+
+                {/* Marka Çubuğu (Branding Bar) */}
+                {state.showBrandingBar && (
+                    <div className="w-full bg-black text-white py-4 px-8 border-t-brutal border-white/20 flex items-center justify-between">
+                        {/* Web Sitesi (Sol) */}
+                        <div className="flex items-center gap-2">
+                            <Globe size={16} className="text-v-yellow" />
+                            <span className="font-bold text-base tracking-tight">{state.website}</span>
+                        </div>
+
+                        {/* Sosyal Medya Kanalları (Orta/Sağ) */}
+                        <div className="flex items-center gap-3">
+                            {state.handleInstagram && (
+                                <div className="flex items-center gap-1 grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all">
+                                    <div className="bg-white/10 p-1 rounded">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                                    </div>
+                                    <span className="font-bold text-xs tracking-tight">{state.handleInstagram}</span>
+                                </div>
+                            )}
+                            {state.handleTiktok && (
+                                <div className="flex items-center gap-1 grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all">
+                                    <div className="bg-white/10 p-1 rounded">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" /></svg>
+                                    </div>
+                                    <span className="font-bold text-xs tracking-tight">{state.handleTiktok}</span>
+                                </div>
+                            )}
+                            {state.handleX && (
+                                <div className="flex items-center gap-1 grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all">
+                                    <div className="bg-white/10 p-1 rounded">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932 6.064-6.932zm-1.292 19.49h2.039L6.486 3.24H4.298l13.311 17.403z" /></svg>
+                                    </div>
+                                    <span className="font-bold text-xs tracking-tight">{state.handleX}</span>
+                                </div>
+                            )}
+                            {state.handleFacebook && (
+                                <div className="flex items-center gap-1 grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all">
+                                    <div className="bg-white/10 p-1 rounded">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                                    </div>
+                                    <span className="font-bold text-xs tracking-tight">{state.handleFacebook}</span>
+                                </div>
+                            )}
+                            {state.handleYoutube && (
+                                <div className="flex items-center gap-1 grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all">
+                                    <div className="bg-white/10 p-1 rounded">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
+                                    </div>
+                                    <span className="font-bold text-xs tracking-tight">{state.handleYoutube}</span>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                )}
+            </div>
+        </div >
     );
 };
 
