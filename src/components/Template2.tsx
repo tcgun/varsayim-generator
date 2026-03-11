@@ -87,20 +87,20 @@ const Template2: React.FC<Props> = ({ state, domRef }) => {
                 {isSquare && (
                     <div className="w-full flex flex-col gap-4 max-w-5xl">
                         {/* 1. SATIR: TOPLAM GÖREV (FULL WIDTH - CAM) */}
-                        <div className="w-full bg-black/30 backdrop-blur-3xl border-t-4 border-white p-5 flex flex-col items-center shadow-2xl border-x border-b border-white/5">
-                            <span className="text-xs font-bold opacity-90 mb-4 uppercase tracking-[0.1em] text-white">TOPLAM GÖREV</span>
+                        <div className="w-full bg-black/30 backdrop-blur-3xl border-t-4 border-white p-3 flex flex-col items-center shadow-2xl border-x border-b border-white/5">
+                            <span className="text-xl font-bold opacity-90 mb-3 uppercase tracking-[0.1em] text-white">TOPLAM GÖREV</span>
                             <div className="flex w-full justify-around items-center">
                                 <div className="flex flex-col items-center">
-                                    <span className="text-[11px] font-bold opacity-80 uppercase mb-1">HAKEM</span>
-                                    <span className="text-5xl font-black text-white leading-none drop-shadow-xl">{state.refMatches || "0"}</span>
+                                    <span className="text-lg font-bold opacity-80 uppercase mb-0.5">HAKEM</span>
+                                    <span className="text-4xl font-black text-white leading-none drop-shadow-xl">{state.refMatches || "0"}</span>
                                 </div>
-                                <div className="flex flex-col items-center border-l border-white/20 pl-12 pr-12">
-                                    <span className="text-[11px] font-bold opacity-80 uppercase mb-1">VAR</span>
-                                    <span className="text-5xl font-black text-white leading-none drop-shadow-xl">{state.refVarMatches || "0"}</span>
+                                <div className="flex flex-col items-center border-l border-white/20 pl-4 pr-4">
+                                    <span className="text-lg font-bold opacity-80 uppercase mb-0.5">VAR</span>
+                                    <span className="text-4xl font-black text-white leading-none drop-shadow-xl">{state.refVarMatches || "0"}</span>
                                 </div>
-                                <div className="flex flex-col items-center">
-                                    <span className="text-[11px] font-bold opacity-80 uppercase mb-1">AVAR</span>
-                                    <span className="text-5xl font-black text-white leading-none drop-shadow-xl">{state.refAvarMatches || "0"}</span>
+                                <div className="flex flex-col items-center border-l border-white/20 pl-4">
+                                    <span className="text-lg font-bold opacity-80 uppercase mb-0.5">AVAR</span>
+                                    <span className="text-4xl font-black text-white leading-none drop-shadow-xl">{state.refAvarMatches || "0"}</span>
                                 </div>
                             </div>
                         </div>
@@ -109,50 +109,50 @@ const Template2: React.FC<Props> = ({ state, domRef }) => {
                         <div className="space-y-4 w-full">
                             {/* 1. SATIR: VAR VE HATALI KARAR (2 Kolon) */}
                             <div className="grid grid-cols-2 gap-4">
-                                <div className="bg-black/30 backdrop-blur-3xl border-t-4 border-v-yellow p-5 flex flex-col items-center justify-center text-center shadow-[0px_0px_30px_rgba(250,204,21,0.2)] border-x border-b border-white/5">
-                                    <span className="text-xs font-bold opacity-90 mb-1 uppercase tracking-wider">VAR MÜDAHALESİ</span>
-                                    <span className="text-6xl font-black text-v-yellow leading-none tracking-tighter drop-shadow-2xl">{state.refVarGo || "0.0"}</span>
+                                <div className="bg-black/30 backdrop-blur-3xl border-t-4 border-v-yellow p-3 flex flex-col items-center justify-center text-center shadow-[0px_0px_30px_rgba(250,204,21,0.2)] border-x border-b border-white/5">
+                                    <span className="text-xl font-bold opacity-90 mb-1 uppercase tracking-wider">VAR MÜDAHALESİ</span>
+                                    <span className="text-4xl font-black text-v-yellow leading-none tracking-tighter drop-shadow-2xl">{state.refVarGo || "0.0"}</span>
                                     {state.refVarCalls && (
-                                        <div className="mt-2 text-xs font-bold opacity-80 text-white uppercase tracking-tighter">Çağrı: {state.refVarCalls}</div>
+                                        <div className="mt-1 text-lg font-bold opacity-80 text-white uppercase tracking-tighter">Çağrı: {state.refVarCalls}</div>
                                     )}
                                 </div>
-                                <div className="bg-black/30 backdrop-blur-3xl border-t-4 border-red-500 p-5 flex flex-col items-center justify-center text-center shadow-[0px_0px_30px_rgba(239,68,68,0.2)] border-x border-b border-white/5">
-                                    <span className="text-[9px] font-bold opacity-90 mb-1 uppercase tracking-tight leading-tight h-6 flex items-center justify-center">YORUMCU İSTATİSTİKLERİNE GÖRE</span>
-                                    <span className="text-6xl font-black text-red-500 leading-none tracking-tighter drop-shadow-2xl">{state.refWrongDecision || "0.0"}</span>
-                                    <span className="text-xs font-bold opacity-80 text-white uppercase tracking-tight mt-1">HATALI KARAR</span>
+                                <div className="bg-black/30 backdrop-blur-3xl border-t-4 border-red-500 p-3 flex flex-col items-center justify-center text-center shadow-[0px_0px_30px_rgba(239,68,68,0.2)] border-x border-b border-white/5">
+                                    <span className="text-sm font-bold opacity-90 mb-1 uppercase tracking-tight leading-tight h-8 flex items-center justify-center">YORUMCU İSTATİSTİKLERİNE GÖRE</span>
+                                    <span className="text-4xl font-black text-red-500 leading-none tracking-tighter drop-shadow-2xl">{state.refWrongDecision || "0.0"}</span>
+                                    <span className="text-xl font-bold opacity-80 text-white uppercase tracking-tight mt-1">HATALI KARAR</span>
                                 </div>
                             </div>
 
                             {/* 2. SATIR: KARTLAR (2x2 Grid) */}
                             <div className="grid grid-cols-2 gap-4">
-                                <div className="bg-yellow-400/10 backdrop-blur-3xl border-t-2 border-yellow-400 p-4 flex flex-col items-center border-x border-b border-white/5">
-                                    <span className="text-[11px] font-bold opacity-80 uppercase">SARI KART (M.B.O)</span>
+                                <div className="bg-yellow-400/10 backdrop-blur-3xl border-t-2 border-yellow-400 p-2 flex flex-col items-center border-x border-b border-white/5">
+                                    <span className="text-lg font-bold opacity-80 uppercase">SARI KART (M.B.O)</span>
                                     <span className="text-4xl font-black text-yellow-400 drop-shadow-md">{state.refYellowCards || "0.0"}</span>
-                                    <div className="flex w-full justify-between items-center text-[11px] font-bold opacity-90 mt-2 border-t border-white/5 pt-1">
+                                    <div className="flex w-full justify-between items-center text-base font-bold opacity-90 mt-1 border-t border-white/5 pt-1">
                                         <span>EV: {state.refHomeYellow || "0"}</span>
                                         <span>DEP: {state.refAwayYellow || "0"}</span>
                                     </div>
                                 </div>
-                                <div className="bg-red-500/10 backdrop-blur-3xl border-t-2 border-red-500 p-4 flex flex-col items-center border-x border-b border-white/5">
-                                    <span className="text-[11px] font-bold opacity-80 uppercase">KIRMIZI KART (M.B.O)</span>
+                                <div className="bg-red-500/10 backdrop-blur-3xl border-t-2 border-red-500 p-2 flex flex-col items-center border-x border-b border-white/5">
+                                    <span className="text-lg font-bold opacity-80 uppercase">KIRMIZI KART (M.B.O)</span>
                                     <span className="text-4xl font-black text-red-500 drop-shadow-md">{state.refRedCards || "0.0"}</span>
-                                    <div className="flex w-full justify-between items-center text-[11px] font-bold opacity-90 mt-2 border-t border-white/5 pt-1">
+                                    <div className="flex w-full justify-between items-center text-base font-bold opacity-90 mt-1 border-t border-white/5 pt-1">
                                         <span>EV: {state.refHomeRed || "0"}</span>
                                         <span>DEP: {state.refAwayRed || "0"}</span>
                                     </div>
                                 </div>
-                                <div className="bg-white/5 backdrop-blur-3xl border-t-2 border-white p-4 flex flex-col items-center border-x border-b border-white/5">
-                                    <span className="text-[11px] font-bold opacity-80 uppercase">PENALTI</span>
+                                <div className="bg-white/5 backdrop-blur-3xl border-t-2 border-white p-2 flex flex-col items-center border-x border-b border-white/5">
+                                    <span className="text-lg font-bold opacity-80 uppercase">PENALTI</span>
                                     <span className="text-4xl font-black text-white drop-shadow-md">{state.refPenalties || "0"}</span>
-                                    <div className="flex w-full justify-between items-center text-[11px] font-bold opacity-90 mt-2 border-t border-white/5 pt-1">
+                                    <div className="flex w-full justify-between items-center text-base font-bold opacity-90 mt-1 border-t border-white/5 pt-1">
                                         <span>EV: {state.refHomePenalty || "0"}</span>
                                         <span>DEP: {state.refAwayPenalty || "0"}</span>
                                     </div>
                                 </div>
-                                <div className="bg-v-pink/10 backdrop-blur-3xl border-t-2 border-v-pink p-4 flex flex-col items-center border-x border-b border-white/5">
-                                    <span className="text-[11px] font-bold opacity-80 uppercase">FAUL (M.B.O)</span>
+                                <div className="bg-v-pink/10 backdrop-blur-3xl border-t-2 border-v-pink p-2 flex flex-col items-center border-x border-b border-white/5">
+                                    <span className="text-lg font-bold opacity-80 uppercase">FAUL (M.B.O)</span>
                                     <span className="text-4xl font-black text-v-pink drop-shadow-md">{state.refFouls || "0.0"}</span>
-                                    <div className="flex w-full justify-between items-center text-[11px] font-bold opacity-90 mt-2 border-t border-white/5 pt-1">
+                                    <div className="flex w-full justify-between items-center text-base font-bold opacity-90 mt-1 border-t border-white/5 pt-1">
                                         <span>EV: {state.refHomeFoul || "0"}</span>
                                         <span>DEP: {state.refAwayFoul || "0"}</span>
                                     </div>
@@ -172,40 +172,40 @@ const Template2: React.FC<Props> = ({ state, domRef }) => {
                         <div className={`${isLandscape ? 'w-[30%]' : 'w-[40%]'} flex flex-col gap-4 items-center justify-center`}>
                             {/* GÖREVLER KUTUSU */}
                             <div className="w-full bg-black/30 backdrop-blur-3xl border-t-4 border-white p-5 flex flex-col items-center justify-center text-center shadow-2xl border-x border-b border-white/5">
-                                <span className="text-[10px] font-bold opacity-90 mb-2 uppercase tracking-wider text-white">TOPLAM GÖREV</span>
+                                <span className="text-2xl font-bold opacity-90 mb-2 uppercase tracking-wider text-white">TOPLAM GÖREV</span>
                                 <div className="flex flex-col w-full gap-2">
                                     <div className="flex justify-between items-center border-b border-white/10 pb-1">
-                                        <span className="text-[9px] font-bold opacity-80 uppercase text-white">HAKEM</span>
-                                        <span className="text-2xl font-black text-white leading-none">{state.refMatches || "0"}</span>
+                                        <span className="text-2xl font-bold opacity-80 uppercase text-white">HAKEM</span>
+                                        <span className="text-4xl font-black text-white leading-none">{state.refMatches || "0"}</span>
                                     </div>
                                     <div className="flex justify-between items-center border-b border-white/10 pb-1">
-                                        <span className="text-[9px] font-bold opacity-80 uppercase text-white">VAR</span>
-                                        <span className="text-2xl font-black text-white leading-none">{state.refVarMatches || "0"}</span>
+                                        <span className="text-2xl font-bold opacity-80 uppercase text-white">VAR</span>
+                                        <span className="text-4xl font-black text-white leading-none">{state.refVarMatches || "0"}</span>
                                     </div>
                                     <div className="flex justify-between items-center">
-                                        <span className="text-[9px] font-bold opacity-80 uppercase text-white">AVAR</span>
-                                        <span className="text-2xl font-black text-white leading-none">{state.refAvarMatches || "0"}</span>
+                                        <span className="text-2xl font-bold opacity-80 uppercase text-white">AVAR</span>
+                                        <span className="text-4xl font-black text-white leading-none">{state.refAvarMatches || "0"}</span>
                                     </div>
                                 </div>
                             </div>
 
                             {/* VAR KUTUSU */}
                             <div className="w-full bg-black/30 backdrop-blur-3xl border-t-4 border-v-yellow p-5 flex flex-col items-center justify-center text-center shadow-[0px_0px_30px_rgba(250,204,21,0.2)] border-x border-b border-white/5">
-                                <span className="text-[10px] font-bold opacity-90 mb-1 uppercase tracking-wider text-white">VAR MÜDAHALESİ</span>
-                                <span className="text-6xl font-black text-v-yellow leading-none tracking-tighter drop-shadow-2xl">{state.refVarGo || "0.0"}</span>
+                                <span className="text-2xl font-bold opacity-90 mb-1 uppercase tracking-wider text-white">VAR MÜDAHALESİ</span>
+                                <span className="text-4xl font-black text-v-yellow leading-none tracking-tighter drop-shadow-2xl">{state.refVarGo || "0.0"}</span>
                                 {state.refVarCalls && (
                                     <div className="mt-3 pt-2 border-t border-white/10 w-full flex flex-col items-center">
-                                        <span className="text-[8px] font-bold opacity-80 uppercase text-white">VAR'a Çağırma</span>
-                                        <span className="text-2xl font-black text-white">{state.refVarCalls}</span>
+                                        <span className="text-2xl font-bold opacity-80 uppercase text-white">VAR'a Çağırma</span>
+                                        <span className="text-4xl font-black text-white">{state.refVarCalls}</span>
                                     </div>
                                 )}
                             </div>
 
                             {/* HATALI KARAR KUTUSU */}
                             <div className="w-full bg-black/30 backdrop-blur-3xl border-t-4 border-red-500 p-5 flex flex-col items-center justify-center text-center shadow-[0px_0px_30px_rgba(239,68,68,0.2)] border-x border-b border-white/5">
-                                <span className="text-[9px] font-bold opacity-90 mb-1 uppercase tracking-tight leading-tight h-6 flex items-center justify-center text-white text-center">YORUMCU İSTATİSTİKLERİNE GÖRE</span>
-                                <span className="text-6xl font-black text-red-500 leading-none tracking-tighter mt-2 drop-shadow-2xl">{state.refWrongDecision || "0.0"}</span>
-                                <span className="text-xs font-bold opacity-80 text-white uppercase tracking-tight mt-1">HATALI KARAR</span>
+                                <span className="text-2xl font-bold opacity-90 mb-1 uppercase tracking-tight leading-tight h-10 flex items-center justify-center text-white text-center">YORUMCU İSTATİSTİKLERİNE GÖRE</span>
+                                <span className="text-4xl font-black text-red-500 leading-none tracking-tighter mt-2 drop-shadow-2xl">{state.refWrongDecision || "0.0"}</span>
+                                <span className="text-2xl font-bold opacity-80 text-white uppercase tracking-tight mt-1">HATALI KARAR</span>
                             </div>
                         </div>
                     </div>
@@ -216,20 +216,20 @@ const Template2: React.FC<Props> = ({ state, domRef }) => {
                     <div className="w-full max-w-6xl mt-8 px-12">
                         <div className="grid grid-cols-4 gap-4">
                             <div className="bg-yellow-400/20 backdrop-blur-3xl border-t-4 border-yellow-400 p-4 flex flex-col items-center justify-center text-center shadow-[0px_0px_20px_rgba(250,204,21,0.2)] overflow-hidden border-x border-b border-white/5">
-                                <span className="text-[10px] font-bold opacity-90 mb-1 uppercase tracking-wider">SARI KART (M.B.O)</span>
-                                <span className="text-5xl font-black text-yellow-400 leading-none tracking-tighter drop-shadow-md">{state.refYellowCards || "0.0"}</span>
+                                <span className="text-2xl font-bold opacity-90 mb-1 uppercase tracking-wider">SARI KART (M.B.O)</span>
+                                <span className="text-4xl font-black text-yellow-400 leading-none tracking-tighter drop-shadow-md">{state.refYellowCards || "0.0"}</span>
                             </div>
                             <div className="bg-red-500/20 backdrop-blur-3xl border-t-4 border-red-500 p-4 flex flex-col items-center justify-center text-center shadow-[0px_0px_20px_rgba(239,68,68,0.2)] overflow-hidden border-x border-b border-white/5">
-                                <span className="text-[10px] font-bold opacity-90 mb-1 uppercase tracking-wider">KIRMIZI KART (M.B.O)</span>
-                                <span className="text-5xl font-black text-red-500 leading-none tracking-tighter drop-shadow-md">{state.refRedCards || "0.0"}</span>
+                                <span className="text-2xl font-bold opacity-90 mb-1 uppercase tracking-wider">KIRMIZI KART (M.B.O)</span>
+                                <span className="text-4xl font-black text-red-500 leading-none tracking-tighter drop-shadow-md">{state.refRedCards || "0.0"}</span>
                             </div>
                             <div className="bg-white/10 backdrop-blur-3xl border-t-4 border-white p-4 flex flex-col items-center justify-center text-center shadow-2xl overflow-hidden border-x border-b border-white/5">
-                                <span className="text-[10px] font-bold opacity-90 mb-1 uppercase tracking-wider">PENALTI</span>
-                                <span className="text-5xl font-black text-white leading-none tracking-tighter drop-shadow-md">{state.refPenalties || "0"}</span>
+                                <span className="text-2xl font-bold opacity-90 mb-1 uppercase tracking-wider">PENALTI</span>
+                                <span className="text-4xl font-black text-white leading-none tracking-tighter drop-shadow-md">{state.refPenalties || "0"}</span>
                             </div>
                             <div className="bg-v-pink/20 backdrop-blur-3xl border-t-4 border-v-pink p-4 flex flex-col items-center justify-center text-center shadow-[0px_0px_20px_rgba(244,114,182,0.2)] overflow-hidden border-x border-b border-white/5">
-                                <span className="text-[10px] font-bold opacity-90 mb-1 uppercase tracking-wider">FAUL (M.B.O)</span>
-                                <span className="text-5xl font-black text-v-pink leading-none tracking-tighter drop-shadow-md">{state.refFouls || "0.0"}</span>
+                                <span className="text-2xl font-bold opacity-90 mb-1 uppercase tracking-wider">FAUL (M.B.O)</span>
+                                <span className="text-4xl font-black text-v-pink leading-none tracking-tighter drop-shadow-md">{state.refFouls || "0.0"}</span>
                             </div>
                         </div>
                     </div>
@@ -241,18 +241,18 @@ const Template2: React.FC<Props> = ({ state, domRef }) => {
                         <div className="space-y-6">
                             {/* MOBİL GÖREVLER KUTUSU (ÜSTTE) */}
                             <div className="bg-black/30 backdrop-blur-3xl border-t-4 border-white p-6 flex flex-col items-center justify-center text-center shadow-2xl border-x border-b border-white/5">
-                                <span className="text-xs font-bold opacity-90 mb-4 uppercase tracking-[0.2em]">TOPLAM GÖREV</span>
+                                <span className="text-2xl font-bold opacity-90 mb-4 uppercase tracking-[0.2em]">TOPLAM GÖREV</span>
                                 <div className="flex w-full gap-4 justify-around">
                                     <div className="flex flex-col items-center">
-                                        <span className="text-[11px] font-bold opacity-80 uppercase mb-1">HAKEM</span>
+                                        <span className="text-2xl font-bold opacity-80 uppercase mb-1">HAKEM</span>
                                         <span className="text-4xl font-black text-white leading-none drop-shadow-md">{state.refMatches || "0"}</span>
                                     </div>
                                     <div className="flex flex-col items-center border-l border-white/10 pl-4">
-                                        <span className="text-[11px] font-bold opacity-80 uppercase mb-1">VAR</span>
+                                        <span className="text-2xl font-bold opacity-80 uppercase mb-1">VAR</span>
                                         <span className="text-4xl font-black text-white leading-none drop-shadow-md">{state.refVarMatches || "0"}</span>
                                     </div>
                                     <div className="flex flex-col items-center border-l border-white/10 pl-4">
-                                        <span className="text-[11px] font-bold opacity-80 uppercase mb-1">AVAR</span>
+                                        <span className="text-2xl font-bold opacity-80 uppercase mb-1">AVAR</span>
                                         <span className="text-4xl font-black text-white leading-none drop-shadow-md">{state.refAvarMatches || "0"}</span>
                                     </div>
                                 </div>
@@ -261,46 +261,46 @@ const Template2: React.FC<Props> = ({ state, domRef }) => {
                             {/* MOBİL VAR VE HATALI KARAR */}
                             <div className="grid grid-cols-2 gap-6">
                                 <div className="bg-black/30 backdrop-blur-3xl border-t-4 border-v-yellow p-8 flex flex-col items-center justify-center text-center shadow-[0px_0px_30px_rgba(250,204,21,0.2)] border-x border-b border-white/5">
-                                    <span className="text-xs font-bold opacity-90 mb-2 uppercase tracking-wider">VAR MÜDAHALESİ</span>
-                                    <span className="text-7xl font-black text-v-yellow leading-none tracking-tighter drop-shadow-2xl">{state.refVarGo || "0.0"}</span>
+                                    <span className="text-2xl font-bold opacity-90 mb-2 uppercase tracking-wider">VAR MÜDAHALESİ</span>
+                                    <span className="text-4xl font-black text-v-yellow leading-none tracking-tighter drop-shadow-2xl">{state.refVarGo || "0.0"}</span>
                                 </div>
                                 <div className="bg-black/30 backdrop-blur-3xl border-t-4 border-red-500 p-8 flex flex-col items-center justify-center text-center shadow-[0px_0px_30px_rgba(239,68,68,0.2)] border-x border-b border-white/5">
-                                    <span className="text-[9px] font-bold opacity-90 mb-1 uppercase tracking-tight leading-tight h-6 flex items-center justify-center">YORUMCU İSTATİSTİKLERİNE GÖRE</span>
-                                    <span className="text-7xl font-black text-red-500 leading-none tracking-tighter drop-shadow-2xl">{state.refWrongDecision || "0.0"}</span>
-                                    <span className="text-xs font-bold opacity-80 text-white uppercase tracking-tight mt-1">HATALI KARAR</span>
+                                    <span className="text-2xl font-bold opacity-90 mb-1 uppercase tracking-tight leading-tight h-10 flex items-center justify-center">YORUMCU İSTATİSTİKLERİNE GÖRE</span>
+                                    <span className="text-4xl font-black text-red-500 leading-none tracking-tighter drop-shadow-2xl">{state.refWrongDecision || "0.0"}</span>
+                                    <span className="text-2xl font-bold opacity-80 text-white uppercase tracking-tight mt-1">HATALI KARAR</span>
                                 </div>
                             </div>
 
                             {/* ALT KARTLAR (2x2) */}
                             <div className="grid grid-cols-2 gap-6">
                                 <div className="bg-yellow-400/10 backdrop-blur-3xl border-t-2 border-yellow-400 p-6 flex flex-col items-center border-x border-b border-white/5">
-                                    <span className="text-[11px] font-bold opacity-80 uppercase mb-1">SARI KART (M.B.O)</span>
-                                    <span className="text-5xl font-black text-yellow-400 drop-shadow-md leading-none">{state.refYellowCards || "0.0"}</span>
-                                    <div className="flex w-full justify-between items-center text-xs font-bold opacity-90 mt-3 border-t border-white/5 pt-2">
+                                    <span className="text-2xl font-bold opacity-80 uppercase mb-1">SARI KART (M.B.O)</span>
+                                    <span className="text-4xl font-black text-yellow-400 drop-shadow-md leading-none">{state.refYellowCards || "0.0"}</span>
+                                    <div className="flex w-full justify-between items-center text-2xl font-bold opacity-90 mt-3 border-t border-white/5 pt-2">
                                         <span>EV SAHİBİ: {state.refHomeYellow || "0"}</span>
                                         <span>DEPLASMAN: {state.refAwayYellow || "0"}</span>
                                     </div>
                                 </div>
                                 <div className="bg-red-500/10 backdrop-blur-3xl border-t-2 border-red-500 p-6 flex flex-col items-center border-x border-b border-white/5">
-                                    <span className="text-[11px] font-bold opacity-80 uppercase mb-1">KIRMIZI KART (M.B.O)</span>
-                                    <span className="text-5xl font-black text-red-500 drop-shadow-md leading-none">{state.refRedCards || "0.0"}</span>
-                                    <div className="flex w-full justify-between items-center text-xs font-bold opacity-90 mt-3 border-t border-white/5 pt-2">
+                                    <span className="text-2xl font-bold opacity-80 uppercase mb-1">KIRMIZI KART (M.B.O)</span>
+                                    <span className="text-4xl font-black text-red-500 drop-shadow-md leading-none">{state.refRedCards || "0.0"}</span>
+                                    <div className="flex w-full justify-between items-center text-2xl font-bold opacity-90 mt-3 border-t border-white/5 pt-2">
                                         <span>EV SAHİBİ: {state.refHomeRed || "0"}</span>
                                         <span>DEPLASMAN: {state.refAwayRed || "0"}</span>
                                     </div>
                                 </div>
                                 <div className="bg-white/5 backdrop-blur-3xl border-t-2 border-white p-6 flex flex-col items-center border-x border-b border-white/5">
-                                    <span className="text-[11px] font-bold opacity-80 uppercase mb-1">PENALTI</span>
-                                    <span className="text-5xl font-black text-white drop-shadow-md leading-none">{state.refPenalties || "0"}</span>
-                                    <div className="flex w-full justify-between items-center text-xs font-bold opacity-90 mt-3 border-t border-white/5 pt-2">
+                                    <span className="text-2xl font-bold opacity-80 uppercase mb-1">PENALTI</span>
+                                    <span className="text-4xl font-black text-white drop-shadow-md leading-none">{state.refPenalties || "0"}</span>
+                                    <div className="flex w-full justify-between items-center text-2xl font-bold opacity-90 mt-3 border-t border-white/5 pt-2">
                                         <span>EV SAHİBİ: {state.refHomePenalty || "0"}</span>
                                         <span>DEPLASMAN: {state.refAwayPenalty || "0"}</span>
                                     </div>
                                 </div>
                                 <div className="bg-v-pink/10 backdrop-blur-3xl border-t-2 border-v-pink p-6 flex flex-col items-center border-x border-b border-white/5">
-                                    <span className="text-[11px] font-bold opacity-80 uppercase mb-1">FAUL (M.B.O)</span>
-                                    <span className="text-5xl font-black text-v-pink drop-shadow-md leading-none">{state.refFouls || "0.0"}</span>
-                                    <div className="flex w-full justify-between items-center text-xs font-bold opacity-90 mt-3 border-t border-white/5 pt-2">
+                                    <span className="text-2xl font-bold opacity-80 uppercase mb-1">FAUL (M.B.O)</span>
+                                    <span className="text-4xl font-black text-v-pink drop-shadow-md leading-none">{state.refFouls || "0.0"}</span>
+                                    <div className="flex w-full justify-between items-center text-2xl font-bold opacity-90 mt-3 border-t border-white/5 pt-2">
                                         <span>EV SAHİBİ: {state.refHomeFoul || "0"}</span>
                                         <span>DEPLASMAN: {state.refAwayFoul || "0"}</span>
                                     </div>

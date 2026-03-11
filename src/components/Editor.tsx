@@ -52,9 +52,9 @@ const Editor: React.FC<Props> = ({ state, setState, isMobile }) => {
                             className="brutal-input font-bold"
                         >
                             <option value="template1">Görüş / Yorum</option>
-                            <option value="template2">Fotoğraflı Haber</option>
-                            <option value="template3">Minimal Poster</option>
-                            <option value="template4">4. Şablon (Haber Grafiği)</option>
+                            <option value="template2">Hakem İstatistikleri</option>
+                            <option value="template3">Saha Görevlileri</option>
+                            <option value="template4">VAR / AVAR</option>
                             <option value="template5">5. Şablon (VAR/Hakem Analizi)</option>
                         </select>
                     </div>
@@ -533,6 +533,484 @@ const Editor: React.FC<Props> = ({ state, setState, isMobile }) => {
                             </div>
                         </div>
                     </div>
+                ) : (state.template === 'template3' || state.template === 'template4') ? (
+                    /* TEMPLATE 3 & 4: MAÇ GÖREVLİLERİ FORMU (T4 will be modified later) */
+                    <div className="space-y-6">
+                        <div className="bg-black text-white p-4 border-2 border-black rounded-brutal shadow-brutal flex items-center gap-3">
+                            <div className="bg-v-yellow text-black p-2 rounded-full">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                            </div>
+                            <h4 className="font-black uppercase tracking-tighter text-v-yellow">MAÇ GÖREVLİLERİ</h4>
+                        </div>
+
+
+                        <div className="flex items-center justify-between pt-4 border-t border-black/10">
+                            <h3 className="text-xl font-black uppercase inline-flex items-center gap-2">
+                                Maç Bilgileri
+                            </h3>
+                            <label className="flex items-center gap-2 cursor-pointer font-bold text-xs bg-black text-white px-2 py-1 rounded-brutal">
+                                <input
+                                    type="checkbox"
+                                    name="showMatchInfo"
+                                    checked={state.showMatchInfo}
+                                    onChange={handleChange}
+                                    className="w-4 h-4 accent-v-yellow"
+                                />
+                                GÖSTER
+                            </label>
+                        </div>
+
+                        {state.showMatchInfo && (
+                            <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
+                                <div className="grid grid-cols-2 gap-3 pb-4 border-b border-black/10">
+                                    <label className="block space-y-1">
+                                        <span className="font-bold text-[10px] uppercase opacity-60">Ev Sahibi</span>
+                                        <input
+                                            type="text"
+                                            name="homeTeam"
+                                            value={state.homeTeam || ""}
+                                            onChange={handleChange}
+                                            className="brutal-input h-8 text-xs font-bold uppercase"
+                                            placeholder="EV SAHİBİ"
+                                        />
+                                    </label>
+                                    <label className="block space-y-1">
+                                        <span className="font-bold text-[10px] uppercase opacity-60">Deplasman</span>
+                                        <input
+                                            type="text"
+                                            name="awayTeam"
+                                            value={state.awayTeam || ""}
+                                            onChange={handleChange}
+                                            className="brutal-input h-8 text-xs font-bold uppercase"
+                                            placeholder="DEPLASMAN"
+                                        />
+                                    </label>
+                                    <label className="block space-y-1">
+                                        <span className="font-bold text-[10px] uppercase opacity-60">Tarih</span>
+                                        <input
+                                            type="text"
+                                            name="date"
+                                            value={state.date || ""}
+                                            onChange={handleChange}
+                                            className="brutal-input h-8 text-xs font-bold uppercase"
+                                            placeholder="01.01.2024"
+                                        />
+                                    </label>
+                                    <label className="block space-y-1">
+                                        <span className="font-bold text-[10px] uppercase opacity-60">Sıralama / Hafta</span>
+                                        <input
+                                            type="text"
+                                            name="matchWeek"
+                                            value={state.matchWeek || ""}
+                                            onChange={handleChange}
+                                            className="brutal-input h-8 text-xs font-bold uppercase"
+                                            placeholder="21. HAFTA"
+                                        />
+                                    </label>
+                                </div>
+                            </div>
+                        )}
+                        {state.template !== 'template3' && state.template !== 'template4' && (
+                            <div className="space-y-4 animate-in fade-in duration-300">
+                                <label className="block space-y-1">
+                                    <span className="font-bold text-[10px] uppercase opacity-60">MAÇIN HAKEMİ</span>
+                                    <input
+                                        type="text"
+                                        name="author"
+                                        value={state.author || ""}
+                                        onChange={handleChange}
+                                        className="brutal-input h-10 text-sm font-black uppercase"
+                                        placeholder="HAKEM İSMİ"
+                                    />
+                                </label>
+
+                                <div className="grid grid-cols-2 gap-4">
+                                    <label className="block space-y-1">
+                                        <span className="font-bold text-[10px] uppercase opacity-60">Yardımcı Hakem 1</span>
+                                        <input
+                                            type="text"
+                                            name="assistant1Name"
+                                            value={state.assistant1Name || ""}
+                                            onChange={handleChange}
+                                            className="brutal-input h-10 text-sm font-bold uppercase"
+                                            placeholder="YARDIMCI 1"
+                                        />
+                                    </label>
+                                    <label className="block space-y-1">
+                                        <span className="font-bold text-[10px] uppercase opacity-60">Yardımcı Hakem 2</span>
+                                        <input
+                                            type="text"
+                                            name="assistant2Name"
+                                            value={state.assistant2Name || ""}
+                                            onChange={handleChange}
+                                            className="brutal-input h-10 text-sm font-bold uppercase"
+                                            placeholder="YARDIMCI 2"
+                                        />
+                                    </label>
+                                </div>
+
+                                <label className="block space-y-1">
+                                    <span className="font-bold text-[10px] uppercase opacity-60">Dördüncü Hakem</span>
+                                    <input
+                                        type="text"
+                                        name="fourthOfficialName"
+                                        value={state.fourthOfficialName || ""}
+                                        onChange={handleChange}
+                                        className="brutal-input h-10 text-sm font-bold uppercase"
+                                        placeholder="4. HAKEM"
+                                    />
+                                </label>
+                            </div>
+                        )}
+
+                        {state.template === 'template4' && (
+                            <div className="space-y-4 border-t border-black/5 pt-3">
+                                <div className="flex items-center justify-between">
+                                    <h4 className="font-black uppercase tracking-tighter text-v-pink">GÖRSEL KONUMLANDIRMA (TEMPLATE 4)</h4>
+                                </div>
+
+                                {/* Görsel Kontrol Bileşeni */}
+                                {(() => {
+                                    const PosControl = ({ label, xName, yName, scaleName, img }: { label: string, xName: string, yName: string, scaleName: string, img: string | undefined }) => {
+                                        if (!img) return null;
+                                        const xVal = (state as any)[xName] !== undefined ? (state as any)[xName] : 50;
+                                        const yVal = (state as any)[yName] !== undefined ? (state as any)[yName] : 50;
+                                        const scaleVal = (state as any)[scaleName] || 1;
+
+                                        return (
+                                            <div className="bg-black/5 p-4 rounded-xl space-y-3 border border-black/10 animate-in fade-in slide-in-from-top-2">
+                                                <div className="flex items-center justify-between">
+                                                    <span className="font-black text-[10px] uppercase text-v-pink italic tracking-widest">{label} KONUMLANDIRMA</span>
+                                                    <button
+                                                        onClick={() => {
+                                                            setState(prev => ({
+                                                                ...prev,
+                                                                [xName]: 50,
+                                                                [yName]: 50,
+                                                                [scaleName]: 1
+                                                            }));
+                                                        }}
+                                                        className="text-[9px] font-black underline hover:text-v-pink transition-colors"
+                                                    >
+                                                        SIFIRLA
+                                                    </button>
+                                                </div>
+
+                                                {/* İnteraktif Sürükleme Alanı */}
+                                                <div
+                                                    className="h-40 w-full bg-white/50 rounded-lg border-2 border-dashed border-black/20 relative cursor-move overflow-hidden group/pos"
+                                                    onMouseMove={(e) => {
+                                                        if (e.buttons === 1) {
+                                                            const rect = e.currentTarget.getBoundingClientRect();
+                                                            const x = Math.round(((e.clientX - rect.left) / rect.width) * 100);
+                                                            const y = Math.round(((e.clientY - rect.top) / rect.height) * 100);
+                                                            setState(prev => ({
+                                                                ...prev,
+                                                                [xName]: Math.min(Math.max(x, 0), 100),
+                                                                [yName]: Math.min(Math.max(y, 0), 100)
+                                                            }));
+                                                        }
+                                                    }}
+                                                    onMouseDown={(e) => {
+                                                        const rect = e.currentTarget.getBoundingClientRect();
+                                                        const x = Math.round(((e.clientX - rect.left) / rect.width) * 100);
+                                                        const y = Math.round(((e.clientY - rect.top) / rect.height) * 100);
+                                                        setState(prev => ({
+                                                            ...prev,
+                                                            [xName]: Math.min(Math.max(x, 0), 100),
+                                                            [yName]: Math.min(Math.max(y, 0), 100)
+                                                        }));
+                                                    }}
+                                                >
+                                                    <img src={img} className="w-full h-full object-cover opacity-10 grayscale" />
+                                                    <div
+                                                        className="absolute w-5 h-5 border-2 border-black bg-v-pink rounded-full -translate-x-1/2 -translate-y-1/2 shadow-lg flex items-center justify-center pointer-events-none"
+                                                        style={{ left: `${xVal}%`, top: `${yVal}%` }}
+                                                    >
+                                                        <div className="w-1 h-1 bg-white rounded-full" />
+                                                    </div>
+                                                </div>
+
+                                                <div className="grid grid-cols-3 gap-3">
+                                                    <div className="space-y-1">
+                                                        <div className="flex justify-between text-[8px] font-bold opacity-60"><span>YATAY</span> <span>%{xVal}</span></div>
+                                                        <input type="range" min="0" max="100" value={xVal} onChange={(e) => handleChange({ target: { name: xName, value: parseInt(e.target.value) } } as any)} className="w-full h-1 bg-black/10 appearance-none rounded-full accent-v-pink" />
+                                                    </div>
+                                                    <div className="space-y-1">
+                                                        <div className="flex justify-between text-[8px] font-bold opacity-60"><span>DİKEY</span> <span>%{yVal}</span></div>
+                                                        <input type="range" min="0" max="100" value={yVal} onChange={(e) => handleChange({ target: { name: yName, value: parseInt(e.target.value) } } as any)} className="w-full h-1 bg-black/10 appearance-none rounded-full accent-v-pink" />
+                                                    </div>
+                                                    <div className="space-y-1">
+                                                        <div className="flex justify-between text-[8px] font-bold opacity-60"><span>BOYUT</span> <span>{Number(scaleVal).toFixed(1)}x</span></div>
+                                                        <input type="range" min="0.5" max="2.5" step="0.1" value={scaleVal} onChange={(e) => handleChange({ target: { name: scaleName, value: parseFloat(e.target.value) } } as any)} className="w-full h-1 bg-black/10 appearance-none rounded-full accent-v-pink" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    };
+
+                                    return (
+                                        <div className="space-y-3">
+                                            <PosControl label="VAR" xName="varX" yName="varY" scaleName="varScale" img={state.varImage} />
+                                            <PosControl label="AVAR 1" xName="avarX" yName="avarY" scaleName="avarScale" img={state.avarImage} />
+                                            <PosControl label="AVAR 2" xName="avar2X" yName="avar2Y" scaleName="avar2Scale" img={state.avar2Image} />
+                                            <PosControl label="GÖZLEMCİ" xName="observerX" yName="observerY" scaleName="observerScale" img={state.observerImage} />
+                                            <PosControl label="TEMSİLCİ 1" xName="rep1X" yName="rep1Y" scaleName="rep1Scale" img={state.representativeImage} />
+                                            <PosControl label="TEMSİLCİ 2" xName="rep2X" yName="rep2Y" scaleName="rep2Scale" img={state.representative2Image} />
+                                        </div>
+                                    );
+                                })()}
+                            </div>
+                        )}
+
+                        <div className="grid grid-cols-2 gap-4 pt-4 border-t border-black/10">
+                            <div className="space-y-1">
+                                <span className="font-bold text-[10px] uppercase opacity-60">VAR HAKEMİ</span>
+                                <input
+                                    type="text"
+                                    name="varName"
+                                    value={state.varName || ""}
+                                    onChange={handleChange}
+                                    className="brutal-input h-10 text-sm font-bold uppercase"
+                                    placeholder="VAR İSMİ"
+                                />
+                                <div className="flex items-center gap-2 mt-1">
+                                    <div className="h-10 w-10 border-2 border-dashed border-black/30 rounded flex items-center justify-center overflow-hidden bg-white relative">
+                                        {state.varImage ? <img src={state.varImage} className="w-full h-full object-cover" /> : <ImageIcon size={12} className="opacity-30" />}
+                                        <input type="file" accept="image/*" onChange={(e) => {
+                                            const file = e.target.files?.[0];
+                                            if (file) {
+                                                const reader = new FileReader();
+                                                reader.onloadend = () => setState(prev => ({ ...prev, varImage: reader.result as string }));
+                                                reader.readAsDataURL(file);
+                                            }
+                                        }} className="absolute inset-0 opacity-0 cursor-pointer" title="Fotoğraf Yükle" />
+                                    </div>
+                                    {state.varImage && (
+                                        <button onClick={() => setState(prev => ({ ...prev, varImage: undefined }))} className="text-[8px] font-black text-red-500 underline">KALDIR</button>
+                                    )}
+                                </div>
+                            </div>
+                            <div className="space-y-1">
+                                <span className="font-bold text-[10px] uppercase opacity-60">AVAR HAKEMİ</span>
+                                <input
+                                    type="text"
+                                    name="avarName"
+                                    value={state.avarName || ""}
+                                    onChange={handleChange}
+                                    className="brutal-input h-10 text-sm font-bold uppercase"
+                                    placeholder="AVAR 1"
+                                />
+                                <div className="flex items-center gap-2 mt-1">
+                                    <div className="h-10 w-10 border-2 border-dashed border-black/30 rounded flex items-center justify-center overflow-hidden bg-white relative">
+                                        {state.avarImage ? <img src={state.avarImage} className="w-full h-full object-cover" /> : <ImageIcon size={12} className="opacity-30" />}
+                                        <input type="file" accept="image/*" onChange={(e) => {
+                                            const file = e.target.files?.[0];
+                                            if (file) {
+                                                const reader = new FileReader();
+                                                reader.onloadend = () => setState(prev => ({ ...prev, avarImage: reader.result as string }));
+                                                reader.readAsDataURL(file);
+                                            }
+                                        }} className="absolute inset-0 opacity-0 cursor-pointer" title="Fotoğraf Yükle" />
+                                    </div>
+                                    {state.avarImage && (
+                                        <button onClick={() => setState(prev => ({ ...prev, avarImage: undefined }))} className="text-[8px] font-black text-red-500 underline">KALDIR</button>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4">
+                            <div />
+                            <div className="space-y-1">
+                                <span className="font-bold text-[10px] uppercase opacity-60">AVAR HAKEMİ 2</span>
+                                <input
+                                    type="text"
+                                    name="avar2Name"
+                                    value={state.avar2Name || ""}
+                                    onChange={handleChange}
+                                    className="brutal-input h-10 text-sm font-bold uppercase"
+                                    placeholder="AVAR 2"
+                                />
+                                <div className="flex items-center gap-2 mt-1">
+                                    <div className="h-10 w-10 border-2 border-dashed border-black/30 rounded flex items-center justify-center overflow-hidden bg-white relative">
+                                        {state.avar2Image ? <img src={state.avar2Image} className="w-full h-full object-cover" /> : <ImageIcon size={12} className="opacity-30" />}
+                                        <input type="file" accept="image/*" onChange={(e) => {
+                                            const file = e.target.files?.[0];
+                                            if (file) {
+                                                const reader = new FileReader();
+                                                reader.onloadend = () => setState(prev => ({ ...prev, avar2Image: reader.result as string }));
+                                                reader.readAsDataURL(file);
+                                            }
+                                        }} className="absolute inset-0 opacity-0 cursor-pointer" title="Fotoğraf Yükle" />
+                                    </div>
+                                    {state.avar2Image && (
+                                        <button onClick={() => setState(prev => ({ ...prev, avar2Image: undefined }))} className="text-[8px] font-black text-red-500 underline">KALDIR</button>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="space-y-3 border-t border-black/5 pt-3">
+                            <div className="flex items-center justify-between mb-2">
+                                <h4 className="font-black uppercase tracking-tighter text-v-pink">DİĞER GÖREVLİLER</h4>
+                            </div>
+                            <div className="grid grid-cols-1 gap-2">
+                                <div className="space-y-1">
+                                    <div className="flex items-center justify-between">
+                                        <span className="font-bold text-[10px] uppercase opacity-60 text-v-pink">GÖZLEMCİ</span>
+                                        <label className="flex items-center gap-2 cursor-pointer font-bold text-[10px] bg-v-pink/10 text-v-pink px-2 py-0.5 rounded border border-v-pink/20">
+                                            <input
+                                                type="checkbox"
+                                                name="showObserver"
+                                                checked={!!state.showObserver}
+                                                onChange={handleChange}
+                                                className="w-3 h-3 accent-v-pink"
+                                            />
+                                            AKTİF
+                                        </label>
+                                    </div>
+                                    <input
+                                        type="text"
+                                        name="observerName"
+                                        value={state.observerName || ""}
+                                        onChange={handleChange}
+                                        className="brutal-input h-10 text-sm font-bold uppercase border-v-pink"
+                                        placeholder="GÖZLEMCİ İSMİ"
+                                    />
+                                    <div className="flex items-center gap-2 mt-1">
+                                        <div className="h-10 w-10 border-2 border-dashed border-v-pink/30 rounded flex items-center justify-center overflow-hidden bg-white relative">
+                                            {state.observerImage ? <img src={state.observerImage} className="w-full h-full object-cover" /> : <ImageIcon size={12} className="opacity-30" />}
+                                            <input type="file" accept="image/*" onChange={(e) => {
+                                                const file = e.target.files?.[0];
+                                                if (file) {
+                                                    const reader = new FileReader();
+                                                    reader.onloadend = () => setState(prev => ({ ...prev, observerImage: reader.result as string }));
+                                                    reader.readAsDataURL(file);
+                                                }
+                                            }} className="absolute inset-0 opacity-0 cursor-pointer" title="Fotoğraf Yükle" />
+                                        </div>
+                                        {state.observerImage && (
+                                            <button onClick={() => setState(prev => ({ ...prev, observerImage: undefined }))} className="text-[8px] font-black text-red-500 underline">KALDIR</button>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="space-y-2 pt-2 border-t border-black/5">
+                            <div className="flex items-center justify-between">
+                                <span className="font-bold text-[10px] uppercase opacity-60 text-v-pink">TEMSİLCİLER</span>
+                                <label className="flex items-center gap-2 cursor-pointer font-bold text-[10px] bg-v-pink/10 text-v-pink px-2 py-0.5 rounded border border-v-pink/20">
+                                    <input
+                                        type="checkbox"
+                                        name="showRepresentative"
+                                        checked={!!state.showRepresentative}
+                                        onChange={handleChange}
+                                        className="w-3 h-3 accent-v-pink"
+                                    />
+                                    AKTİF
+                                </label>
+                            </div>
+                            <div className="grid grid-cols-2 gap-2">
+                                <div className="space-y-1">
+                                    <span className="font-bold text-[10px] uppercase opacity-60 text-v-pink">TEMSİLCİ 1</span>
+                                    <input
+                                        type="text"
+                                        name="representativeName"
+                                        value={state.representativeName || ""}
+                                        onChange={handleChange}
+                                        className="brutal-input h-8 text-xs font-bold uppercase border-v-pink"
+                                        placeholder="TEMSİLCİ 1"
+                                    />
+                                    <div className="flex items-center gap-1 mt-1">
+                                        <div className="h-8 w-8 border border-dashed border-v-pink/30 rounded flex items-center justify-center overflow-hidden bg-white relative">
+                                            {state.representativeImage ? <img src={state.representativeImage} className="w-full h-full object-cover" /> : <ImageIcon size={10} className="opacity-20" />}
+                                            <input type="file" accept="image/*" onChange={(e) => {
+                                                const file = e.target.files?.[0];
+                                                if (file) {
+                                                    const reader = new FileReader();
+                                                    reader.onloadend = () => setState(prev => ({ ...prev, representativeImage: reader.result as string }));
+                                                    reader.readAsDataURL(file);
+                                                }
+                                            }} className="absolute inset-0 opacity-0 cursor-pointer" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="space-y-1">
+                                    <span className="font-bold text-[10px] uppercase opacity-60 text-v-pink">TEMSİLCİ 2</span>
+                                    <input
+                                        type="text"
+                                        name="representative2Name"
+                                        value={state.representative2Name || ""}
+                                        onChange={handleChange}
+                                        className="brutal-input h-8 text-xs font-bold uppercase border-v-pink"
+                                        placeholder="TEMSİLCİ 2"
+                                    />
+                                    <div className="flex items-center gap-1 mt-1">
+                                        <div className="h-8 w-8 border border-dashed border-v-pink/30 rounded flex items-center justify-center overflow-hidden bg-white relative">
+                                            {state.representative2Image ? <img src={state.representative2Image} className="w-full h-full object-cover" /> : <ImageIcon size={10} className="opacity-20" />}
+                                            <input type="file" accept="image/*" onChange={(e) => {
+                                                const file = e.target.files?.[0];
+                                                if (file) {
+                                                    const reader = new FileReader();
+                                                    reader.onloadend = () => setState(prev => ({ ...prev, representative2Image: reader.result as string }));
+                                                    reader.readAsDataURL(file);
+                                                }
+                                            }} className="absolute inset-0 opacity-0 cursor-pointer" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="space-y-1">
+                                    <span className="font-bold text-[10px] uppercase opacity-60 text-v-pink">TEMSİLCİ 3</span>
+                                    <input
+                                        type="text"
+                                        name="representative3Name"
+                                        value={state.representative3Name || ""}
+                                        onChange={handleChange}
+                                        className="brutal-input h-8 text-xs font-bold uppercase border-v-pink"
+                                        placeholder="TEMSİLCİ 3"
+                                    />
+                                    <div className="flex items-center gap-1 mt-1">
+                                        <div className="h-8 w-8 border border-dashed border-v-pink/30 rounded flex items-center justify-center overflow-hidden bg-white relative">
+                                            {state.representative3Image ? <img src={state.representative3Image} className="w-full h-full object-cover" /> : <ImageIcon size={10} className="opacity-20" />}
+                                            <input type="file" accept="image/*" onChange={(e) => {
+                                                const file = e.target.files?.[0];
+                                                if (file) {
+                                                    const reader = new FileReader();
+                                                    reader.onloadend = () => setState(prev => ({ ...prev, representative3Image: reader.result as string }));
+                                                    reader.readAsDataURL(file);
+                                                }
+                                            }} className="absolute inset-0 opacity-0 cursor-pointer" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="space-y-1">
+                                    <span className="font-bold text-[10px] uppercase opacity-60 text-v-pink">TEMSİLCİ 4</span>
+                                    <input
+                                        type="text"
+                                        name="representative4Name"
+                                        value={state.representative4Name || ""}
+                                        onChange={handleChange}
+                                        className="brutal-input h-8 text-xs font-bold uppercase border-v-pink"
+                                        placeholder="TEMSİLCİ 4"
+                                    />
+                                    <div className="flex items-center gap-1 mt-1">
+                                        <div className="h-8 w-8 border border-dashed border-v-pink/30 rounded flex items-center justify-center overflow-hidden bg-white relative">
+                                            {state.representative4Image ? <img src={state.representative4Image} className="w-full h-full object-cover" /> : <ImageIcon size={10} className="opacity-20" />}
+                                            <input type="file" accept="image/*" onChange={(e) => {
+                                                const file = e.target.files?.[0];
+                                                if (file) {
+                                                    const reader = new FileReader();
+                                                    reader.onloadend = () => setState(prev => ({ ...prev, representative4Image: reader.result as string }));
+                                                    reader.readAsDataURL(file);
+                                                }
+                                            }} className="absolute inset-0 opacity-0 cursor-pointer" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 ) : (
                     /* DİĞER ŞABLONLAR İÇİN BASİT FORM */
                     <div className="space-y-6">
@@ -699,8 +1177,7 @@ const Editor: React.FC<Props> = ({ state, setState, isMobile }) => {
                     </div>
                 </div>
             </div>
-
-        </div >
+        </div>
     );
 };
 

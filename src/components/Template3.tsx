@@ -12,133 +12,202 @@ interface Props {
 const Template3: React.FC<Props> = ({ state, domRef }) => {
     const preset = PRESETS[state.currentPreset] || PRESETS["ig-square"];
     const isLandscape = preset.width > preset.height;
-    const isExtremeLandscape = isLandscape && preset.height < 650;
-
-    // Tema Renkleri (Sade / Göz Yormayan)
-    const THEMES: Record<string, any> = {
-        varsayim: { primary: "#E2E8F0", bg: "#FDF6E3", cardBg: "#FFFFFF", highlight: "#94A3B8", border: "#CBD5E1", text: "#1E293B", shadow: "shadow-[8px_8px_0px_0px_#CBD5E1]", quote: "text-[#CBD5E1]" },
-    };
-
-    const currentTheme = THEMES[state.theme] || THEMES.varsayim;
-
-    const fontSize = useMemo(() => {
-        const len = state.comment.length;
-        if (len > 500) return "text-base";
-        if (len > 400) return "text-lg";
-        if (len > 300) return "text-xl";
-        if (len > 250) return "text-2xl";
-        if (len > 200) return "text-3xl";
-        if (len > 150) return "text-5xl";
-        if (len > 100) return isLandscape ? "text-4xl" : "text-7xl";
-        if (len > 50) return isLandscape ? "text-5xl" : "text-8xl";
-        return isLandscape ? "text-6xl" : "text-[10rem]";
-    }, [state.comment, isLandscape]);
-
-    const renderedComment = useMemo(() => {
-        const comment = state.comment.trim();
-        if (!state.highlight) return comment;
-
-        const highlights = state.highlight.split('*').map(h => h.trim()).filter(h => h !== "");
-        if (highlights.length === 0) return comment;
-
-        const escapedHighlights = highlights.map(h => h.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
-        const regex = new RegExp(`(${escapedHighlights.join('|')})`, 'gi');
-
-        const parts = comment.split(regex);
-        return parts.map((part, i) => {
-            const isMatch = highlights.some(h => h.toLowerCase() === part.toLowerCase());
-            if (isMatch) {
-                return (
-                    <span key={i} className="text-white px-2 py-0.5 mx-1 inline-block skew-x-[-12deg] font-black" style={{ backgroundColor: currentTheme.highlight || currentTheme.primary }}>
-                        {part}
-                    </span>
-                );
-            }
-            return part;
-        });
-    }, [state.comment, state.highlight, currentTheme]);
+    const isPortrait = preset.height > preset.width;
 
     return (
         <div
             ref={domRef}
-            className="relative flex flex-col justify-between overflow-hidden box-border font-sans transition-all duration-300"
+            className="relative flex flex-col items-center justify-between overflow-hidden bg-black font-sans"
             style={{
                 width: preset.width,
                 height: preset.height,
-                backgroundColor: currentTheme.bg,
-                color: currentTheme.text
             }}
             id="capture-area"
         >
-            {/* Arka Plan Deseni */}
-            <div className={`absolute inset-0 z-0 opacity-10 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]`} />
+            {/* ARKAPLAN: VURGULU VE DERİNLİKLİ */}
+            <div className="absolute inset-0 z-0">
+                {/* Dinamik Degrade Arkaplan */}
+                <div className="absolute inset-0 bg-gradient-to-br from-black via-[#111] to-[#1a1a1a]" />
+                {/* Grainy Noise Dokusu */}
+                <div className="absolute inset-0 opacity-15 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay" />
+                {/* Vurgu Işıkları */}
+                <div className="absolute top-[-10%] right-[-10%] w-[60%] h-[60%] bg-v-yellow/5 rounded-full blur-[120px]" />
+                <div className="absolute bottom-[-10%] left-[-10%] w-[60%] h-[60%] bg-v-pink/5 rounded-full blur-[120px]" />
+            </div>
 
-            {/* Üst Kenarlık */}
-            <div className="absolute top-0 left-0 w-full h-2 z-[60]" style={{ backgroundColor: currentTheme.primary }} />
-
-            {/* HEADER: Sponsor & Logo */}
-            <div className={`absolute ${isLandscape ? 'top-8 left-8 right-8' : 'top-12 left-12 right-12'} flex items-start justify-between z-50`}>
-                {state.showSponsor && (state.sponsorName || state.sponsorLogo) ? (
-                    <div className="text-black p-2 flex items-center gap-3 rounded-brutal shadow-2xl border-2 border-black" style={{ backgroundColor: currentTheme.cardBg }}>
-                        {state.sponsorLogo && <img src={state.sponsorLogo} alt="Sponsor" className="h-6 object-contain" />}
-                        {state.sponsorName && (
-                            <div className="flex flex-col items-start leading-none pr-2">
-                                <span className="text-[6px] font-black uppercase tracking-widest opacity-30 italic">DESTEĞİYLE</span>
-                                <span className="text-xs font-black italic uppercase tracking-tighter">{state.sponsorName}</span>
-                            </div>
-                        )}
+            {/* ÜST BİLGİLER: Başlık (SOL) & Logo (SAĞ) */}
+            <div className="absolute top-0 left-0 right-0 p-4 z-50 flex items-start justify-between">
+                <div className="flex flex-col items-start gap-2">
+                    <div className="bg-v-yellow text-black border-[3px] border-black shadow-[4px_4px_0px_#000] px-6 py-2">
+                        <span className="text-xl md:text-2xl font-black tracking-tighter uppercase text-black leading-none">
+                            MAÇ GÖREVLİLERİ
+                        </span>
                     </div>
-                ) : <div />}
+                    {/* MAÇ TAKIMLARI VE DETAYLARI (ORİJİNAL ÇARŞAF STİLİ) */}
+                    {state.showMatchInfo && (state.homeTeam || state.awayTeam || state.date || state.matchWeek) && (
+                        <div className="bg-black/40 backdrop-blur-3xl px-4 py-2 border-l-8 border-v-yellow shadow-[4px_4px_20px_rgba(255,215,0,0.2)] flex flex-col items-start gap-1 animate-in fade-in slide-in-from-left-4 duration-500">
+                            <span className="text-xl md:text-2xl font-black uppercase tracking-tighter italic text-white drop-shadow-md">
+                                {state.homeTeam || "EV SAHİBİ"} - {state.awayTeam || "DEPLASMAN"}
+                            </span>
+                            {(state.matchWeek || state.date) && (
+                                <div className="flex items-center gap-2 opacity-80">
+                                    <span className="text-xs font-black uppercase tracking-widest text-[#FFD700]">
+                                        {state.matchWeek} {state.matchWeek && state.date ? " | " : ""} {state.date}
+                                    </span>
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </div>
 
-                <div className="bg-[#FFD700] text-black px-6 py-2 rounded-brutal shadow-[4px_4px_15px_rgba(255,0,150,0.6)] border-[3px] border-black">
-                    <span className="text-3xl font-black tracking-tighter uppercase text-black leading-none">VARSAYIM</span>
+                {/* VARSAYIM Logo (Sağ Üst) */}
+                <div className="bg-[#FFD700] text-black border-[3px] border-black shadow-[4px_4px_15px_rgba(255,0,150,0.6)] px-8 py-3">
+                    <span className="text-4xl font-black tracking-tighter uppercase text-black leading-none">
+                        VARSAYIM
+                    </span>
                 </div>
             </div>
 
-            {/* MAIN CONTENT */}
-            <div className={`flex-1 flex flex-col items-center justify-center z-10 ${isLandscape ? 'px-16 pt-32 pb-48' : 'px-12 pt-64 pb-56'}`}>
-                <div className="max-w-6xl w-full flex flex-col items-center gap-16">
-                    <div className="bg-white px-8 py-6 rounded-brutal shadow-2xl border-2 border-black">
-                        <p className={`${fontSize} font-black leading-relaxed tracking-normal uppercase text-center text-black`}>
-                            {renderedComment || "DRIES MERTENS"}
-                        </p>
+            {/* ANA İÇERİK: GÖREVLİLER LİSTESİ */}
+            <div className={`relative z-10 flex-1 w-full flex flex-col items-center justify-center p-8 ${isPortrait ? 'pt-48 pb-24 gap-6' : 'pt-32 pb-24 gap-4'}`}>
+                {/* GÖREVLİ KARTLARI */}
+                <div className="w-full max-w-5xl flex flex-col gap-6">
+
+                    {/* HAKEM KARTI (ANA VURGU) */}
+                    <div className="bg-white/5 border-t-4 border-v-yellow p-6 flex flex-col items-center shadow-2xl relative overflow-hidden group">
+                        <span className="text-v-yellow text-xl font-bold uppercase tracking-widest mb-1">MÜSABAKANIN HAKEMİ</span>
+                        <span className="text-white text-6xl font-black uppercase tracking-tighter italic drop-shadow-md text-center">
+                            {state.author || "HAKEM İSMİ"}
+                        </span>
+
+                        {/* YARDIMCI VE 4. HAKEMLER */}
+                        {(state.assistant1Name || state.assistant2Name || state.fourthOfficialName) && (
+                            <div className="mt-6 pt-6 border-t border-white/10 w-full flex flex-col gap-6">
+                                <div className="grid grid-cols-2 gap-8">
+                                    {state.assistant1Name && (
+                                        <div className="flex flex-col items-center">
+                                            <span className="text-v-yellow text-sm font-bold uppercase tracking-widest opacity-70">1. YARDIMCI HAKEM</span>
+                                            <span className="text-white text-3xl font-black uppercase tracking-tight text-center">{state.assistant1Name}</span>
+                                        </div>
+                                    )}
+                                    {state.assistant2Name && (
+                                        <div className="flex flex-col items-center">
+                                            <span className="text-v-yellow text-sm font-bold uppercase tracking-widest opacity-70">2. YARDIMCI HAKEM</span>
+                                            <span className="text-white text-3xl font-black uppercase tracking-tight text-center">{state.assistant2Name}</span>
+                                        </div>
+                                    )}
+                                </div>
+                                {state.fourthOfficialName && (
+                                    <div className="flex flex-col items-center pt-2">
+                                        <span className="text-v-yellow text-sm font-bold uppercase tracking-widest opacity-70">DÖRDÜNCÜ HAKEM</span>
+                                        <span className="text-white text-3xl font-black uppercase tracking-tight text-center">{state.fourthOfficialName}</span>
+                                    </div>
+                                )}
+                            </div>
+                        )}
                     </div>
 
-                    {/* Author Section */}
-                    {state.author && (
-                        <div className="flex flex-col items-center gap-5 animate-in fade-in duration-1000">
-                            <div className="text-center space-y-2">
-                                <h2 className={`text-4xl font-black italic uppercase tracking-tighter bg-white text-black px-8 py-2 rounded-brutal border-2 border-black shadow-2xl`}>
-                                    {state.author}
-                                </h2>
-                            </div>
+                    {/* VAR / AVAR GRUBU */}
+                    {(state.varName || state.avarName || state.avar2Name) && (
+                        <div className={`grid ${state.varName && (state.avarName || state.avar2Name) ? 'grid-cols-2' : 'grid-cols-1'} gap-6 w-full`}>
+                            {state.varName && (
+                                <div className="bg-black/40 border-t-2 border-v-pink p-6 flex flex-col items-center shadow-xl border-x border-b border-white/5">
+                                    <span className="text-v-pink text-sm font-bold uppercase tracking-widest mb-2 opacity-80 underline underline-offset-4">VAR HAKEMİ</span>
+                                    <span className="text-white text-3xl font-black uppercase tracking-tight text-center">
+                                        {state.varName}
+                                    </span>
+                                </div>
+                            )}
+                            {(state.avarName || state.avar2Name) && (
+                                <div className="bg-black/40 border-t-2 border-v-pink p-6 flex flex-col items-center shadow-xl border-x border-b border-white/5">
+                                    <span className="text-v-pink text-sm font-bold uppercase tracking-widest mb-2 opacity-80 underline underline-offset-4">AVAR HAKEMİ</span>
+                                    <div className="flex flex-col items-center gap-1">
+                                        {state.avarName && (
+                                            <span className="text-white text-3xl font-black uppercase tracking-tight text-center">
+                                                {state.avarName}
+                                            </span>
+                                        )}
+                                        {state.avar2Name && (
+                                            <span className="text-white text-3xl font-black uppercase tracking-tight text-center">
+                                                {state.avar2Name}
+                                            </span>
+                                        )}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* GÖZLEMCİ / TEMSİLCİ GRUBU */}
+                    {((state.showObserver && state.observerName) || (state.showRepresentative && (state.representativeName || state.representative2Name || state.representative3Name || state.representative4Name))) && (
+                        <div className={`grid ${state.showObserver && state.observerName && state.showRepresentative && (state.representativeName || state.representative2Name || state.representative3Name || state.representative4Name) ? 'grid-cols-2' : 'grid-cols-1'} gap-6 w-full`}>
+                            {state.showObserver && state.observerName && (
+                                <div className="bg-black/40 border-t-2 border-white/40 p-6 flex flex-col items-center shadow-xl border-x border-b border-white/5 relative overflow-hidden">
+                                    <span className="text-white/40 text-sm font-bold uppercase tracking-widest mb-4">GÖZLEMCİ</span>
+                                    <div className="flex items-center gap-4 justify-center">
+                                        {state.observerImage && (
+                                            <div className="w-16 h-16 rounded-full border border-white/40 overflow-hidden shadow-lg">
+                                                <img src={state.observerImage} className="w-full h-full object-cover" />
+                                            </div>
+                                        )}
+                                        <span className="text-white text-3xl font-black uppercase tracking-tight text-center leading-tight">
+                                            {state.observerName}
+                                        </span>
+                                    </div>
+                                </div>
+                            )}
+                            {state.showRepresentative && (state.representativeName || state.representative2Name || state.representative3Name || state.representative4Name) && (
+                                <div className="bg-black/40 border-t-2 border-white/40 p-6 flex flex-col items-center shadow-xl border-x border-b border-white/5 relative overflow-hidden">
+                                    <span className="text-white/40 text-sm font-bold uppercase tracking-widest mb-4">TEMSİLCİ</span>
+                                    <div className="flex flex-col gap-4 w-full">
+                                        {[
+                                            { name: state.representativeName, img: state.representativeImage },
+                                            { name: state.representative2Name, img: state.representative2Image },
+                                            { name: state.representative3Name, img: state.representative3Image },
+                                            { name: state.representative4Name, img: state.representative4Image }
+                                        ].map((rep, idx) => rep.name && (
+                                            <div key={idx} className="flex items-center gap-3 justify-center">
+                                                {rep.img && (
+                                                    <div className="w-12 h-12 rounded-full border border-white/20 overflow-hidden shadow-sm">
+                                                        <img src={rep.img} className="w-full h-full object-cover" />
+                                                    </div>
+                                                )}
+                                                <span className="text-white text-2xl font-black uppercase tracking-tight text-center">
+                                                    {rep.name}
+                                                </span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>
             </div>
 
-            {/* Maç Bilgisi & Marka Çubuğu (T1 Standart) */}
+            {/* ALT BİLGİ VE MARKA ALANI */}
             <div className="absolute bottom-0 left-0 right-0 z-50 flex flex-col items-center">
-                {/* Maç Bilgisi */}
-                {state.showMatchInfo && (
-                    <div className={`${isExtremeLandscape ? 'mb-8 scale-[0.85]' : 'mb-6'} bg-white border-brutal border-black ${currentTheme.shadow} px-8 py-3 flex flex-col items-center`}>
-                        <p className={`text-xl font-black uppercase tracking-widest text-center text-black`}>
-                            {state.homeTeam} {state.score} {state.awayTeam}
-                        </p>
-                        <p className="text-[10px] font-bold opacity-50 text-center tracking-[0.3em] mt-1">
-                            {state.matchWeek} {state.separator} {state.date}
-                        </p>
+                {/* Sponsor Alanı */}
+                {state.showSponsor && state.sponsorLogo && (
+                    <div className="absolute bottom-20 left-8 bg-white/5 p-4 rounded-brutal border border-white/10 backdrop-blur-sm flex items-center gap-4 animate-in fade-in slide-in-from-bottom-4">
+                        <div className="flex flex-col items-start">
+                            <span className="text-[8px] font-black uppercase tracking-[0.3em] text-v-yellow opacity-50 italic">DESTEKLERİYLE</span>
+                            <span className="text-white font-black italic uppercase tracking-tighter text-xl">{state.sponsorName || "VARSAYIM PRO"}</span>
+                        </div>
+                        <img src={state.sponsorLogo} alt="Sponsor" className="h-10 object-contain brightness-0 invert opacity-80" />
                     </div>
                 )}
 
-                {/* Marka Çubuğu */}
+                {/* Marka Çubuğu (Branding Bar) */}
                 {state.showBrandingBar && (
                     <div className="w-full bg-black text-white py-4 px-8 border-t-brutal border-white/20 flex items-center justify-between">
+                        {/* Web Sitesi (Sol) */}
                         <div className="flex items-center gap-2">
                             <Globe size={16} className="text-v-yellow" />
                             <span className="font-bold text-base tracking-tight">{state.website}</span>
                         </div>
 
+                        {/* Sosyal Medya Kanalları */}
                         <div className="flex items-center gap-3">
                             {state.handleInstagram && (
                                 <div className="flex items-center gap-1 grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all">
@@ -184,7 +253,7 @@ const Template3: React.FC<Props> = ({ state, domRef }) => {
                     </div>
                 )}
             </div>
-        </div >
+        </div>
     );
 };
 

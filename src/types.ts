@@ -92,7 +92,56 @@ export interface AppState {
   refVarMatches?: string;
   refAvarMatches?: string;
   refVarCalls?: string;
+  // Match Officials (Template 3)
+  assistant1Name?: string;
+  assistant2Name?: string;
+  fourthOfficialName?: string;
+  varName?: string;
+  avarName?: string;
+  avar2Name?: string;
+  observerName?: string;
+  representativeName?: string;
+  representative2Name?: string;
+  representative3Name?: string;
+  representative4Name?: string;
+  // Official Images
+  varImage?: string;
+  avarImage?: string;
+  avar2Image?: string;
+  observerImage?: string;
+  representativeImage?: string;
+  representative2Image?: string;
+  representative3Image?: string;
+  representative4Image?: string;
+  showObserver?: boolean;
+  showRepresentative?: boolean;
   // Image Positioning
   authorImageX?: number;
   authorImageY?: number;
+  authorImageScale?: number;
+  // Official Photo Positioning
+  varX?: number;
+  varY?: number;
+  varScale?: number;
+  avarX?: number;
+  avarY?: number;
+  avarScale?: number;
+  avar2X?: number;
+  avar2Y?: number;
+  avar2Scale?: number;
+  observerX?: number;
+  observerY?: number;
+  observerScale?: number;
+  rep1X?: number;
+  rep1Y?: number;
+  rep1Scale?: number;
+  rep2X?: number;
+  rep2Y?: number;
+  rep2Scale?: number;
+  rep3X?: number;
+  rep3Y?: number;
+  rep3Scale?: number;
+  rep4X?: number;
+  rep4Y?: number;
+  rep4Scale?: number;
 }
