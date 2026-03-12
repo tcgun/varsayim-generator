@@ -70,7 +70,28 @@ export default function Home() {
   // Save to localStorage on change
   useEffect(() => {
     if (mounted) {
-      localStorage.setItem("varsayim_state", JSON.stringify(state));
+      try {
+        localStorage.setItem("varsayim_state", JSON.stringify(state));
+      } catch (e) {
+        if (e instanceof DOMException && e.name === 'QuotaExceededError') {
+          console.warn("LocalStorage quota exceeded, attempting to save light state...");
+          // Fallback: Save without images
+          const lightState = { ...state };
+          const imageKeys = [
+            'authorImage', 'varImage', 'avarImage', 'avar2Image',
+            'observerImage', 'representativeImage', 'representative2Image',
+            'representative3Image', 'representative4Image', 'sponsorLogo'
+          ] as const;
+
+          imageKeys.forEach(key => delete (lightState as any)[key]);
+
+          try {
+            localStorage.setItem("varsayim_state", JSON.stringify(lightState));
+          } catch (innerE) {
+            console.error("Even light state save failed", innerE);
+          }
+        }
+      }
     }
   }, [state, mounted]);
 
@@ -95,8 +116,34 @@ export default function Home() {
   };
 
   const handleSavePreset = () => {
-    localStorage.setItem("varsayim_state", JSON.stringify(state));
-    alert("Ayarlar başarıyla kaydedildi!");
+    try {
+      localStorage.setItem("varsayim_state", JSON.stringify(state));
+      alert("Ayarlar başarıyla kaydedildi!");
+    } catch (e) {
+      if (e instanceof DOMException && e.name === 'QuotaExceededError') {
+        const confirmSave = confirm(
+          "Görseller çok büyük olduğu için kaydedilemedi. Sadece metinleri kaydetmek ister misiniz?"
+        );
+        if (confirmSave) {
+          const lightState = { ...state };
+          const imageKeys = [
+            'authorImage', 'varImage', 'avarImage', 'avar2Image',
+            'observerImage', 'representativeImage', 'representative2Image',
+            'representative3Image', 'representative4Image', 'sponsorLogo'
+          ] as const;
+          imageKeys.forEach(key => delete (lightState as any)[key]);
+
+          try {
+            localStorage.setItem("varsayim_state", JSON.stringify(lightState));
+            alert("Metinler kaydedildi, ancak görseller hafızadan silinebilir.");
+          } catch (innerE) {
+            alert("Kaydetme işlemi tamamen başarısız oldu.");
+          }
+        }
+      } else {
+        alert("Bilinmeyen bir hata oluştu.");
+      }
+    }
   };
 
   if (!mounted) return (
