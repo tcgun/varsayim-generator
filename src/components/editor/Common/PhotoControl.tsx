@@ -3,32 +3,25 @@ import { AppState } from "../../../types";
 
 interface Props {
     label: string;
-    imageKey: keyof AppState;
-    xKey: keyof AppState;
-    yKey: keyof AppState;
-    scaleKey?: keyof AppState;
-    state: AppState;
-    setState: React.Dispatch<React.SetStateAction<AppState>>;
+    image?: string;
+    x: number;
+    y: number;
+    scale?: number;
+    onUpdate: (data: { image?: string; x?: number; y?: number; scale?: number }) => void;
     accentColor?: string;
     showControls?: boolean;
 }
 
 const PhotoControl: React.FC<Props> = ({
     label,
-    imageKey,
-    xKey,
-    yKey,
-    scaleKey,
-    state,
-    setState,
+    image: imageUrl,
+    x: xVal,
+    y: yVal,
+    scale: scaleVal = 1,
+    onUpdate,
     accentColor = "v-yellow",
     showControls = true
 }) => {
-    const imageUrl = state[imageKey] as string | undefined;
-    const xVal = (state[xKey] as number) ?? 50;
-    const yVal = (state[yKey] as number) ?? 50;
-    const scaleVal = scaleKey ? (state[scaleKey] as number ?? 1) : 1;
-
     const accentClass = accentColor.startsWith("bg-") ? accentColor : `bg-${accentColor}`;
     const borderClass = accentColor.startsWith("border-") ? accentColor : `border-${accentColor}`;
     const textClass = accentClass.replace('bg-', 'text-');
@@ -38,33 +31,61 @@ const PhotoControl: React.FC<Props> = ({
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
-                setState((prev: AppState) => ({
-                    ...prev,
-                    [imageKey]: reader.result as string,
-                    [xKey]: 50,
-                    [yKey]: 50,
-                    ...(scaleKey ? { [scaleKey]: 1 } : {})
-                }));
+                const img = new Image();
+                img.onload = () => {
+                    // Maximum dimensions for optimization
+                    const MAX_WIDTH = 1200;
+                    const MAX_HEIGHT = 1200;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > MAX_WIDTH) {
+                            height *= MAX_WIDTH / width;
+                            width = MAX_WIDTH;
+                        }
+                    } else {
+                        if (height > MAX_HEIGHT) {
+                            width *= MAX_HEIGHT / height;
+                            height = MAX_HEIGHT;
+                        }
+                    }
+
+                    const canvas = document.createElement('canvas');
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    if (ctx) {
+                        ctx.drawImage(img, 0, 0, width, height);
+                        // Using higher quality for optimization without much loss
+                        const optimizedImage = canvas.toDataURL('image/jpeg', 0.8);
+                        onUpdate({
+                            image: optimizedImage,
+                            x: 50,
+                            y: 50,
+                            scale: 1
+                        });
+                    }
+                };
+                img.src = reader.result as string;
             };
             reader.readAsDataURL(file);
         }
     };
 
     const handleReset = () => {
-        setState((prev: AppState) => ({
-            ...prev,
-            [xKey]: 50,
-            [yKey]: 50,
-            ...(scaleKey ? { [scaleKey]: 1 } : {})
-        }));
+        onUpdate({
+            x: 50,
+            y: 50,
+            scale: 1
+        });
     };
 
     const updatePos = (x: number, y: number) => {
-        setState((prev: AppState) => ({
-            ...prev,
-            [xKey]: Math.min(Math.max(x, 0), 100),
-            [yKey]: Math.min(Math.max(y, 0), 100)
-        }));
+        onUpdate({
+            x: Math.min(Math.max(x, 0), 100),
+            y: Math.min(Math.max(y, 0), 100)
+        });
     };
 
     return (
@@ -73,7 +94,7 @@ const PhotoControl: React.FC<Props> = ({
                 <span className="font-bold text-xs uppercase opacity-70">{label}</span>
                 {imageUrl && (
                     <button
-                        onClick={() => setState((prev: AppState) => ({ ...prev, [imageKey]: undefined }))}
+                        onClick={() => onUpdate({ image: undefined })}
                         className="text-[10px] font-bold text-red-500 underline"
                     >
                         KALDIR
@@ -81,7 +102,7 @@ const PhotoControl: React.FC<Props> = ({
                 )}
             </div>
 
-            <div className="h-28 w-full border-2 border-dashed border-black/30 rounded flex items-center justify-center overflow-hidden hover:border-black transition-colors bg-white">
+            <div className="h-28 w-full border-2 border-dashed border-black/30 rounded flex items-center justify-center overflow-hidden hover:border-black transition-colors bg-white relative">
                 {imageUrl ? (
                     <img src={imageUrl} className="w-full h-full object-cover" />
                 ) : (
@@ -163,23 +184,21 @@ const PhotoControl: React.FC<Props> = ({
                                 className={`w-full accent-${accentColor.replace('bg-', '').replace('v-', '')} cursor-pointer`}
                             />
                         </div>
-                        {scaleKey && (
-                            <div className="col-span-2 space-y-1">
-                                <div className="flex justify-between text-[9px] font-black italic">
-                                    <span>ÖLÇEK (BOYUT)</span>
-                                    <span>{scaleVal.toFixed(1)}x</span>
-                                </div>
-                                <input
-                                    type="range"
-                                    min="0.5"
-                                    max="3"
-                                    step="0.1"
-                                    value={scaleVal}
-                                    onChange={(e) => setState((prev: AppState) => ({ ...prev, [scaleKey]: parseFloat(e.target.value) }))}
-                                    className={`w-full accent-${accentColor.replace('bg-', '').replace('v-', '')} cursor-pointer`}
-                                />
+                        <div className="col-span-2 space-y-1">
+                            <div className="flex justify-between text-[9px] font-black italic">
+                                <span>ÖLÇEK (BOYUT)</span>
+                                <span>{scaleVal.toFixed(1)}x</span>
                             </div>
-                        )}
+                            <input
+                                type="range"
+                                min="0.5"
+                                max="3"
+                                step="0.1"
+                                value={scaleVal}
+                                onChange={(e) => onUpdate({ scale: parseFloat(e.target.value) })}
+                                className={`w-full accent-${accentColor.replace('bg-', '').replace('v-', '')} cursor-pointer`}
+                            />
+                        </div>
                     </div>
                 </div>
             )}

@@ -1,14 +1,22 @@
 import React from "react";
-import { AppState } from "../../types";
+import { useStore } from "../../store/useStore";
 
 interface Props {
-    state: AppState;
     handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
     title?: string;
     showLabel?: string;
 }
 
-const MatchInfoSection: React.FC<Props> = ({ state, handleChange, title = "Maç Bilgileri", showLabel = "ŞABLON 1" }) => {
+const MatchInfoSection: React.FC<Props> = ({ handleChange, title = "Maç Bilgileri", showLabel = "ŞABLON 1" }) => {
+    const {
+        showMatchInfo,
+        homeTeam,
+        awayTeam,
+        date,
+        matchWeek,
+        score
+    } = useStore();
+
     return (
         <div className="space-y-4 pt-4 border-t border-black/10">
             <div className="flex items-center justify-between">
@@ -19,7 +27,7 @@ const MatchInfoSection: React.FC<Props> = ({ state, handleChange, title = "Maç 
                     <input
                         type="checkbox"
                         name="showMatchInfo"
-                        checked={state.showMatchInfo}
+                        checked={showMatchInfo}
                         onChange={handleChange}
                         className="w-4 h-4 accent-v-yellow"
                     />
@@ -27,14 +35,14 @@ const MatchInfoSection: React.FC<Props> = ({ state, handleChange, title = "Maç 
                 </label>
             </div>
 
-            {state.showMatchInfo && (
+            {showMatchInfo && (
                 <div className="grid grid-cols-2 gap-3 animate-in fade-in slide-in-from-top-2 duration-300">
                     <div className="space-y-1">
                         <span className="font-bold text-[10px] uppercase opacity-60">Ev Sahibi</span>
                         <input
                             type="text"
                             name="homeTeam"
-                            value={state.homeTeam || ""}
+                            value={homeTeam || ""}
                             onChange={handleChange}
                             placeholder="Ev Sahibi"
                             className="brutal-input text-xs w-full"
@@ -45,7 +53,7 @@ const MatchInfoSection: React.FC<Props> = ({ state, handleChange, title = "Maç 
                         <input
                             type="text"
                             name="awayTeam"
-                            value={state.awayTeam || ""}
+                            value={awayTeam || ""}
                             onChange={handleChange}
                             placeholder="Deplasman"
                             className="brutal-input text-xs w-full"
@@ -56,7 +64,7 @@ const MatchInfoSection: React.FC<Props> = ({ state, handleChange, title = "Maç 
                         <input
                             type="text"
                             name="date"
-                            value={state.date || ""}
+                            value={date || ""}
                             onChange={handleChange}
                             placeholder="01.01.2024"
                             className="brutal-input text-xs w-full"
@@ -67,7 +75,7 @@ const MatchInfoSection: React.FC<Props> = ({ state, handleChange, title = "Maç 
                         <input
                             type="text"
                             name="matchWeek"
-                            value={state.matchWeek || ""}
+                            value={matchWeek || ""}
                             onChange={handleChange}
                             placeholder="Örn: 21. HAFTA"
                             className="brutal-input text-xs w-full"
@@ -78,7 +86,7 @@ const MatchInfoSection: React.FC<Props> = ({ state, handleChange, title = "Maç 
                         <input
                             type="text"
                             name="score"
-                            value={state.score || ""}
+                            value={score || ""}
                             onChange={handleChange}
                             placeholder="0-0"
                             className="brutal-input text-center font-black text-lg w-full"

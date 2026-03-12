@@ -1,12 +1,13 @@
 import React from "react";
-import { AppState } from "../../types";
+import { useStore } from "../../store/useStore";
 
 interface Props {
-    state: AppState;
     handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
 }
 
-const BrandingSection: React.FC<Props> = ({ state, handleChange }) => {
+const BrandingSection: React.FC<Props> = ({ handleChange }) => {
+    const { showBrandingBar, handles } = useStore();
+
     return (
         <div className="space-y-4 pt-8 border-t-2 border-black border-dashed">
             <div className="flex items-center justify-between">
@@ -15,7 +16,7 @@ const BrandingSection: React.FC<Props> = ({ state, handleChange }) => {
                     <input
                         type="checkbox"
                         name="showBrandingBar"
-                        checked={state.showBrandingBar}
+                        checked={showBrandingBar}
                         onChange={handleChange}
                         className="w-4 h-4 accent-v-yellow"
                     />
@@ -28,8 +29,8 @@ const BrandingSection: React.FC<Props> = ({ state, handleChange }) => {
                     <span className="font-bold text-[10px] opacity-40 uppercase">Facebook</span>
                     <input
                         type="text"
-                        name="handleFacebook"
-                        value={state.handleFacebook || ""}
+                        name="handles.facebook"
+                        value={handles.facebook || ""}
                         onChange={handleChange}
                         className="brutal-input h-8 text-xs font-bold"
                         placeholder="varsayimcom"
@@ -39,8 +40,8 @@ const BrandingSection: React.FC<Props> = ({ state, handleChange }) => {
                     <span className="font-bold text-[10px] opacity-40 uppercase">YouTube</span>
                     <input
                         type="text"
-                        name="handleYoutube"
-                        value={state.handleYoutube || ""}
+                        name="handles.youtube"
+                        value={handles.youtube || ""}
                         onChange={handleChange}
                         className="brutal-input h-8 text-xs font-bold"
                         placeholder="varsayimcom"
@@ -50,8 +51,8 @@ const BrandingSection: React.FC<Props> = ({ state, handleChange }) => {
                     <span className="font-bold text-[10px] opacity-40 uppercase">Web Sitesi</span>
                     <input
                         type="text"
-                        name="website"
-                        value={state.website || ""}
+                        name="handles.website"
+                        value={handles.website || ""}
                         onChange={handleChange}
                         className="brutal-input h-8 text-xs font-bold"
                         placeholder="varsayim.com"
@@ -61,8 +62,8 @@ const BrandingSection: React.FC<Props> = ({ state, handleChange }) => {
                     <span className="font-bold text-[10px] opacity-40 uppercase">X (Twitter)</span>
                     <input
                         type="text"
-                        name="handleX"
-                        value={state.handleX || ""}
+                        name="handles.twitter"
+                        value={handles.twitter || ""}
                         onChange={handleChange}
                         className="brutal-input h-8 text-xs font-bold"
                         placeholder="@username"
@@ -72,8 +73,8 @@ const BrandingSection: React.FC<Props> = ({ state, handleChange }) => {
                     <span className="font-bold text-[10px] opacity-40 uppercase">Instagram</span>
                     <input
                         type="text"
-                        name="handleInstagram"
-                        value={state.handleInstagram || ""}
+                        name="handles.instagram"
+                        value={handles.instagram || ""}
                         onChange={handleChange}
                         className="brutal-input h-8 text-xs font-bold"
                         placeholder="@username"
@@ -83,8 +84,8 @@ const BrandingSection: React.FC<Props> = ({ state, handleChange }) => {
                     <span className="font-bold text-[10px] opacity-40 uppercase">TikTok</span>
                     <input
                         type="text"
-                        name="handleTiktok"
-                        value={state.handleTiktok || ""}
+                        name="handles.tiktok"
+                        value={handles.tiktok || ""}
                         onChange={handleChange}
                         className="brutal-input h-8 text-xs font-bold"
                         placeholder="@username"

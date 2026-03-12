@@ -1,7 +1,6 @@
-"use client";
-
 import React, { useEffect, useState, useRef } from "react";
-import { AppState, PRESETS } from "../types";
+import { useStore } from "../store/useStore";
+import { PRESETS } from "../types";
 import Template1 from "./Template1";
 import Template2 from "./Template2";
 import Template3 from "./Template3";
@@ -10,18 +9,18 @@ import Template5 from "./Template5";
 import { ZoomIn, ZoomOut, RotateCcw, Download, Save } from "lucide-react";
 
 interface Props {
-    state: AppState;
     domRef: React.RefObject<HTMLDivElement | null>;
     onSavePreset: () => void;
     onDownload: () => void;
 }
 
-const Preview: React.FC<Props> = ({ state, domRef, onSavePreset, onDownload }) => {
+const Preview: React.FC<Props> = ({ domRef, onSavePreset, onDownload }) => {
+    const { template, currentPreset } = useStore();
     const [autoScale, setAutoScale] = useState(0.2);
     const [manualScaleOffset, setManualScaleOffset] = useState(0); // Offset from autoScale
     const containerRef = useRef<HTMLDivElement>(null);
     const scrollRef = useRef<HTMLDivElement>(null);
-    const preset = PRESETS[state.currentPreset] || PRESETS["ig-square"];
+    const preset = PRESETS[currentPreset] || PRESETS["ratio-1-1"];
 
     // Drag to scroll state
     const [isDragging, setIsDragging] = useState(false);
@@ -83,17 +82,17 @@ const Preview: React.FC<Props> = ({ state, domRef, onSavePreset, onDownload }) =
     };
 
     const renderTemplate = () => {
-        switch (state.template) {
+        switch (template) {
             case "template2":
-                return <Template2 state={state} domRef={domRef} />;
+                return <Template2 domRef={domRef} />;
             case "template3":
-                return <Template3 state={state} domRef={domRef} />;
+                return <Template3 domRef={domRef} />;
             case "template4":
-                return <Template4 state={state} domRef={domRef} />;
+                return <Template4 domRef={domRef} />;
             case "template5":
-                return <Template5 state={state} domRef={domRef} />;
+                return <Template5 domRef={domRef} />;
             default:
-                return <Template1 state={state} domRef={domRef} />;
+                return <Template1 domRef={domRef} />;
         }
     };
 
@@ -174,7 +173,7 @@ const Preview: React.FC<Props> = ({ state, domRef, onSavePreset, onDownload }) =
             <div className="absolute bottom-4 left-6 bg-black text-white px-3 py-1 rounded-full text-xs font-mono flex items-center gap-3 z-40">
                 <span>{preset.width} x {preset.height} px</span>
                 <span className="opacity-40">|</span>
-                <span>{state.template.toUpperCase()}</span>
+                <span>{template.toUpperCase()}</span>
                 <span className="opacity-40">|</span>
                 <span className="text-v-yellow">%{Math.round(currentScale * 100)}</span>
                 {isDragging && <span className="text-white/40 ml-2 animate-pulse">KAYDIRILIYOR...</span>}

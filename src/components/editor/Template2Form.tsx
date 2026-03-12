@@ -1,14 +1,14 @@
 import React from "react";
-import { AppState } from "../../types";
+import { useStore } from "../../store/useStore";
 import PhotoControl from "./Common/PhotoControl";
 
 interface Props {
-    state: AppState;
-    setState: React.Dispatch<React.SetStateAction<AppState>>;
     handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
 }
 
-const Template2Form: React.FC<Props> = ({ state, setState, handleChange }) => {
+const Template2Form: React.FC<Props> = ({ handleChange }) => {
+    const { officials, stats, setState } = useStore();
+
     return (
         <div className="space-y-6">
             <div className="bg-v-yellow p-4 border-2 border-black rounded-brutal shadow-brutal flex items-center gap-3">
@@ -21,11 +21,17 @@ const Template2Form: React.FC<Props> = ({ state, setState, handleChange }) => {
             <div className="grid grid-cols-2 gap-4">
                 <PhotoControl
                     label="Hakem Fotoğrafı"
-                    imageKey="authorImage"
-                    xKey="authorImageX"
-                    yKey="authorImageY"
-                    state={state}
-                    setState={setState}
+                    image={officials.referee?.image}
+                    x={officials.referee?.x ?? 50}
+                    y={officials.referee?.y ?? 50}
+                    scale={officials.referee?.scale}
+                    onUpdate={(data) => setState((prev) => ({
+                        ...prev,
+                        officials: {
+                            ...prev.officials,
+                            referee: { ...prev.officials.referee, ...data as any }
+                        }
+                    }))}
                 />
 
                 <div className="space-y-4">
@@ -33,8 +39,8 @@ const Template2Form: React.FC<Props> = ({ state, setState, handleChange }) => {
                         <span className="font-bold text-[10px] uppercase opacity-60">HAKEM ADI</span>
                         <input
                             type="text"
-                            name="author"
-                            value={state.author || ""}
+                            name="officials.referee.name"
+                            value={officials.referee?.name || ""}
                             onChange={handleChange}
                             className="brutal-input h-10 text-sm font-black uppercase"
                             placeholder="HAKEM İSMİ"
@@ -44,8 +50,8 @@ const Template2Form: React.FC<Props> = ({ state, setState, handleChange }) => {
                         <span className="font-bold text-[10px] uppercase opacity-60">MAÇ SAYISI (HAKEM)</span>
                         <input
                             type="text"
-                            name="refMatches"
-                            value={state.refMatches || ""}
+                            name="stats.matches"
+                            value={stats.matches || ""}
                             onChange={handleChange}
                             className="brutal-input h-10 text-sm font-black"
                             placeholder="Örn: 12"
@@ -56,8 +62,8 @@ const Template2Form: React.FC<Props> = ({ state, setState, handleChange }) => {
                             <span className="font-bold text-[8px] uppercase opacity-60">VAR GÖREVİ</span>
                             <input
                                 type="text"
-                                name="refVarMatches"
-                                value={state.refVarMatches || ""}
+                                name="stats.varMatches"
+                                value={stats.varMatches || ""}
                                 onChange={handleChange}
                                 className="brutal-input h-8 text-xs font-bold"
                                 placeholder="Örn: 5"
@@ -67,8 +73,8 @@ const Template2Form: React.FC<Props> = ({ state, setState, handleChange }) => {
                             <span className="font-bold text-[8px] uppercase opacity-60">AVAR GÖREVİ</span>
                             <input
                                 type="text"
-                                name="refAvarMatches"
-                                value={state.refAvarMatches || ""}
+                                name="stats.avarMatches"
+                                value={stats.avarMatches || ""}
                                 onChange={handleChange}
                                 className="brutal-input h-8 text-xs font-bold"
                                 placeholder="Örn: 3"
@@ -85,8 +91,8 @@ const Template2Form: React.FC<Props> = ({ state, setState, handleChange }) => {
                         <span className="text-[9px] font-bold uppercase opacity-50">VAR'A GİTME (M.B)</span>
                         <input
                             type="text"
-                            name="refVarGo"
-                            value={state.refVarGo || ""}
+                            name="stats.varGo"
+                            value={stats.varGo || ""}
                             onChange={handleChange}
                             placeholder="0.5"
                             className="brutal-input text-xs"
@@ -96,8 +102,8 @@ const Template2Form: React.FC<Props> = ({ state, setState, handleChange }) => {
                         <span className="text-[9px] font-bold uppercase opacity-50 text-v-pink">VAR'A ÇAĞIRMA (TOPLAM)</span>
                         <input
                             type="text"
-                            name="refVarCalls"
-                            value={state.refVarCalls || ""}
+                            name="stats.varCalls"
+                            value={stats.varCalls || ""}
                             onChange={handleChange}
                             placeholder="Örn: 8"
                             className="brutal-input text-xs border-v-pink"
@@ -108,8 +114,8 @@ const Template2Form: React.FC<Props> = ({ state, setState, handleChange }) => {
                     <span className="text-[9px] font-bold uppercase opacity-50">HATALI KARAR (YORUMCU)</span>
                     <input
                         type="text"
-                        name="refWrongDecision"
-                        value={state.refWrongDecision || ""}
+                        name="stats.wrongDecision"
+                        value={stats.wrongDecision || ""}
                         onChange={handleChange}
                         placeholder="1.2"
                         className="brutal-input text-xs border-red-200"
@@ -122,8 +128,8 @@ const Template2Form: React.FC<Props> = ({ state, setState, handleChange }) => {
                     <span className="text-[9px] font-bold uppercase opacity-50">SARI KART (ORT)</span>
                     <input
                         type="text"
-                        name="refYellowCards"
-                        value={state.refYellowCards || ""}
+                        name="stats.yellowCards"
+                        value={stats.yellowCards || ""}
                         onChange={handleChange}
                         placeholder="4.2"
                         className="brutal-input text-xs border-yellow-400 bg-yellow-50"
@@ -133,8 +139,8 @@ const Template2Form: React.FC<Props> = ({ state, setState, handleChange }) => {
                     <span className="text-[9px] font-bold uppercase opacity-50">KIRMIZI KART (ORT)</span>
                     <input
                         type="text"
-                        name="refRedCards"
-                        value={state.refRedCards || ""}
+                        name="stats.redCards"
+                        value={stats.redCards || ""}
                         onChange={handleChange}
                         placeholder="0.3"
                         className="brutal-input text-xs border-red-500 bg-red-50"
@@ -144,8 +150,8 @@ const Template2Form: React.FC<Props> = ({ state, setState, handleChange }) => {
                     <span className="text-[9px] font-bold uppercase opacity-50">PENALTI (TOPLAM)</span>
                     <input
                         type="text"
-                        name="refPenalties"
-                        value={state.refPenalties || ""}
+                        name="stats.penalties"
+                        value={stats.penalties || ""}
                         onChange={handleChange}
                         placeholder="5"
                         className="brutal-input text-xs"
@@ -155,8 +161,8 @@ const Template2Form: React.FC<Props> = ({ state, setState, handleChange }) => {
                     <span className="text-[9px] font-bold uppercase opacity-50">FAUL (ORT)</span>
                     <input
                         type="text"
-                        name="refFouls"
-                        value={state.refFouls || ""}
+                        name="stats.fouls"
+                        value={stats.fouls || ""}
                         onChange={handleChange}
                         placeholder="22.5"
                         className="brutal-input text-xs"
@@ -169,29 +175,29 @@ const Template2Form: React.FC<Props> = ({ state, setState, handleChange }) => {
                 <div className="space-y-2">
                     <span className="text-[8px] font-black uppercase opacity-40">Sarı Kart Dağılımı</span>
                     <div className="grid grid-cols-2 gap-2">
-                        <input type="text" name="refHomeYellow" value={state.refHomeYellow || ""} onChange={handleChange} placeholder="EV SAHİBİ" className="brutal-input text-[10px] h-7" />
-                        <input type="text" name="refAwayYellow" value={state.refAwayYellow || ""} onChange={handleChange} placeholder="DEPLASMAN" className="brutal-input text-[10px] h-7" />
+                        <input type="text" name="stats.homeYellow" value={stats.homeYellow || ""} onChange={handleChange} placeholder="EV SAHİBİ" className="brutal-input text-[10px] h-7" />
+                        <input type="text" name="stats.awayYellow" value={stats.awayYellow || ""} onChange={handleChange} placeholder="DEPLASMAN" className="brutal-input text-[10px] h-7" />
                     </div>
                 </div>
                 <div className="space-y-2">
                     <span className="text-[8px] font-black uppercase opacity-40">Kırmızı Kart Dağılımı</span>
                     <div className="grid grid-cols-2 gap-2">
-                        <input type="text" name="refHomeRed" value={state.refHomeRed || ""} onChange={handleChange} placeholder="EV SAHİBİ" className="brutal-input text-[10px] h-7" />
-                        <input type="text" name="refAwayRed" value={state.refAwayRed || ""} onChange={handleChange} placeholder="DEPLASMAN" className="brutal-input text-[10px] h-7" />
+                        <input type="text" name="stats.homeRed" value={stats.homeRed || ""} onChange={handleChange} placeholder="EV SAHİBİ" className="brutal-input text-[10px] h-7" />
+                        <input type="text" name="stats.awayRed" value={stats.awayRed || ""} onChange={handleChange} placeholder="DEPLASMAN" className="brutal-input text-[10px] h-7" />
                     </div>
                 </div>
                 <div className="space-y-2">
                     <span className="text-[8px] font-black uppercase opacity-40">Penaltı Dağılımı</span>
                     <div className="grid grid-cols-2 gap-2">
-                        <input type="text" name="refHomePenalty" value={state.refHomePenalty || ""} onChange={handleChange} placeholder="EV SAHİBİ" className="brutal-input text-[10px] h-7" />
-                        <input type="text" name="refAwayPenalty" value={state.refAwayPenalty || ""} onChange={handleChange} placeholder="DEPLASMAN" className="brutal-input text-[10px] h-7" />
+                        <input type="text" name="stats.homePenalty" value={stats.homePenalty || ""} onChange={handleChange} placeholder="EV SAHİBİ" className="brutal-input text-[10px] h-7" />
+                        <input type="text" name="stats.awayPenalty" value={stats.awayPenalty || ""} onChange={handleChange} placeholder="DEPLASMAN" className="brutal-input text-[10px] h-7" />
                     </div>
                 </div>
                 <div className="space-y-2">
                     <span className="text-[8px] font-black uppercase opacity-40">Faul Dağılımı</span>
                     <div className="grid grid-cols-2 gap-2">
-                        <input type="text" name="refHomeFoul" value={state.refHomeFoul || ""} onChange={handleChange} placeholder="EV SAHİBİ" className="brutal-input text-[10px] h-7" />
-                        <input type="text" name="refAwayFoul" value={state.refAwayFoul || ""} onChange={handleChange} placeholder="DEPLASMAN" className="brutal-input text-[10px] h-7" />
+                        <input type="text" name="stats.homeFoul" value={stats.homeFoul || ""} onChange={handleChange} placeholder="EV SAHİBİ" className="brutal-input text-[10px] h-7" />
+                        <input type="text" name="stats.awayFoul" value={stats.awayFoul || ""} onChange={handleChange} placeholder="DEPLASMAN" className="brutal-input text-[10px] h-7" />
                     </div>
                 </div>
             </div>
@@ -200,9 +206,9 @@ const Template2Form: React.FC<Props> = ({ state, setState, handleChange }) => {
             <div className="pt-4 border-t border-black/10">
                 <span className="font-bold text-[10px] uppercase opacity-60 block mb-2">GALİBİYET / BERABERLİK YÜZDELERİ</span>
                 <div className="grid grid-cols-3 gap-2">
-                    <input type="text" name="refHomeWin" value={state.refHomeWin || ""} onChange={handleChange} placeholder="EV %45" className="brutal-input text-[10px] h-8" />
-                    <input type="text" name="refDraw" value={state.refDraw || ""} onChange={handleChange} placeholder="BER %25" className="brutal-input text-[10px] h-8" />
-                    <input type="text" name="refAwayWin" value={state.refAwayWin || ""} onChange={handleChange} placeholder="DEP %30" className="brutal-input text-[10px] h-8" />
+                    <input type="text" name="stats.homeWin" value={stats.homeWin || ""} onChange={handleChange} placeholder="EV %45" className="brutal-input text-[10px] h-8" />
+                    <input type="text" name="stats.draw" value={stats.draw || ""} onChange={handleChange} placeholder="BER %25" className="brutal-input text-[10px] h-8" />
+                    <input type="text" name="stats.awayWin" value={stats.awayWin || ""} onChange={handleChange} placeholder="DEP %30" className="brutal-input text-[10px] h-8" />
                 </div>
             </div>
         </div>

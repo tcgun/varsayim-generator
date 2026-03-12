@@ -1,13 +1,14 @@
 import React from "react";
-import { AppState } from "../../types";
+import { useStore } from "../../store/useStore";
 import MatchInfoSection from "./MatchInfoSection";
 
 interface Props {
-    state: AppState;
     handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
 }
 
-const Template1Form: React.FC<Props> = ({ state, handleChange }) => {
+const Template1Form: React.FC<Props> = ({ handleChange }) => {
+    const { positionText, refereeDecision, comment, highlight, author } = useStore();
+
     return (
         <div className="space-y-6">
             <div className="space-y-1">
@@ -15,7 +16,7 @@ const Template1Form: React.FC<Props> = ({ state, handleChange }) => {
                 <input
                     type="text"
                     name="positionText"
-                    value={state.positionText || ""}
+                    value={positionText || ""}
                     onChange={handleChange}
                     placeholder="Örn: Ceza Sahası İçi"
                     className="brutal-input text-xs w-full"
@@ -27,7 +28,7 @@ const Template1Form: React.FC<Props> = ({ state, handleChange }) => {
                 <input
                     type="text"
                     name="refereeDecision"
-                    value={state.refereeDecision || ""}
+                    value={refereeDecision || ""}
                     onChange={handleChange}
                     placeholder="Örn: PENALTI"
                     className="brutal-input text-xs w-full font-black"
@@ -38,7 +39,7 @@ const Template1Form: React.FC<Props> = ({ state, handleChange }) => {
                 <span className="font-bold text-sm">Yorumcuların Yorumu</span>
                 <textarea
                     name="comment"
-                    value={state.comment || ""}
+                    value={comment || ""}
                     onChange={handleChange}
                     rows={8}
                     className="brutal-input resize-y text-lg"
@@ -51,7 +52,7 @@ const Template1Form: React.FC<Props> = ({ state, handleChange }) => {
                 <input
                     type="text"
                     name="highlight"
-                    value={state.highlight || ""}
+                    value={highlight || ""}
                     onChange={handleChange}
                     placeholder="örn: kelime1 * kelime2"
                     className="brutal-input border-v-pink"
@@ -63,14 +64,14 @@ const Template1Form: React.FC<Props> = ({ state, handleChange }) => {
                 <input
                     type="text"
                     name="author"
-                    value={state.author || ""}
+                    value={author || ""}
                     onChange={handleChange}
                     className="brutal-input h-12 text-lg font-black uppercase"
                     placeholder="İSİM YAZIN"
                 />
             </label>
 
-            <MatchInfoSection state={state} handleChange={handleChange} showLabel="ŞABLON 1" />
+            <MatchInfoSection handleChange={handleChange} showLabel="ŞABLON 1" />
         </div>
     );
 };

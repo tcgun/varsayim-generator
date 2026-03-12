@@ -1,14 +1,14 @@
 import React from "react";
-import { AppState } from "../../types";
+import { useStore } from "../../store/useStore";
 import { Image as ImageIcon } from "lucide-react";
 
 interface Props {
-    state: AppState;
-    setState: React.Dispatch<React.SetStateAction<AppState>>;
     handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
 }
 
-const SponsorSection: React.FC<Props> = ({ state, setState, handleChange }) => {
+const SponsorSection: React.FC<Props> = ({ handleChange }) => {
+    const { showSponsor, sponsorName, sponsorLogo, setState } = useStore();
+
     return (
         <div className="space-y-4 pt-8 border-t-2 border-black border-dashed">
             <div className="flex items-center justify-between">
@@ -17,7 +17,7 @@ const SponsorSection: React.FC<Props> = ({ state, setState, handleChange }) => {
                     <input
                         type="checkbox"
                         name="showSponsor"
-                        checked={state.showSponsor || false}
+                        checked={showSponsor || false}
                         onChange={handleChange}
                         className="w-4 h-4 accent-v-yellow"
                     />
@@ -25,7 +25,7 @@ const SponsorSection: React.FC<Props> = ({ state, setState, handleChange }) => {
                 </label>
             </div>
 
-            {state.showSponsor && (
+            {showSponsor && (
                 <div className="space-y-4 animate-in fade-in duration-300">
                     <div className="grid grid-cols-[1fr,60px] gap-3">
                         <label className="block space-y-1">
@@ -33,7 +33,7 @@ const SponsorSection: React.FC<Props> = ({ state, setState, handleChange }) => {
                             <input
                                 type="text"
                                 name="sponsorName"
-                                value={state.sponsorName || ""}
+                                value={sponsorName || ""}
                                 onChange={handleChange}
                                 className="brutal-input h-10 text-sm font-bold"
                                 placeholder="Sponsorunuz"
@@ -42,7 +42,7 @@ const SponsorSection: React.FC<Props> = ({ state, setState, handleChange }) => {
                         <div className="space-y-1">
                             <span className="font-bold text-[10px] opacity-40 uppercase">Logo</span>
                             <div className="h-10 w-full border-2 border-dashed border-black/30 rounded flex items-center justify-center overflow-hidden bg-white relative">
-                                {state.sponsorLogo ? <img src={state.sponsorLogo} className="w-full h-full object-contain" /> : <ImageIcon size={16} className="opacity-30" />}
+                                {sponsorLogo ? <img src={sponsorLogo} className="w-full h-full object-contain" /> : <ImageIcon size={16} className="opacity-30" />}
                                 <input type="file" accept="image/*" onChange={(e) => {
                                     const file = e.target.files?.[0];
                                     if (file) {

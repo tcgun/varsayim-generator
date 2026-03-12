@@ -1,99 +1,21 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import { AppState, PRESETS } from "../types";
+import React, { useEffect, useRef, useState } from "react";
+import { useStore } from "../store/useStore";
 import Editor from "../components/Editor";
 import Preview from "../components/Preview";
 import { toPng } from "html-to-image";
 
-const INITIAL_STATE: AppState = {
-  comment: "Penaltı yok. Hücum faulü var.",
-  highlight: "Penaltı yok.",
-  author: "Bahattin Duran",
-  authorTitle: "VARSAYIM ÖZEL YORUMCU",
-  homeTeam: "Kasımpaşa",
-  awayTeam: "Samsunspor",
-  score: "0-1",
-  minute: "57",
-  matchWeek: "24. HAFTA",
-  date: "02.02.2026",
-  separator: "·",
-  bgColor: "#FAF9F6",
-  currentPreset: "ig-story",
-  pattern: "dots",
-  handleX: "varsayimcom",
-  handleInstagram: "varsayimcom",
-  handleFacebook: "varsayimcom",
-  handleYoutube: "varsayimcom",
-  handleTiktok: "varsayimcom",
-  website: "varsayim.com",
-  showMatchInfo: true,
-  showBrandingBar: true,
-  template: "template2",
-  theme: "varsayim",
-  showPositionBox: true,
-  positionText: "Ceza Sahası İçi",
-  positionMinute: "57'",
-  positionLabel: "DAKİKA",
-  refereeDecision: "PENALTI",
-  showMinute: true,
-  contentLayout: "compact",
-  showSponsor: false,
-  sponsorName: "Sponsorunuz",
-  showAuthorImage: true,
-  authorImageX: 50,
-  authorImageY: 50,
-};
-
 type Tab = 'editor' | 'preview';
 
 export default function Home() {
-  const [state, setState] = useState<AppState>(INITIAL_STATE);
+  const state = useStore();
   const [mounted, setMounted] = useState(false);
-  const [activeTab, setActiveTab] = useState<Tab>('editor');
   const captureRef = useRef<HTMLDivElement>(null);
 
-  // Load from localStorage on mount
   useEffect(() => {
-    const saved = localStorage.getItem("varsayim_state");
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        setState({ ...INITIAL_STATE, ...parsed });
-      } catch (e) {
-        console.error("Failed to load state", e);
-      }
-    }
     setMounted(true);
   }, []);
-
-  // Save to localStorage on change
-  useEffect(() => {
-    if (mounted) {
-      try {
-        localStorage.setItem("varsayim_state", JSON.stringify(state));
-      } catch (e) {
-        if (e instanceof DOMException && e.name === 'QuotaExceededError') {
-          console.warn("LocalStorage quota exceeded, attempting to save light state...");
-          // Fallback: Save without images
-          const lightState = { ...state };
-          const imageKeys = [
-            'authorImage', 'varImage', 'avarImage', 'avar2Image',
-            'observerImage', 'representativeImage', 'representative2Image',
-            'representative3Image', 'representative4Image', 'sponsorLogo'
-          ] as const;
-
-          imageKeys.forEach(key => delete (lightState as any)[key]);
-
-          try {
-            localStorage.setItem("varsayim_state", JSON.stringify(lightState));
-          } catch (innerE) {
-            console.error("Even light state save failed", innerE);
-          }
-        }
-      }
-    }
-  }, [state, mounted]);
 
   const handleDownload = async () => {
     if (!captureRef.current) return;
@@ -116,34 +38,9 @@ export default function Home() {
   };
 
   const handleSavePreset = () => {
-    try {
-      localStorage.setItem("varsayim_state", JSON.stringify(state));
-      alert("Ayarlar başarıyla kaydedildi!");
-    } catch (e) {
-      if (e instanceof DOMException && e.name === 'QuotaExceededError') {
-        const confirmSave = confirm(
-          "Görseller çok büyük olduğu için kaydedilemedi. Sadece metinleri kaydetmek ister misiniz?"
-        );
-        if (confirmSave) {
-          const lightState = { ...state };
-          const imageKeys = [
-            'authorImage', 'varImage', 'avarImage', 'avar2Image',
-            'observerImage', 'representativeImage', 'representative2Image',
-            'representative3Image', 'representative4Image', 'sponsorLogo'
-          ] as const;
-          imageKeys.forEach(key => delete (lightState as any)[key]);
-
-          try {
-            localStorage.setItem("varsayim_state", JSON.stringify(lightState));
-            alert("Metinler kaydedildi, ancak görseller hafızadan silinebilir.");
-          } catch (innerE) {
-            alert("Kaydetme işlemi tamamen başarısız oldu.");
-          }
-        }
-      } else {
-        alert("Bilinmeyen bir hata oluştu.");
-      }
-    }
+    // Zustand's persist middleware handles localStorage automatically.
+    // We just show a confirmation here to maintain UX.
+    alert("Ayarlar otomatik olarak kaydedildi!");
   };
 
   if (!mounted) return (
@@ -154,12 +51,8 @@ export default function Home() {
 
   return (
     <main className="min-h-dvh bg-v-gray flex flex-col md:flex-row overflow-hidden relative">
-      <Editor
-        state={state}
-        setState={setState}
-      />
+      <Editor />
       <Preview
-        state={state}
         domRef={captureRef}
         onSavePreset={handleSavePreset}
         onDownload={handleDownload}
