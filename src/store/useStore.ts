@@ -6,6 +6,7 @@ interface StoreState extends AppState {
     updateState: (name: string, value: any) => void;
     setState: (newState: Partial<AppState> | ((prev: AppState) => AppState)) => void;
     resetState: () => void;
+    resetAllPhotos: () => void;
 }
 
 export const INITIAL_STATE: AppState = {
@@ -103,6 +104,24 @@ export const useStore = create<StoreState>()(
             },
 
             resetState: () => set(INITIAL_STATE),
+            
+            resetAllPhotos: () => set((state) => {
+                const newOfficials = { ...state.officials };
+                // Keep the names and positions but remove the images
+                Object.keys(newOfficials).forEach(key => {
+                    const officialKey = key as keyof typeof newOfficials;
+                    if (newOfficials[officialKey]) {
+                        newOfficials[officialKey] = {
+                            ...newOfficials[officialKey]!,
+                            image: undefined,
+                            x: 50,
+                            y: 50,
+                            scale: 1
+                        };
+                    }
+                });
+                return { officials: newOfficials };
+            }),
         }),
         {
             name: 'varsayim_state',

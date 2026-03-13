@@ -73,6 +73,7 @@ const BaseTemplate: React.FC<BaseTemplateProps> = ({
                                 className="w-full h-full object-cover opacity-90 grayscale-[0.3]"
                                 style={{
                                     objectPosition: `${officials.referee.x ?? 50}% ${officials.referee.y ?? 50}%`,
+                                    transformOrigin: `${officials.referee.x ?? 50}% ${officials.referee.y ?? 50}%`,
                                     transform: `scale(${officials.referee.scale ?? 1})`
                                 }}
                             />

@@ -8,7 +8,13 @@ interface Props {
 }
 
 const AppearanceSection: React.FC<Props> = ({ handleChange }) => {
-    const { currentPreset, template, pattern } = useStore();
+    const { currentPreset, template, pattern, resetAllPhotos } = useStore();
+
+    const handleResetPhotos = () => {
+        if (window.confirm("Bütün yüklü fotoğrafları silmek istediğinize emin misiniz? Bu işlem geri alınamaz ve uygulamanın belleğini temizler.")) {
+            resetAllPhotos();
+        }
+    };
 
     return (
         <div className="space-y-4">
@@ -71,6 +77,16 @@ const AppearanceSection: React.FC<Props> = ({ handleChange }) => {
                             </select>
                         </div>
                     </div>
+                </div>
+
+                <div className="pt-2">
+                    <button
+                        onClick={handleResetPhotos}
+                        className="w-full bg-red-500 hover:bg-red-600 text-white font-black uppercase tracking-wider py-4 border-[3px] border-black shadow-brutal transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none active:bg-red-700"
+                    >
+                        TÜM FOTOĞRAFLARI SIFIRLA
+                    </button>
+                    <p className="text-[10px] text-center font-bold text-black/50 mt-2 uppercase italic leading-tight">Yüklenen görseller yavaşlığa veya kalite düşüşüne sebep oluyorsa buradan belleği temizleyebilirsiniz.</p>
                 </div>
             </div>
         </div>

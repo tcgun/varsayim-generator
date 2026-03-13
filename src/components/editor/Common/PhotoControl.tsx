@@ -34,8 +34,8 @@ const PhotoControl: React.FC<Props> = ({
                 const img = new Image();
                 img.onload = () => {
                     // Maximum dimensions for optimization
-                    const MAX_WIDTH = 1200;
-                    const MAX_HEIGHT = 1200;
+                    const MAX_WIDTH = 2500;
+                    const MAX_HEIGHT = 2500;
                     let width = img.width;
                     let height = img.height;
 
@@ -58,7 +58,7 @@ const PhotoControl: React.FC<Props> = ({
                     if (ctx) {
                         ctx.drawImage(img, 0, 0, width, height);
                         // Using higher quality for optimization without much loss
-                        const optimizedImage = canvas.toDataURL('image/jpeg', 0.8);
+                        const optimizedImage = canvas.toDataURL('image/jpeg', 0.95);
                         onUpdate({
                             image: optimizedImage,
                             x: 50,

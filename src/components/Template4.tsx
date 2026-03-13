@@ -128,6 +128,7 @@ const Template4: React.FC<Props> = ({ domRef }) => {
                                         className="w-full h-full object-cover grayscale-[0.2]"
                                         style={{
                                             objectPosition: `${officials.var.x ?? 50}% ${officials.var.y ?? 50}%`,
+                                            transformOrigin: `${officials.var.x ?? 50}% ${officials.var.y ?? 50}%`,
                                             transform: `scale(${officials.var.scale || 1})`,
                                         }}
                                     />
@@ -169,6 +170,7 @@ const Template4: React.FC<Props> = ({ domRef }) => {
                                             className="w-full h-full object-cover grayscale-[0.3]"
                                             style={{
                                                 objectPosition: `${officials.avar.x ?? 50}% ${officials.avar.y ?? 50}%`,
+                                                transformOrigin: `${officials.avar.x ?? 50}% ${officials.avar.y ?? 50}%`,
                                                 transform: `scale(${officials.avar.scale || 1})`,
                                             }}
                                         />
@@ -205,6 +207,7 @@ const Template4: React.FC<Props> = ({ domRef }) => {
                                             className="w-full h-full object-cover grayscale-[0.3]"
                                             style={{
                                                 objectPosition: `${officials.avar2.x ?? 50}% ${officials.avar2.y ?? 50}%`,
+                                                transformOrigin: `${officials.avar2.x ?? 50}% ${officials.avar2.y ?? 50}%`,
                                                 transform: `scale(${officials.avar2.scale || 1})`,
                                             }}
                                         />
