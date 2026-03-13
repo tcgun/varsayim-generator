@@ -36,6 +36,11 @@ const Template5: React.FC<Props> = ({ domRef }) => {
     const isSquare = ratio >= 1 && ratio <= 1.1;
     const isWide = ratio < 1;
 
+    // Üst Bilgiler (Yazı boyutundan bağımsız - Statik)
+    const mainTitlePx = isTall ? 24 : isWide ? 18 : 24;
+    const refereeNamePx = mainTitlePx;
+    const labelPx = isTall ? 14 : isWide ? 10 : 12;
+
     // Tema Renkleri
     const THEMES: Record<string, any> = {
         varsayim: { primary: "bg-[#E2E8F0]", bg: "#FDF6E3", cardBg: "bg-[#FFFFFF]", badge: "bg-[#E2E8F0]", highlight: "bg-[#94A3B8]", border: "border-slate-300", shadow: "shadow-[8px_8px_0px_0px_#CBD5E1]", text: "text-slate-800", quote: "text-slate-300" },
@@ -131,11 +136,42 @@ const Template5: React.FC<Props> = ({ domRef }) => {
     );
 
     return (
-        <BaseTemplate domRef={domRef} overlayContent={overlayContent} showBrandingHeader={false}>
-            <div className={`absolute ${isWide ? 'top-8 right-8' : 'top-12 right-12'} z-50`}>
-                <div className="bg-[#FFD700] text-black px-6 py-2 rounded-brutal shadow-[4px_4px_15px_rgba(255,0,150,0.6)] border-[3px] border-black">
-                    <span className="text-3xl font-black tracking-tighter uppercase text-black leading-none">VARSAYIM</span>
+        <BaseTemplate domRef={domRef} overlayContent={overlayContent} showBrandingHeader={true}>
+            {/* ÜST SOL: BAŞLIK VE MAÇ BİLGİSİ */}
+            <div className="absolute top-0 left-0 p-4 z-[60] flex flex-col items-start gap-2">
+                <div className="bg-[#FFD700] text-black border-[3px] border-black px-6 py-2 shadow-[4px_4px_0px_#000]">
+                    <span
+                        style={{ fontSize: `${mainTitlePx}px` }}
+                        className="font-black uppercase tracking-tighter leading-none"
+                    >
+                        DİJİTAL ANALİZ
+                    </span>
                 </div>
+                {showMatchInfo && (
+                    <div className="bg-black/40 backdrop-blur-3xl px-4 py-2 border-l-8 border-[#FFD700] shadow-[4px_4px_20px_rgba(255,215,0,0.2)] flex flex-col items-start">
+                        <span
+                            style={{ fontSize: `${refereeNamePx}px` }}
+                            className="text-white font-black uppercase italic tracking-tighter leading-none mb-1 drop-shadow-md"
+                        >
+                            {homeTeam} {score || "-"} {awayTeam}
+                        </span>
+                        <div className="flex items-center gap-2">
+                            <span
+                                style={{ fontSize: `${labelPx}px` }}
+                                className="text-[#FFD700] font-black uppercase tracking-widest opacity-90"
+                            >
+                                {matchWeek}
+                            </span>
+                            <span className="text-white/40 text-[10px]">|</span>
+                            <span
+                                style={{ fontSize: `${labelPx}px` }}
+                                className="text-white/60 font-bold uppercase"
+                            >
+                                {date}
+                            </span>
+                        </div>
+                    </div>
+                )}
             </div>
 
             <div className={`relative z-10 flex-1 flex flex-col justify-center px-10 md:px-16 ${isTall ? 'pt-32 pb-56' : isPortrait ? 'pt-24 pb-48' : 'pt-16 pb-32'}`}>
@@ -181,21 +217,6 @@ const Template5: React.FC<Props> = ({ domRef }) => {
                     </div>
                 )}
             </div>
-
-            {showMatchInfo && (
-                <div className={`absolute bottom-24 left-1/2 -translate-x-1/2 z-50 ${isWide ? 'scale-[0.85]' : ''}`}>
-                    <div className={`bg-white border-brutal border-black ${currentTheme.shadow} px-8 py-3 flex flex-col items-center`}>
-                        <p className={`text-xl font-black uppercase tracking-widest text-center text-black`}>
-                            {homeTeam} {score} {awayTeam}
-                        </p>
-                        {matchWeek && (
-                            <p className="text-[10px] font-bold opacity-40 text-center tracking-[0.3em] mt-1 text-black">
-                                {matchWeek} {separator} {date}
-                            </p>
-                        )}
-                    </div>
-                </div>
-            )}
         </BaseTemplate>
     );
 };

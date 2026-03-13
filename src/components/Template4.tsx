@@ -151,17 +151,17 @@ const Template4: React.FC<Props> = ({ domRef }) => {
                 )}
 
                 {/* AVAR KONTEYNERI (YATAY DİZİLİM) */}
-                <div className="flex flex-row items-start justify-center gap-12 w-full animate-in fade-in duration-1000">
+                <div className="flex flex-row items-stretch justify-center gap-12 w-full animate-in fade-in duration-1000">
                     {/* AVAR HAKEMİ KARTU (KÜÇÜK) */}
                     {showAvar && officials.avar?.name && (
-                        <div className="flex flex-col items-center">
+                        <div className="flex flex-col items-stretch">
                             <div
                                 style={{ width: `${avarBoxWidth}px` }}
-                                className="relative border-2 border-v-pink/40 shadow-[0_0_20px_rgba(255,0,150,0.2),_0_0_8px_rgba(255,0,150,0.1)] flex flex-col bg-black overflow-hidden"
+                                className="relative h-full border-2 border-v-pink/40 shadow-[0_0_20px_rgba(255,0,150,0.2),_0_0_8px_rgba(255,0,150,0.1)] flex flex-col bg-black overflow-hidden"
                             >
                                 <div
                                     style={{ height: `${avarBoxImgHeight}px` }}
-                                    className="overflow-hidden relative"
+                                    className="overflow-hidden relative shrink-0"
                                 >
                                     {officials.avar.image ? (
                                         <img
@@ -178,7 +178,7 @@ const Template4: React.FC<Props> = ({ domRef }) => {
                                         </div>
                                     )}
                                 </div>
-                                <div className="bg-black p-5 flex flex-col items-center text-center border-t-2 border-v-pink/80">
+                                <div className="bg-black p-5 flex-1 flex flex-col items-center justify-center text-center border-t-2 border-v-pink/80">
                                     <span style={{ fontSize: `${cardLabelPx * 0.9}px` }} className="text-v-pink font-black uppercase tracking-[0.3em] italic mb-2">AVAR HAKEMİ</span>
                                     <h4 style={{ fontSize: `${avarNamePx}px` }} className="text-white font-black uppercase tracking-tighter leading-tight">
                                         {officials.avar.name}
@@ -190,14 +190,14 @@ const Template4: React.FC<Props> = ({ domRef }) => {
 
                     {/* AVAR 2 HAKEMİ KARTU (KÜÇÜK) */}
                     {showAvar2 && officials.avar2?.name && (
-                        <div className="flex flex-col items-center animate-in fade-in slide-in-from-right-8 duration-1000 delay-150">
+                        <div className="flex flex-col items-stretch animate-in fade-in slide-in-from-right-8 duration-1000 delay-150">
                             <div
                                 style={{ width: `${avarBoxWidth}px` }}
-                                className="relative border-2 border-v-pink/40 shadow-[0_0_20px_rgba(255,0,150,0.2),_0_0_8px_rgba(255,0,150,0.1)] flex flex-col bg-black overflow-hidden"
+                                className="relative h-full border-2 border-v-pink/40 shadow-[0_0_20px_rgba(255,0,150,0.2),_0_0_8px_rgba(255,0,150,0.1)] flex flex-col bg-black overflow-hidden"
                             >
                                 <div
                                     style={{ height: `${avarBoxImgHeight}px` }}
-                                    className="overflow-hidden relative"
+                                    className="overflow-hidden relative shrink-0"
                                 >
                                     {officials.avar2.image ? (
                                         <img
@@ -214,7 +214,7 @@ const Template4: React.FC<Props> = ({ domRef }) => {
                                         </div>
                                     )}
                                 </div>
-                                <div className="bg-black p-5 flex flex-col items-center text-center border-t-2 border-v-pink/80">
+                                <div className="bg-black p-5 flex-1 flex flex-col items-center justify-center text-center border-t-2 border-v-pink/80">
                                     <span style={{ fontSize: `${cardLabelPx * 0.9}px` }} className="text-v-pink font-black uppercase tracking-[0.3em] italic mb-2">AVAR 2 HAKEMİ</span>
                                     <h4 style={{ fontSize: `${avarNamePx}px` }} className="text-white font-black uppercase tracking-tighter leading-tight">
                                         {officials.avar2.name}

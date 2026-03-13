@@ -34,6 +34,11 @@ const Template3: React.FC<Props> = ({ domRef }) => {
 
     const multiplier = fontSizeMultiplier || 1;
 
+    // Üst Bilgiler (Yazı boyutundan bağımsız - Statik)
+    const mainTitlePx = isTall ? 24 : isWide ? 18 : 24;
+    const refereeNamePx = mainTitlePx;
+    const labelPx = isTall ? 14 : isWide ? 10 : 12;
+
     // Font Boyutları (Üst sınırlarla korunmuştur)
     const titleLabelPx = Math.min((isTall ? 14 : isWide ? 14 : 16) * multiplier, 24);
     const mainRefereePx = Math.min((isTall ? 72 : isWide ? 44 : 56) * multiplier, 100);
@@ -58,7 +63,7 @@ const Template3: React.FC<Props> = ({ domRef }) => {
     };
 
     return (
-        <BaseTemplate domRef={domRef} showBrandingHeader={false} showBrandingBar={true}>
+        <BaseTemplate domRef={domRef} showBrandingHeader={true} showBrandingBar={true}>
             {/* ARKAPLAN GRADYANI (Görseldeki gibi merkezden parlayan karanlık) */}
             <div className="absolute inset-0 bg-[#0a0a0a] z-0">
                 <div className="absolute inset-0 bg-gradient-to-b from-[#1a1a1a] via-[#0a0a0a] to-[#050505]" />
@@ -66,33 +71,40 @@ const Template3: React.FC<Props> = ({ domRef }) => {
             </div>
 
             {/* ÜST SOL: BAŞLIK VE MAÇ BİLGİSİ */}
-            <div className="absolute top-10 left-10 z-50 flex flex-col gap-1">
-                <div className="bg-[#FFD700] text-black border-[3px] border-black px-5 py-1.5 shadow-[4px_4px_0px_#000]">
-                    <span className="text-xl md:text-2xl font-black uppercase tracking-tighter">MAÇ GÖREVLİLERİ</span>
+            <div className="absolute top-0 left-0 p-4 z-[60] flex flex-col items-start gap-2">
+                <div className="bg-[#FFD700] text-black border-[3px] border-black px-6 py-2 shadow-[4px_4px_0px_#000]">
+                    <span
+                        style={{ fontSize: `${mainTitlePx}px` }}
+                        className="font-black uppercase tracking-tighter leading-none"
+                    >
+                        MAÇ GÖREVLİLERİ
+                    </span>
                 </div>
                 {showMatchInfo && (
-                    <div className="bg-[#050505] border-[2px] border-[#FFD700]/40 px-5 py-2 flex flex-col items-start shadow-2xl">
-                        <span className="text-white font-black uppercase text-xl italic tracking-tighter leading-none">
-                            {homeTeam} - {awayTeam}
+                    <div className="bg-black/40 backdrop-blur-3xl px-4 py-2 border-l-8 border-[#FFD700] shadow-[4px_4px_20px_rgba(255,215,0,0.2)] flex flex-col items-start">
+                        <span
+                            style={{ fontSize: `${refereeNamePx}px` }}
+                            className="text-white font-black uppercase italic tracking-tighter leading-none mb-1 drop-shadow-md"
+                        >
+                            {homeTeam} {score || "-"} {awayTeam}
                         </span>
-                        <div className="flex items-center gap-2 mt-1">
-                            <span className="text-[#FFD700] text-[10px] font-black uppercase tracking-widest opacity-90">
+                        <div className="flex items-center gap-2">
+                            <span
+                                style={{ fontSize: `${labelPx}px` }}
+                                className="text-[#FFD700] font-black uppercase tracking-widest opacity-90"
+                            >
                                 {matchWeek}
                             </span>
-                            <span className="text-white/40 text-[10px]">·</span>
-                            <span className="text-white/60 text-[10px] font-bold uppercase tracking-widest">
+                            <span className="text-white/40 text-[10px]">|</span>
+                            <span
+                                style={{ fontSize: `${labelPx}px` }}
+                                className="text-white/60 font-bold uppercase"
+                            >
                                 {date}
                             </span>
                         </div>
                     </div>
                 )}
-            </div>
-
-            {/* ÜST SAĞ: LOGO (Parlak ve Keskin) */}
-            <div className="absolute top-10 right-10 z-50">
-                <div className="bg-[#FFD700] text-black border-[3px] border-black px-8 py-2 shadow-[0px_0px_35px_rgba(255,0,150,0.7),4px_4px_0px_rgba(0,0,0,1)]">
-                    <span className="text-3xl font-black uppercase tracking-tighter">VARSAYIM</span>
-                </div>
             </div>
 
             {/* MERKEZ: HAKEM GRUBU */}

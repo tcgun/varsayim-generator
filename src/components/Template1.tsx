@@ -30,6 +30,17 @@ const Template1: React.FC<Props> = ({ domRef }) => {
     const isLandscape = currentPreset.includes('land') || currentPreset.includes('square');
     const isExtremeLandscape = isLandscape && (currentPreset.includes('land'));
 
+    const preset = PRESETS[currentPreset] || PRESETS["ratio-1-1"];
+    const ratio = preset.height / preset.width;
+
+    const isTall = ratio > 1.5;     // 9:16
+    const isWide = ratio < 1;       // 16:9
+
+    // Üst Bilgiler (Yazı boyutundan bağımsız - Statik)
+    const mainTitlePx = isTall ? 24 : isWide ? 18 : 24;
+    const refereeNamePx = mainTitlePx;
+    const labelPx = isTall ? 14 : isWide ? 10 : 12;
+
     const THEMES: Record<string, any> = {
         varsayim: { highlight: "bg-[#94A3B8]", cardBg: "bg-[#FFFFFF]", text: "text-slate-800" },
     };
@@ -97,6 +108,43 @@ const Template1: React.FC<Props> = ({ domRef }) => {
 
     return (
         <BaseTemplate domRef={domRef} bgColor="#42403b">
+            {/* ÜST SOL: BAŞLIK VE MAÇ BİLGİSİ */}
+            <div className="absolute top-0 left-0 p-4 z-[60] flex flex-col items-start gap-2">
+                <div className="bg-[#FFD700] text-black border-[3px] border-black px-6 py-2 shadow-[4px_4px_0px_#000]">
+                    <span
+                        style={{ fontSize: `${mainTitlePx}px` }}
+                        className="font-black uppercase tracking-tighter leading-none"
+                    >
+                        HAKEM YORUMU
+                    </span>
+                </div>
+                {showMatchInfo && (
+                    <div className="bg-black/40 backdrop-blur-3xl px-4 py-2 border-l-8 border-[#FFD700] shadow-[4px_4px_20px_rgba(255,215,0,0.2)] flex flex-col items-start">
+                        <span
+                            style={{ fontSize: `${refereeNamePx}px` }}
+                            className="text-white font-black uppercase italic tracking-tighter leading-none mb-1 drop-shadow-md"
+                        >
+                            {homeTeam} {score || "-"} {awayTeam}
+                        </span>
+                        <div className="flex items-center gap-2">
+                            <span
+                                style={{ fontSize: `${labelPx}px` }}
+                                className="text-[#FFD700] font-black uppercase tracking-widest opacity-90"
+                            >
+                                {matchWeek}
+                            </span>
+                            <span className="text-white/40 text-[10px]">|</span>
+                            <span
+                                style={{ fontSize: `${labelPx}px` }}
+                                className="text-white/60 font-bold uppercase"
+                            >
+                                {date}
+                            </span>
+                        </div>
+                    </div>
+                )}
+            </div>
+
             <div className={`flex-1 flex flex-col items-center justify-center p-[60px]`}>
                 {showPositionBox && (
                     <div className={`relative z-40 ${isExtremeLandscape ? 'mb-2 scale-[0.55] mt-0' : (isLandscape ? 'mt-12 mb-4 scale-75' : 'mt-20 mb-8')} origin-center flex flex-col items-center gap-4 w-full max-w-[90%]`}>
@@ -147,20 +195,6 @@ const Template1: React.FC<Props> = ({ domRef }) => {
                     </div>
                 </div>
 
-                {showMatchInfo && (
-                    <div className="mt-auto mb-12 flex flex-col items-center">
-                        <div className={`${isExtremeLandscape ? 'scale-[0.8]' : ''} flex flex-col items-center drop-shadow-[1px_1px_0.5px_#fff]`}>
-                            <p className={`text-2xl font-black uppercase tracking-widest text-center text-black leading-tight`}>
-                                {homeTeam} {score} {awayTeam}
-                            </p>
-                            {matchWeek && (
-                                <p className="text-[12px] font-black text-black/80 text-center tracking-[0.4em] mt-1.5 uppercase">
-                                    {matchWeek} {separator} {date}
-                                </p>
-                            )}
-                        </div>
-                    </div>
-                )}
             </div>
         </BaseTemplate>
     );
