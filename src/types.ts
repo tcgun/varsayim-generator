@@ -96,6 +96,7 @@ export interface AppState {
   showRepresentative?: boolean;
   showVar?: boolean;
   showAvar?: boolean;
+  showAvar2?: boolean;
 
   // Author Image Positioning (Keep separate for now as it's unique)
   authorImageX?: number;

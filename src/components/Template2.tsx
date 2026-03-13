@@ -20,8 +20,8 @@ const Template2: React.FC<Props> = ({ domRef }) => {
 
     // Dinamik Font Boyutları (Baz Değerler * Çarpan)
     const multiplier = fontSizeMultiplier || 1;
-    const mainTitlePx = (isWide ? 18 : 24) * multiplier;
-    const refereeNamePx = (isTall ? 48 : isWide ? 24 : 36) * multiplier;
+    const mainTitlePx = (isTall ? 24 : isWide ? 18 : 24) * multiplier;
+    const refereeNamePx = mainTitlePx;
     const statLabelPx = (isTall ? 18 : isWide ? 14 : 16) * multiplier;
     const statValuePx = (isTall ? 48 : isWide ? 28 : 36) * multiplier;
     const subStatPx = (isTall ? 14 : isWide ? 10 : 12) * multiplier;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useStore } from "../../store/useStore";
 import MatchInfoSection from "./MatchInfoSection";
 import PhotoControl from "./Common/PhotoControl";
@@ -9,7 +9,6 @@ interface Props {
 
 const Template3Form: React.FC<Props> = ({ handleChange }) => {
     const {
-        author,
         officials,
         showObserver,
         showRepresentative,
@@ -19,8 +18,125 @@ const Template3Form: React.FC<Props> = ({ handleChange }) => {
         setState
     } = useStore();
 
+    const TEAM_NAME_MAP: Record<string, string> = {
+        "BEŞİKTAŞ": "Beşiktaş",
+        "KONYASPOR": "Konyaspor",
+        "GALATASARAY": "Galatasaray",
+        "GÖZTEPE": "Göztepe",
+        "BAŞAKŞEHİR": "Başakşehir Futbol Kulübü",
+        "ANTALYASPOR": "Antalyaspor",
+        "SAMSUNSPOR": "Samsunspor",
+        "TRABZONSPOR": "Trabzonspor",
+        "ALANYASPOR": "Alanyaspor",
+        "FENERBAHÇE": "Fenerbahçe",
+        "GENÇLERBİRLİĞİ": "Gençlerbirliği",
+        "KASIMPAŞA": "Kasımpaşa",
+        "KOCAELİSPOR": "Kocaelispor",
+        "KARAGÜMRÜK": "Fatih Karagümrük",
+        "EYÜPSPOR": "Eyüpspor",
+        "RİZESPOR": "Rizespor",
+        "GAZİANTEP": "Gaziantep FK",
+        "KAYSERİSPOR": "Kayserispor"
+    };
+
+    const cleanTeamName = (rawName: string) => {
+        const upperRaw = rawName.toUpperCase();
+        for (const [key, cleanValue] of Object.entries(TEAM_NAME_MAP)) {
+            if (upperRaw.includes(key)) {
+                return cleanValue;
+            }
+        }
+        // Eğer listede yoksa sadece A.Ş. ve boşlukları temizle
+        return rawName.replace(/\s+A\.Ş\.$/i, "").trim();
+    };
+
+    const [automationText, setAutomationText] = useState("");
+
+    const handleAutomate = () => {
+        if (!automationText.trim()) return;
+
+        const lines = automationText.split('\n').map((l: string) => l.trim()).filter((l: string) => l);
+        if (lines.length < 2) return;
+
+        const newData: any = {
+            officials: { ...officials }
+        };
+
+        // İlk iki satır genellikle takımlardır (Temizlenmiş olarak)
+        newData.homeTeam = cleanTeamName(lines[0]);
+        newData.awayTeam = cleanTeamName(lines[1]);
+
+        let repCount = 1;
+
+        lines.forEach((line: string) => {
+            // Tarih & Saat: 13.03.2026 - 20:00
+            const dateMatch = line.match(/(\d{2}\.\d{2}\.\d{4})\s*-\s*(\d{2}:\d{2})/);
+            if (dateMatch) {
+                newData.date = `${dateMatch[1]} - ${dateMatch[2]}`;
+            }
+
+            // İsim Ayıklama (Regex)
+            const extractName = (rolePattern: string) => {
+                const regex = new RegExp(`(.*)\\(${rolePattern}\\)`, "i");
+                const match = line.match(regex);
+                return match ? match[1].trim() : null;
+            };
+
+            const referee = extractName("Hakem");
+            if (referee) newData.officials.referee = { ...newData.officials.referee, name: referee };
+
+            const as1 = extractName("1\\. Yardımcı Hakem");
+            if (as1) newData.officials.assistant1 = { ...newData.officials.assistant1, name: as1 };
+
+            const as2 = extractName("2\\. Yardımcı Hakem");
+            if (as2) newData.officials.assistant2 = { ...newData.officials.assistant2, name: as2 };
+
+            const fourth = extractName("Dördüncü Hakem");
+            if (fourth) newData.officials.fourthOfficial = { ...newData.officials.fourthOfficial, name: fourth };
+
+            const observer = extractName("Gözlemci");
+            if (observer) newData.officials.observer = { ...newData.officials.observer, name: observer };
+
+            const rep = extractName("Temsilci");
+            if (rep && repCount <= 4) {
+                newData.officials[`representative${repCount}`] = {
+                    ...(newData.officials[`representative${repCount}`] || { x: 50, y: 50, scale: 1 }),
+                    name: rep
+                };
+                repCount++;
+            }
+        });
+
+        setState(prev => ({ ...prev, ...newData }));
+        setAutomationText(""); // Temizle
+        alert("Bilgiler başarıyla dolduruldu!");
+    };
+
     return (
         <div className="space-y-6">
+            {/* OTOMASYON BÖLÜMÜ */}
+            <div className="bg-v-yellow/10 border-2 border-v-yellow p-4 rounded-brutal shadow-brutal space-y-3">
+                <div className="flex items-center gap-2 text-v-yellow">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l2.25-2.25M15.5 7.5l2.25 2.25"></path></svg>
+                    <h4 className="font-black uppercase tracking-tighter">OTOMASYON EDİTÖRÜ</h4>
+                </div>
+                <p className="text-[10px] font-bold opacity-70 uppercase leading-tight">
+                    TFF SİTESİNDEN KOPYALADIĞINIZ MAÇ BİLGİLERİNİ BURAYA YAPIŞTIRIN.
+                </p>
+                <textarea
+                    value={automationText}
+                    onChange={(e) => setAutomationText(e.target.value)}
+                    className="w-full h-24 bg-black/5 border border-v-yellow/30 p-2 text-[11px] font-medium placeholder:opacity-40 uppercase focus:border-v-yellow focus:ring-0 outline-none resize-none"
+                    placeholder="HESAP.COM ANTALYASPOR ..."
+                />
+                <button
+                    onClick={handleAutomate}
+                    className="w-full bg-v-yellow text-black font-black uppercase text-xs py-2 shadow-[2px_2px_0px_#000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all"
+                >
+                    BİLGİLERİ DOLDUR
+                </button>
+            </div>
+
             <div className="bg-black text-white p-4 border-2 border-black rounded-brutal shadow-brutal flex items-center gap-3">
                 <div className="bg-v-yellow text-black p-2 rounded-full">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>

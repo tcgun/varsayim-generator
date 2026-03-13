@@ -14,7 +14,8 @@ const MatchInfoSection: React.FC<Props> = ({ handleChange, title = "Maç Bilgile
         awayTeam,
         date,
         matchWeek,
-        score
+        score,
+        template
     } = useStore();
 
     return (
@@ -81,17 +82,19 @@ const MatchInfoSection: React.FC<Props> = ({ handleChange, title = "Maç Bilgile
                             className="brutal-input text-xs w-full"
                         />
                     </div>
-                    <div className="col-span-2 space-y-1">
-                        <span className="font-bold text-[10px] uppercase opacity-60 block text-center">Skor</span>
-                        <input
-                            type="text"
-                            name="score"
-                            value={score || ""}
-                            onChange={handleChange}
-                            placeholder="0-0"
-                            className="brutal-input text-center font-black text-lg w-full"
-                        />
-                    </div>
+                    {template !== "template3" && (
+                        <div className="col-span-2 space-y-1">
+                            <span className="font-bold text-[10px] uppercase opacity-60 block text-center">Skor</span>
+                            <input
+                                type="text"
+                                name="score"
+                                value={score || ""}
+                                onChange={handleChange}
+                                placeholder="0-0"
+                                className="brutal-input text-center font-black text-lg w-full"
+                            />
+                        </div>
+                    )}
                 </div>
             )}
         </div>

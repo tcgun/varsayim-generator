@@ -6,6 +6,7 @@ import AppearanceSection from "./editor/AppearanceSection";
 import Template1Form from "./editor/Template1Form";
 import Template2Form from "./editor/Template2Form";
 import Template3Form from "./editor/Template3Form";
+import Template4Form from "./editor/Template4Form";
 import BrandingSection from "./editor/BrandingSection";
 import SponsorSection from "./editor/SponsorSection";
 import TypographySection from "./editor/TypographySection";
@@ -27,8 +28,9 @@ const Editor: React.FC = () => {
             case "template2":
                 return <Template2Form handleChange={handleChange} />;
             case "template3":
-            case "template4":
                 return <Template3Form handleChange={handleChange} />;
+            case "template4":
+                return <Template4Form handleChange={handleChange} />;
             default:
                 return (
                     <div className="space-y-6">

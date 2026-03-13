@@ -12,8 +12,9 @@ const Template4: React.FC<Props> = ({ domRef }) => {
     const {
         currentPreset,
         officials,
-        showObserver,
-        showRepresentative,
+        showVar,
+        showAvar,
+        showAvar2,
         showSponsor,
         sponsorLogo,
         sponsorName,
@@ -25,38 +26,37 @@ const Template4: React.FC<Props> = ({ domRef }) => {
         fontSizeMultiplier
     } = useStore();
 
-    const preset = PRESETS[currentPreset] || PRESETS["ig-square"];
+    const preset = PRESETS[currentPreset] || PRESETS["ratio-1-1"];
     const ratio = preset.height / preset.width;
 
-    const isTall = ratio > 1.5;
-    const isPortrait = ratio > 1.1;
-    const isSquare = ratio >= 1 && ratio <= 1.1;
-    const isWide = ratio < 1;
+    const isTall = ratio > 1.5;     // 9:16
+    const isWide = ratio < 1;       // 16:9
 
-    // Dinamik Font ve Kutu Boyutları
     const multiplier = fontSizeMultiplier || 1;
-    const mainTitlePx = (isWide ? 18 : 24) * multiplier;
-    const varNamePx = (isTall ? 72 : isWide ? 24 : 36) * multiplier;
-    const avarNamePx = (isTall ? 32 : isWide ? 20 : 24) * multiplier;
 
-    const isVarAvarOnly = useMemo(() => {
-        return (officials.var?.name || officials.avar?.name || officials.avar2?.name) &&
-            !(showObserver && officials.observer?.name) &&
-            !(showRepresentative && (officials.representative?.name || officials.representative2?.name || officials.representative3?.name || officials.representative4?.name));
-    }, [officials, showObserver, showRepresentative]);
+    // Üst Bilgiler (Yazı boyutundan bağımsız - Statik)
+    const mainTitlePx = isTall ? 24 : isWide ? 18 : 24;
+    const refereeNamePx = mainTitlePx;
+    const labelPx = isTall ? 14 : isWide ? 10 : 12;
+
+    // VAR/AVAR Kart İsim Puntoları (VAR Boyutu Geri Getirildi)
+    const varNamePx = Math.min(34 * multiplier, 34);
+    const avarNamePx = Math.min(17 * multiplier, 17);
+    const cardLabelPx = Math.min(11 * multiplier, 12);
+
+    // Kutu Boyutları (VAR Eski Boyutuna Döndü, AVARlar Eşitlendi)
+    const varBoxWidth = 280 * multiplier;
+    const varBoxImgHeight = 250 * multiplier;
+    const avarBoxWidth = 180 * multiplier;
+    const avarBoxImgHeight = 130 * multiplier;
 
     const overlayContent = (
         <>
-            <div className="absolute inset-0 z-0 pointer-events-none">
-                <div className="absolute top-[-10%] right-[-10%] w-[60%] h-[60%] bg-v-yellow/5 rounded-full blur-[120px]" />
-                <div className="absolute bottom-[-10%] left-[-10%] w-[60%] h-[60%] bg-v-pink/5 rounded-full blur-[120px]" />
-            </div>
-
             {showSponsor && sponsorLogo && (
-                <div className="absolute bottom-20 left-8 bg-white/5 p-4 rounded-brutal border border-white/10 backdrop-blur-sm flex items-center gap-4 animate-in fade-in slide-in-from-bottom-4">
+                <div className="absolute bottom-20 left-8 bg-black/40 p-4 border border-white/10 backdrop-blur-sm flex items-center gap-4">
                     <div className="flex flex-col items-start">
-                        <span className="text-[8px] font-black uppercase tracking-[0.3em] text-v-yellow opacity-50 italic">DESTEKLERİYLE</span>
-                        <span className="text-white font-black italic uppercase tracking-tighter text-xl">{sponsorName || "VARSAYIM PRO"}</span>
+                        <span className="text-[8px] font-black uppercase text-v-pink opacity-50 italic">DESTEKLERİYLE</span>
+                        <span className="text-white font-black italic uppercase tracking-tighter text-xl">{sponsorName || "VARSAYIM"}</span>
                     </div>
                     <img src={sponsorLogo} alt="Sponsor" className="h-10 object-contain brightness-0 invert opacity-80" />
                 </div>
@@ -65,176 +65,162 @@ const Template4: React.FC<Props> = ({ domRef }) => {
     );
 
     return (
-        <BaseTemplate domRef={domRef} overlayContent={overlayContent}>
+        <BaseTemplate domRef={domRef} overlayContent={overlayContent} showBrandingHeader={true} showBrandingBar={true}>
+            {/* Arkaplan Gradyanı */}
+            <div className="absolute inset-0 bg-[#0a0a0a] z-0">
+                <div className="absolute inset-0 bg-gradient-to-b from-[#1a1a1a] via-[#0a0a0a] to-[#050505]" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-[radial-gradient(circle_at_center,rgba(255,20,147,0.03)_0%,transparent_70%)]" />
+            </div>
+            {/* ÜST SOL: BAŞLIK VE MAÇ BİLGİSİ (Template 2 Konumlandırma & Stil - TAM UYUM) */}
             <div className="absolute top-0 left-0 p-4 z-50 flex flex-col items-start gap-2">
-                <div className="bg-black/40 backdrop-blur-3xl px-4 py-2 border-l-8 border-v-yellow shadow-[4px_4px_20px_rgba(255,215,0,0.2)] flex flex-col items-start gap-1 animate-in fade-in slide-in-from-left-4 duration-500">
+                <div className="bg-[#FFD700] text-black border-[3px] border-black px-6 py-2 shadow-[4px_4px_0px_#000]">
                     <span
-                        className={`font-black uppercase tracking-tighter italic text-white drop-shadow-md`}
                         style={{ fontSize: `${mainTitlePx}px` }}
+                        className="font-black uppercase tracking-tighter leading-none"
                     >
-                        {homeTeam || "EV SAHİBİ"} - {awayTeam || "DEPLASMAN"}
+                        VAR / AVAR GÖREVLİLERİ
                     </span>
-                    {(matchWeek || date) && (
-                        <div className="flex items-center gap-2 opacity-80">
-                            <span className="text-xs font-black uppercase tracking-widest text-[#FFD700]">
-                                {matchWeek} {matchWeek && date ? " | " : ""} {date}
+                </div>
+                {showMatchInfo && (
+                    <div className="bg-black/40 backdrop-blur-3xl px-4 py-2 border-l-8 border-[#FFD700] shadow-[4px_4px_20px_rgba(255,215,0,0.2)] flex flex-col items-start">
+                        <span
+                            style={{ fontSize: `${refereeNamePx}px` }}
+                            className="text-white font-black uppercase italic tracking-tighter leading-none mb-1 drop-shadow-md"
+                        >
+                            {homeTeam} - {awayTeam}
+                        </span>
+                        <div className="flex items-center gap-2">
+                            <span
+                                style={{ fontSize: `${labelPx}px` }}
+                                className="text-[#FFD700] font-black uppercase tracking-widest opacity-90"
+                            >
+                                {matchWeek}
+                            </span>
+                            <span className="text-white/40 text-[10px]">|</span>
+                            <span
+                                style={{ fontSize: `${labelPx}px` }}
+                                className="text-white/60 font-bold uppercase"
+                            >
+                                {date}
                             </span>
                         </div>
-                    )}
-                </div>
+                    </div>
+                )}
             </div>
 
-            <div className={`relative z-10 flex-1 w-full flex flex-col items-center justify-center p-8 ${isTall ? 'pt-48 pb-24 gap-6' : isPortrait ? 'pt-40 pb-20 gap-4' : 'pt-24 pb-16 gap-3'}`}>
-                <div className="w-full max-w-5xl flex flex-col gap-6">
-                    {(officials.var?.name || officials.avar?.name || officials.avar2?.name) && (
-                        <div className={`w-full flex flex-col gap-12 items-center mx-auto ${isVarAvarOnly ? 'max-w-4xl' : 'max-w-5xl'}`}>
-                            {officials.var?.name && (
-                                <div className={`group relative ${isVarAvarOnly ? 'w-[480px] h-[560px]' : 'w-80 h-96'} transition-all duration-500`}>
-                                    <div className="absolute inset-0 bg-v-pink translate-x-3 translate-y-3 opacity-20 blur-xl" />
-                                    <div className="relative w-full h-full bg-[#111] border-[6px] border-v-pink shadow-[15px_15px_0px_rgba(255,0,150,0.2)] flex flex-col overflow-hidden">
-                                        <div className="flex-1 min-h-0 relative bg-black overflow-hidden">
-                                            {officials.var.image ? (
-                                                <img
-                                                    src={officials.var.image}
-                                                    style={{
-                                                        objectPosition: `${officials.var.x ?? 50}% ${officials.var.y ?? 50}%`,
-                                                        transform: `scale(${officials.var.scale || 1})`,
-                                                    }}
-                                                    className="w-full h-full object-cover grayscale-[0.3] group-hover:grayscale-0 transition-all duration-700"
-                                                />
-                                            ) : (
-                                                <div className="w-full h-full flex items-center justify-center bg-zinc-900">
-                                                    <span className="text-v-pink/20 font-black text-6xl italic">VAR</span>
-                                                </div>
-                                            )}
-                                        </div>
-                                        <div className="bg-black border-t-4 border-v-pink p-5 flex flex-col items-center text-center">
-                                            <span className="text-v-pink text-2xl font-black uppercase tracking-[0.3em] block mb-2 opacity-90 italic">VAR HAKEMİ</span>
-                                            <h3
-                                                className={`font-black text-white uppercase tracking-tighter leading-none break-words w-full`}
-                                                style={{ fontSize: `${(isVarAvarOnly && isTall) ? varNamePx * 1.5 : varNamePx}px` }}
-                                            >
-                                                {officials.var.name}
-                                            </h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
+            {/* MERKEZ: VAR & AVAR (DİKEY DİZİLİM) */}
+            <div className={`relative z-10 flex-1 flex flex-col items-center justify-center gap-12 px-10 ${isWide ? 'mt-20' : 'mt-32'}`}>
 
-                            {(officials.avar?.name || officials.avar2?.name) && (
-                                <div className={`flex flex-wrap justify-center gap-8 w-full`}>
-                                    {[
-                                        officials.avar,
-                                        officials.avar2
-                                    ].map((avar, idx) => avar?.name && (
-                                        <div key={idx} className={`group relative ${isVarAvarOnly ? 'w-80 h-96' : 'w-64 h-80'} transition-all`}>
-                                            <div className="absolute inset-0 bg-v-pink translate-x-2 translate-y-2 opacity-10 blur-lg" />
-                                            <div className="relative w-full h-full bg-[#111] border-[4px] border-v-pink/60 flex flex-col overflow-hidden opacity-90 hover:opacity-100 hover:border-v-pink transition-all">
-                                                <div className="flex-1 relative bg-black overflow-hidden">
-                                                    {avar.image ? (
-                                                        <img
-                                                            src={avar.image}
-                                                            style={{
-                                                                objectPosition: `${avar.x ?? 50}% ${avar.y ?? 50}%`,
-                                                                transform: `scale(${avar.scale || 1})`,
-                                                            }}
-                                                            className="w-full h-full object-cover grayscale-[0.5] group-hover:grayscale-0 transition-all duration-500"
-                                                        />
-                                                    ) : (
-                                                        <div className="w-full h-full flex items-center justify-center bg-zinc-900">
-                                                            <span className="text-v-pink/10 font-black text-4xl italic">AVAR</span>
-                                                        </div>
-                                                    )}
-                                                    <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-v-pink/60 to-transparent" />
-                                                </div>
-                                                <div className="bg-black/80 border-t border-v-pink/40 p-4">
-                                                    <span className={`${isWide ? 'text-lg' : 'text-2xl'} font-black uppercase tracking-widest block mb-1 text-v-pink`}>AVAR HAKEMİ</span>
-                                                    <h3
-                                                        className={`font-black text-white uppercase tracking-tighter leading-tight`}
-                                                        style={{ fontSize: `${avarNamePx}px` }}
-                                                    >
-                                                        {avar.name}
-                                                    </h3>
-                                                </div>
-                                            </div>
+                {/* VAR HAKEMİ KARTU (BÜYÜK) */}
+                {showVar && officials.var?.name && (
+                    <div className="flex flex-col items-center animate-in fade-in zoom-in duration-700">
+                        <div
+                            style={{ width: `${varBoxWidth}px` }}
+                            className="relative border-2 border-v-pink/50 shadow-[0_0_30px_rgba(255,0,150,0.25),_0_0_10px_rgba(255,0,150,0.15)] flex flex-col bg-black overflow-hidden"
+                        >
+                            <div
+                                style={{ height: `${varBoxImgHeight}px` }}
+                                className="overflow-hidden relative"
+                            >
+                                {officials.var.image ? (
+                                    <img
+                                        src={officials.var.image}
+                                        className="w-full h-full object-cover grayscale-[0.2]"
+                                        style={{
+                                            objectPosition: `${officials.var.x ?? 50}% ${officials.var.y ?? 50}%`,
+                                            transform: `scale(${officials.var.scale || 1})`,
+                                        }}
+                                    />
+                                ) : (
+                                    <div className="w-full h-full bg-zinc-900 flex items-center justify-center">
+                                        <span className="text-v-pink/20 font-black text-8xl italic">VAR</span>
+                                    </div>
+                                )}
+                                <div className="absolute inset-0 shadow-[inset_0_0_100px_rgba(0,0,0,0.5)]" />
+                            </div>
+                            <div className="bg-black p-5 flex flex-col items-center text-center border-t-2 border-v-pink">
+                                <span style={{ fontSize: `${cardLabelPx}px` }} className="text-v-pink font-black uppercase tracking-[0.4em] italic mb-2">VAR HAKEMİ</span>
+                                <h3 style={{ fontSize: `${varNamePx}px` }} className="text-white font-black uppercase italic tracking-tighter leading-none drop-shadow-2xl">
+                                    {officials.var.name}
+                                </h3>
+                            </div>
+                            {/* Arkadaki katman efekti (Görseldeki gibi gölge/derinlik) */}
+                            <div className="absolute -inset-[2px] border-[2px] border-white/5 pointer-events-none" />
+                        </div>
+                    </div>
+                )}
+
+                {/* AVAR KONTEYNERI (YATAY DİZİLİM) */}
+                <div className="flex flex-row items-start justify-center gap-12 w-full animate-in fade-in duration-1000">
+                    {/* AVAR HAKEMİ KARTU (KÜÇÜK) */}
+                    {showAvar && officials.avar?.name && (
+                        <div className="flex flex-col items-center">
+                            <div
+                                style={{ width: `${avarBoxWidth}px` }}
+                                className="relative border-2 border-v-pink/40 shadow-[0_0_20px_rgba(255,0,150,0.2),_0_0_8px_rgba(255,0,150,0.1)] flex flex-col bg-black overflow-hidden"
+                            >
+                                <div
+                                    style={{ height: `${avarBoxImgHeight}px` }}
+                                    className="overflow-hidden relative"
+                                >
+                                    {officials.avar.image ? (
+                                        <img
+                                            src={officials.avar.image}
+                                            className="w-full h-full object-cover grayscale-[0.3]"
+                                            style={{
+                                                objectPosition: `${officials.avar.x ?? 50}% ${officials.avar.y ?? 50}%`,
+                                                transform: `scale(${officials.avar.scale || 1})`,
+                                            }}
+                                        />
+                                    ) : (
+                                        <div className="w-full h-full bg-zinc-900 flex items-center justify-center">
+                                            <span className="text-v-pink/10 font-black text-4xl italic">AVAR</span>
                                         </div>
-                                    ))}
+                                    )}
                                 </div>
-                            )}
+                                <div className="bg-black p-5 flex flex-col items-center text-center border-t-2 border-v-pink/80">
+                                    <span style={{ fontSize: `${cardLabelPx * 0.9}px` }} className="text-v-pink font-black uppercase tracking-[0.3em] italic mb-2">AVAR HAKEMİ</span>
+                                    <h4 style={{ fontSize: `${avarNamePx}px` }} className="text-white font-black uppercase tracking-tighter leading-tight">
+                                        {officials.avar.name}
+                                    </h4>
+                                </div>
+                            </div>
                         </div>
                     )}
 
-                    {((showObserver && officials.observer?.name) || (showRepresentative && (officials.representative?.name || officials.representative2?.name || officials.representative3?.name || officials.representative4?.name))) && (
-                        <div className={`mt-12 flex flex-wrap justify-center gap-6 w-full max-w-6xl`}>
-                            {showObserver && officials.observer?.name && (
-                                <div className="group relative w-80 h-96">
-                                    <div className="absolute inset-0 bg-white/5 translate-x-2 translate-y-2" />
-                                    <div className="relative w-full h-full bg-[#111] border-[4px] border-white/20 flex flex-col overflow-hidden hover:border-white/40 transition-all">
-                                        <div className="flex-1 relative bg-zinc-900 overflow-hidden">
-                                            {officials.observer.image ? (
-                                                <img
-                                                    src={officials.observer.image}
-                                                    style={{
-                                                        objectPosition: `${officials.observer.x ?? 50}% ${officials.observer.y ?? 50}%`,
-                                                        transform: `scale(${officials.observer.scale || 1})`,
-                                                    }}
-                                                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
-                                                />
-                                            ) : (
-                                                <div className="w-full h-full flex items-center justify-center opacity-10">
-                                                    <Globe className="w-24 h-24 text-white" />
-                                                </div>
-                                            )}
-                                            <div className="absolute top-0 left-0 bg-white/10 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white/60">GÖZLEMCİ</div>
+                    {/* AVAR 2 HAKEMİ KARTU (KÜÇÜK) */}
+                    {showAvar2 && officials.avar2?.name && (
+                        <div className="flex flex-col items-center animate-in fade-in slide-in-from-right-8 duration-1000 delay-150">
+                            <div
+                                style={{ width: `${avarBoxWidth}px` }}
+                                className="relative border-2 border-v-pink/40 shadow-[0_0_20px_rgba(255,0,150,0.2),_0_0_8px_rgba(255,0,150,0.1)] flex flex-col bg-black overflow-hidden"
+                            >
+                                <div
+                                    style={{ height: `${avarBoxImgHeight}px` }}
+                                    className="overflow-hidden relative"
+                                >
+                                    {officials.avar2.image ? (
+                                        <img
+                                            src={officials.avar2.image}
+                                            className="w-full h-full object-cover grayscale-[0.3]"
+                                            style={{
+                                                objectPosition: `${officials.avar2.x ?? 50}% ${officials.avar2.y ?? 50}%`,
+                                                transform: `scale(${officials.avar2.scale || 1})`,
+                                            }}
+                                        />
+                                    ) : (
+                                        <div className="w-full h-full bg-zinc-900 flex items-center justify-center">
+                                            <span className="text-v-pink/10 font-black text-4xl italic">AVAR 2</span>
                                         </div>
-                                        <div className="bg-white/5 p-4 border-t border-white/10 backdrop-blur-md">
-                                            <h4 className="text-2xl font-black text-white uppercase tracking-tighter leading-tight">
-                                                {officials.observer.name}
-                                            </h4>
-                                        </div>
-                                    </div>
+                                    )}
                                 </div>
-                            )}
-
-                            {showRepresentative && (officials.representative?.name || officials.representative2?.name || officials.representative3?.name || officials.representative4?.name) && (
-                                <>
-                                    {[
-                                        officials.representative,
-                                        officials.representative2,
-                                        officials.representative3,
-                                        officials.representative4
-                                    ].map((rep, idx) => rep?.name && (
-                                        <div key={idx} className="group relative w-72 h-80 opacity-90 hover:opacity-100 transition-opacity">
-                                            <div className="absolute inset-0 bg-white/5 translate-x-1 translate-y-1" />
-                                            <div className="relative w-full h-full bg-[#111] border-[3px] border-white/10 flex flex-col overflow-hidden hover:border-v-yellow/40 transition-all">
-                                                <div className="flex-1 relative bg-zinc-900 overflow-hidden">
-                                                    {rep.image ? (
-                                                        <img
-                                                            src={rep.image}
-                                                            style={{
-                                                                objectPosition: `${rep.x ?? 50}% ${rep.y ?? 50}%`,
-                                                                transform: `scale(${rep.scale || 1})`,
-                                                            }}
-                                                            className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
-                                                        />
-                                                    ) : (
-                                                        <div className="w-full h-full flex items-center justify-center bg-v-yellow/5">
-                                                            <div className="w-16 h-1 w-16 bg-white/5 rotate-45" />
-                                                            <div className="absolute inset-0 flex items-center justify-center font-black text-4xl text-white/5">REP</div>
-                                                        </div>
-                                                    )}
-                                                    <div className="absolute top-0 right-0 bg-white/5 px-2 py-1 text-[8px] font-black uppercase text-white/40">TEMSİLCİ</div>
-                                                </div>
-                                                <div className="bg-black/50 p-3 backdrop-blur-sm border-t border-white/5">
-                                                    <h4 className="text-lg font-black text-white uppercase tracking-tighter leading-tight line-clamp-2">
-                                                        {rep.name}
-                                                    </h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </>
-                            )}
+                                <div className="bg-black p-5 flex flex-col items-center text-center border-t-2 border-v-pink/80">
+                                    <span style={{ fontSize: `${cardLabelPx * 0.9}px` }} className="text-v-pink font-black uppercase tracking-[0.3em] italic mb-2">AVAR 2 HAKEMİ</span>
+                                    <h4 style={{ fontSize: `${avarNamePx}px` }} className="text-white font-black uppercase tracking-tighter leading-tight">
+                                        {officials.avar2.name}
+                                    </h4>
+                                </div>
+                            </div>
                         </div>
                     )}
                 </div>
