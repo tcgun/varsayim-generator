@@ -21,6 +21,16 @@ export interface OfficialData {
   show?: boolean;
 }
 
+export interface MistakeItem {
+  id: string;
+  minute: string;
+  title: string;
+  description1: string;
+  description2: string;
+  description3: string;
+  icon?: "check" | "cross" | "question" | "none";
+}
+
 export interface AppState {
   comment: string;
   highlight: string;
@@ -97,6 +107,10 @@ export interface AppState {
   showVar?: boolean;
   showAvar?: boolean;
   showAvar2?: boolean;
+
+  // Template 5
+  matchMistakes: MistakeItem[];
+  showNextPageIndicator?: boolean;
 
   // Author Image Positioning (Keep separate for now as it's unique)
   authorImageX?: number;

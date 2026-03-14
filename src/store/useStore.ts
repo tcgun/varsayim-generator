@@ -55,6 +55,25 @@ export const INITIAL_STATE: AppState = {
     authorImageY: 50,
     authorImageScale: 1,
     stats: {},
+    matchMistakes: [
+        {
+            id: "1",
+            minute: "15'",
+            title: "PENALTI BEKLENTİSİ",
+            description1: "Hakem devam dedi",
+            description2: "VAR müdahalesi olmadı",
+            description3: "Yanlış karar"
+        },
+        {
+            id: "2",
+            minute: "45+2'",
+            title: "KIRMIZI KART",
+            description1: "İkinci sarı kart",
+            description2: "Doğru karar",
+            description3: ""
+        }
+    ],
+    showNextPageIndicator: false,
     officials: {
         referee: { name: "Bahattin Duran", x: 50, y: 50, scale: 1 },
         assistant1: { name: "Ceyhun Sesigüzel", x: 50, y: 50, scale: 1 },
@@ -135,6 +154,8 @@ export const useStore = create<StoreState>()(
                     handles: { ...currentState.handles, ...(persistedState.handles || {}) },
                     stats: { ...currentState.stats, ...(persistedState.stats || {}) },
                     officials: { ...currentState.officials, ...(persistedState.officials || {}) },
+                    matchMistakes: persistedState.matchMistakes || currentState.matchMistakes,
+                    showNextPageIndicator: persistedState.showNextPageIndicator ?? currentState.showNextPageIndicator,
                 };
 
                 // Validate currentPreset exists in PRESETS

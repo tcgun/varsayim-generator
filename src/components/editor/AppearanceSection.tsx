@@ -54,7 +54,7 @@ const AppearanceSection: React.FC<Props> = ({ handleChange }) => {
                         <option value="template2">Hakem İstatistikleri</option>
                         <option value="template3">Saha Görevlileri</option>
                         <option value="template4">VAR / AVAR</option>
-                        <option value="template5">5. Şablon (VAR/Hakem Analizi)</option>
+                        <option value="template5">Tartışmalı Pozisyonlar</option>
                     </select>
                 </div>
 
