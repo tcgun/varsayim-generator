@@ -1,6 +1,6 @@
 import React from 'react';
 import { useStore } from '../../store/useStore';
-import { Plus, Trash2 } from 'lucide-react';
+import { Plus, Trash2, ClipboardPaste } from 'lucide-react';
 
 const Template5Form = () => {
     const { 
@@ -13,6 +13,84 @@ const Template5Form = () => {
         const newMistakes = [...matchMistakes];
         newMistakes[index] = { ...newMistakes[index], [field]: value };
         setState({ matchMistakes: newMistakes });
+    };
+
+    const [pasteText, setPasteText] = React.useState('');
+
+    const handlePaste = (rawText: string) => {
+        if (!rawText.trim()) return;
+
+        const blocks = rawText.split(/(?=^inc\d+\b|\binc\d+\b)/im).filter(b => /^inc\d+\b/i.test(b.trim()));
+        
+        if (blocks.length === 0) {
+            alert("Uygun formatta veri bulunamadı. Lütfen tabloyu doğru kopyaladığınızdan emin olun.");
+            return;
+        }
+
+        const newMistakes = blocks.map(block => {
+            const parts = block.split('\t').map(s => s.trim());
+            
+            const inc = parts[0] || '';
+            const minute = parts[1] || '';
+            const title = parts[2] || '';
+            
+            let cardPlayer = '';
+            let refDecision = '';
+            let finalDecision = '';
+            let varIntervention = '';
+
+            if (parts.length >= 8) {
+                varIntervention = parts[3].replace(/[\n\r"]/g, ' ').trim();
+                if (varIntervention === '-') varIntervention = '';
+                
+                const eksik = parts[4].replace(/[\n\r"]/g, ' ').replace(/-$/, '').trim();
+                const hatali = parts[5].replace(/[\n\r"]/g, ' ').replace(/-$/, '').trim();
+                if (eksik && eksik !== '-') cardPlayer = `EKSİK: ${eksik}`;
+                if (hatali && hatali !== '-') {
+                    cardPlayer = cardPlayer ? `${cardPlayer} | HATALI: ${hatali}` : `HATALI: ${hatali}`;
+                }
+                refDecision = parts[6].replace(/[\n\r"]/g, ' ').trim();
+                finalDecision = parts[7].replace(/[\n\r"]/g, ' ').trim();
+            } else if (parts.length === 7) {
+                const eksik = parts[3].replace(/[\n\r"]/g, ' ').replace(/-$/, '').trim();
+                const hatali = parts[4].replace(/[\n\r"]/g, ' ').replace(/-$/, '').trim();
+                if (eksik && eksik !== '-') cardPlayer = `EKSİK: ${eksik}`;
+                if (hatali && hatali !== '-') {
+                    cardPlayer = cardPlayer ? `${cardPlayer} | HATALI: ${hatali}` : `HATALI: ${hatali}`;
+                }
+                refDecision = parts[5].replace(/[\n\r"]/g, ' ').trim();
+                finalDecision = parts[6].replace(/[\n\r"]/g, ' ').trim();
+            } else {
+                const fallbackCard = (parts[3] || '').replace(/[\n\r"]/g, ' ').replace(/-/g, '').trim();
+                if (fallbackCard) cardPlayer = `KART: ${fallbackCard}`;
+                refDecision = parts[4] || ''; 
+                finalDecision = parts[5] || ''; 
+            }
+
+            let icon: "check" | "cross" | "question" = "question";
+            const netUpper = finalDecision.toUpperCase();
+            if (netUpper.includes('DOĞRU')) icon = 'check';
+            else if (netUpper.includes('YANLIŞ') || netUpper.includes('GÖRMELİYDİ') || netUpper.includes('GEREK YOK') || netUpper.includes('SARI KART') || netUpper.includes('KIRMIZI KART')) {
+                if (!netUpper.includes('DOĞRU')) icon = 'cross';
+            }
+
+            return {
+                id: Math.random().toString(36).substr(2, 9),
+                inc,
+                minute,
+                title,
+                description1: '',
+                description2: '',
+                description3: '',
+                refDecision,
+                finalDecision,
+                cardPlayer,
+                varIntervention,
+                icon
+            };
+        });
+
+        setState({ matchMistakes: newMistakes.slice(0, 4) });
     };
 
     const addMistake = () => {
@@ -41,13 +119,33 @@ const Template5Form = () => {
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
-                <h3 className="text-lg font-bold text-white">Tartışmalı Pozisyonlar</h3>
+                <h3 className="text-lg font-bold text-white">Pozisyon Karar Özeti</h3>
                 <button
                     onClick={addMistake}
                     className="flex items-center gap-2 px-3 py-1.5 bg-[#FFD700] text-black font-bold uppercase text-sm hover:bg-[#FFD700]/90 transition-colors"
                 >
                     <Plus className="w-4 h-4" />
                     Pozisyon Ekle
+                </button>
+            </div>
+
+            <div className="p-4 bg-zinc-900 border border-zinc-800 rounded-lg space-y-3">
+                <label className="block text-sm font-bold text-[#FFD700] uppercase">Tablodan Veri Yapıştır</label>
+                <textarea
+                    value={pasteText}
+                    onChange={(e) => setPasteText(e.target.value)}
+                    placeholder="Siteden kopyaladığınız tabloyu buraya yapıştırın (INC Dk Açıklama...)"
+                    className="w-full h-24 bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-300 focus:outline-none focus:border-[#FFD700] resize-y"
+                />
+                <button
+                    onClick={() => {
+                        handlePaste(pasteText);
+                        setPasteText('');
+                    }}
+                    className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-white font-bold rounded transition-colors"
+                >
+                    <ClipboardPaste className="w-4 h-4" />
+                    Verileri Aktar (Maks. 4)
                 </button>
             </div>
 
@@ -151,28 +249,62 @@ const Template5Form = () => {
                             </div>
                         </div>
 
-                        <div className="space-y-2">
-                            <label className="block text-xs font-bold text-zinc-400 uppercase">Açıklamalar (Maks 3 satır)</label>
+                        <div className="grid grid-cols-2 gap-4 mt-4">
+                            <div className="space-y-1">
+                                <label className="block text-xs font-bold text-zinc-400 uppercase">Hakem Kararı</label>
+                                <input
+                                    type="text"
+                                    value={mistake.refDecision || ''}
+                                    onChange={(e) => handleMistakeChange(index, 'refDecision', e.target.value)}
+                                    className="w-full bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#FFD700]"
+                                />
+                            </div>
+                            <div className="space-y-1">
+                                <label className="block text-xs font-bold text-zinc-400 uppercase">Net Karar</label>
+                                <input
+                                    type="text"
+                                    value={mistake.finalDecision || ''}
+                                    onChange={(e) => handleMistakeChange(index, 'finalDecision', e.target.value)}
+                                    className="w-full bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#FFD700]"
+                                />
+                            </div>
+                        </div>
+                        <div className="space-y-1 mt-4">
+                            <label className="block text-xs font-bold text-zinc-400 uppercase">VAR Müdahalesi (Opsiyonel)</label>
+                            <input
+                                type="text"
+                                value={mistake.varIntervention || ''}
+                                onChange={(e) => handleMistakeChange(index, 'varIntervention', e.target.value)}
+                                className="w-full bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#FFD700]"
+                                placeholder="Örn: Penaltı"
+                            />
+                        </div>
+                        <div className="space-y-1 mt-4">
+                            <label className="block text-xs font-bold text-zinc-400 uppercase">Hatalı/Eksik Kart Oyuncusu (Opsiyonel)</label>
+                            <input
+                                type="text"
+                                value={mistake.cardPlayer || ''}
+                                onChange={(e) => handleMistakeChange(index, 'cardPlayer', e.target.value)}
+                                className="w-full bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#FFD700]"
+                                placeholder="Örn: CHRISTOPHER LUNGOYI"
+                            />
+                        </div>
+
+                        <div className="space-y-2 mt-4">
+                            <label className="block text-xs font-bold text-zinc-400 uppercase">Ek Açıklamalar (Maks 2 satır)</label>
                             <input
                                 type="text"
                                 value={mistake.description1}
                                 onChange={(e) => handleMistakeChange(index, 'description1', e.target.value)}
                                 className="w-full bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#FFD700]"
-                                placeholder="1. Satır (Örn: Hakem devam dedi)"
+                                placeholder="1. Satır (İsteğe bağlı)"
                             />
                             <input
                                 type="text"
                                 value={mistake.description2}
                                 onChange={(e) => handleMistakeChange(index, 'description2', e.target.value)}
                                 className="w-full bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#FFD700]"
-                                placeholder="2. Satır (Örn: VAR müdahalesi olmadı)"
-                            />
-                            <input
-                                type="text"
-                                value={mistake.description3}
-                                onChange={(e) => handleMistakeChange(index, 'description3', e.target.value)}
-                                className="w-full bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#FFD700]"
-                                placeholder="3. Satır (İsteğe bağlı)"
+                                placeholder="2. Satır (İsteğe bağlı)"
                             />
                         </div>
                     </div>

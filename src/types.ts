@@ -29,6 +29,11 @@ export interface MistakeItem {
   description2: string;
   description3: string;
   icon?: "check" | "cross" | "question" | "none";
+  inc?: string;
+  refDecision?: string;
+  finalDecision?: string;
+  cardPlayer?: string;
+  varIntervention?: string;
 }
 
 export interface AppState {

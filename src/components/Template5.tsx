@@ -30,16 +30,18 @@ const Template5: React.FC<Props> = ({ domRef }) => {
     const isTall = ratio > 1.5;     // 9:16
     const isWide = ratio < 1;       // 16:9
 
-    const multiplier = fontSizeMultiplier || 1;
+    // Base multiplier specifically for Template 5 (0.5x adjustment)
+    const t5Scale = 0.5;
+    const multiplier = (fontSizeMultiplier || 1) * t5Scale;
 
-    // Font Sizes
-    const mainTitlePx = isTall ? 24 : isWide ? 18 : 24;
+    // Font Sizes (Adjusted to 0.5x scale relative to previous large values)
+    const mainTitlePx = isTall ? 28 : isWide ? 22 : 28;
     const refereeNamePx = mainTitlePx;
-    const labelPx = isTall ? 14 : isWide ? 10 : 12;
+    const labelPx = isTall ? 16 : isWide ? 12 : 14;
 
-    const rowTitlePx = Math.min(20 * multiplier, 24);
-    const rowDescPx = Math.min(14 * multiplier, 16);
-    const minutePx = Math.min(24 * multiplier, 28);
+    const rowTitlePx = Math.min(28 * multiplier, 36);
+    const rowDescPx = Math.min(20 * multiplier, 24);
+    const minutePx = Math.min(36 * multiplier, 48);
 
     const overlayContent = (
         <>
@@ -70,7 +72,7 @@ const Template5: React.FC<Props> = ({ domRef }) => {
                         style={{ fontSize: `${mainTitlePx}px` }}
                         className="font-black uppercase tracking-tighter leading-none"
                     >
-                        TARTIŞMALI POZİSYONLAR
+                        TARTIŞMALI POZİSYONLAR / KARAR ÖZETİ
                     </span>
                 </div>
                 {showMatchInfo && (
@@ -101,16 +103,16 @@ const Template5: React.FC<Props> = ({ domRef }) => {
             </div>
 
             {/* CONTENT LIST */}
-            <div className={`relative z-10 flex-1 w-full flex flex-col items-center justify-center gap-6 px-12 ${isWide ? 'mt-32' : 'mt-48'}`}>
+            <div className={`relative z-10 flex-1 h-full w-full flex flex-col items-stretch justify-between gap-3 md:gap-4 px-6 md:px-8 pt-[160px] md:pt-[180px] pb-6 md:pb-8`}>
                 {matchMistakes.map((mistake, index) => (
                     <div 
                         key={mistake.id}
-                        className="w-full max-w-4xl flex items-center gap-4 md:gap-6 animate-in fade-in slide-in-from-bottom-4"
+                        className="w-full max-w-5xl mx-auto flex-1 flex items-stretch gap-4 md:gap-4 animate-in fade-in slide-in-from-bottom-4 min-h-0"
                         style={{ animationDelay: `${index * 150}ms` }}
                     >
                         {/* OUTSIDE ICON */}
                         {mistake.icon && mistake.icon !== 'none' ? (
-                            <div className="w-12 md:w-16 shrink-0 flex justify-center">
+                            <div className="w-12 md:w-16 shrink-0 flex flex-col justify-center items-center">
                                 {mistake.icon === 'check' && (
                                     <div className="bg-green-500 rounded-full p-2 md:p-3 flex items-center justify-center border-[3px] border-black shadow-[4px_4px_0px_#FFD700]">
                                         <Check className="w-6 h-6 md:w-8 md:h-8 text-white stroke-[3]" />
@@ -131,9 +133,9 @@ const Template5: React.FC<Props> = ({ domRef }) => {
                             <div className="w-12 md:w-16 shrink-0" /> // Placeholder to keep alignment
                         )}
 
-                        <div className="flex-1 bg-[#151515] border-2 border-white/10 flex flex-row shadow-[4px_4px_0px_#FFD700]">
+                        <div className="flex-1 bg-[#151515] border-2 border-white/10 flex flex-row shadow-[4px_4px_0px_#FFD700] overflow-hidden rounded-3xl min-h-0">
                             {/* LEFT: MINUTE */}
-                            <div className="w-24 md:w-32 shrink-0 bg-[#FFD700] flex flex-col items-center justify-center border-r-2 border-black p-4">
+                            <div className="w-20 md:w-24 shrink-0 bg-[#FFD700] flex flex-col items-center justify-center border-r-2 border-black p-2 md:p-4">
                                 <span className="text-black font-black uppercase tracking-widest text-xs md:text-sm opacity-80 mb-1">DAKİKA</span>
                                 <span style={{ fontSize: `${minutePx}px` }} className="text-black font-black italic tracking-tighter leading-none">
                                     {mistake.minute}
@@ -141,30 +143,94 @@ const Template5: React.FC<Props> = ({ domRef }) => {
                             </div>
 
                         {/* MIDDLE: TITLE & ICON */}
-                        <div className="flex-1 shrink-0 flex items-center justify-start border-r-2 border-black/30 p-6 relative overflow-hidden">
+                        <div className="w-1/3 md:w-[35%] shrink-0 flex items-center justify-start border-r-2 border-black/30 p-4 md:p-6 relative overflow-hidden">
                             {/* Accent Glow */}
                             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(ellipse_at_center,rgba(255,215,0,0.1)_0%,transparent_70%)] pointer-events-none" />
                             
                             <div className="flex items-center gap-4 z-10 pl-4 w-full">
-                                <MessageSquareWarning className="w-10 h-10 shrink-0 text-white/50" />
-                                <h3 style={{ fontSize: `${rowTitlePx}px` }} className="text-white font-black uppercase italic tracking-tighter leading-tight text-left drop-shadow-lg">
-                                    {mistake.title}
-                                </h3>
+                                <div className="flex flex-col gap-1 items-start">
+                                    <h3 style={{ fontSize: `${rowTitlePx}px` }} className="text-white font-black uppercase italic tracking-tighter leading-tight text-left drop-shadow-lg">
+                                        {mistake.title}
+                                    </h3>
+                                </div>
                             </div>
                         </div>
 
                         {/* RIGHT: DESCRIPTIONS */}
-                        <div className="flex-1 flex flex-col justify-center p-6 gap-2 bg-[#1a1a1a]">
-                            {[mistake.description1, mistake.description2, mistake.description3].map((desc, i) => (
-                                desc ? (
-                                    <div key={i} className="flex items-center gap-3">
-                                        <div className="w-1.5 h-1.5 rounded-full bg-[#FFD700] shrink-0" />
-                                        <span style={{ fontSize: `${rowDescPx}px` }} className="text-white/90 font-bold uppercase tracking-wide">
-                                            {desc}
-                                        </span>
+                        <div className="flex-1 flex flex-row items-center justify-between p-4 md:p-6 gap-4 bg-[#1a1a1a] relative overflow-hidden">
+                            {/* DECISIONS COLUMN */}
+                            <div className="flex-1 flex flex-col justify-center gap-3 md:gap-4">
+                                {mistake.refDecision && (
+                                    <div className="flex flex-col gap-0.5 relative z-10">
+                                        <span className="text-[12px] md:text-[14px] text-white/40 font-bold uppercase tracking-widest">HAKEM KARARI</span>
+                                        <div className="flex items-center gap-2">
+                                            <div className="w-1.5 h-1.5 rounded-full bg-white/50 shrink-0" />
+                                            <span style={{ fontSize: `${rowDescPx}px` }} className="text-white/80 font-bold uppercase tracking-wide">
+                                                {mistake.refDecision}
+                                            </span>
+                                        </div>
                                     </div>
-                                ) : null
-                            ))}
+                                )}
+
+                                {mistake.finalDecision && (
+                                    <div className="flex flex-col gap-0.5 relative z-10">
+                                        <span className="text-[12px] md:text-[14px] text-[#FFD700]/60 font-bold uppercase tracking-widest">NET KARAR</span>
+                                        <div className="flex items-center gap-2">
+                                            <div className="w-1.5 h-1.5 rounded-full bg-[#FFD700] shrink-0 shadow-[0_0_8px_rgba(255,215,0,0.8)]" />
+                                            <span style={{ fontSize: `${rowDescPx}px` }} className="text-[#FFD700] font-black uppercase tracking-wide">
+                                                {mistake.finalDecision}
+                                            </span>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* DETAILS COLUMN (VAR & KART) */}
+                            {(mistake.cardPlayer || mistake.varIntervention) && (
+                                <div className="flex flex-col items-end justify-center gap-3 shrink-0 ml-auto border-l-2 border-white/5 pl-4 md:pl-6 max-w-[45%]">
+                                    {mistake.varIntervention && (
+                                        <div className="flex flex-col items-end gap-1 text-right">
+                                            <span className="text-[11px] md:text-[12px] text-sky-400/50 font-bold uppercase tracking-widest">VAR MÜDAHALESİ</span>
+                                            <div className="bg-sky-500/10 border border-sky-500/30 px-3 py-1.5 rounded-md shadow-[0_0_10px_rgba(56,189,248,0.1)]">
+                                                <span style={{ fontSize: `${rowDescPx * 0.85}px` }} className="text-sky-400 font-bold uppercase tracking-wide">
+                                                    {mistake.varIntervention}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {mistake.cardPlayer && (
+                                        <div className="flex flex-col items-end gap-1 text-right">
+                                            <span className="text-[11px] md:text-[12px] text-red-100/40 font-bold uppercase tracking-widest">HATALI/EKSİK KART</span>
+                                            <div className="bg-red-500/10 border border-red-500/30 px-3 py-1.5 rounded-md flex items-center gap-2 shadow-[0_0_10px_rgba(239,68,68,0.1)] min-w-0">
+                                                <div className="relative w-4 h-4 flex items-center justify-center shrink-0">
+                                                    <div className="absolute w-2.5 h-3.5 bg-red-500 rounded-[1px] border border-black rotate-[15deg] shadow-sm ml-1" />
+                                                    <div className="absolute w-2.5 h-3.5 bg-yellow-400 rounded-[1px] border border-black -rotate-[10deg] -ml-2 shadow-sm" />
+                                                </div>
+                                                <span style={{ fontSize: `${rowDescPx * 0.85}px` }} className="text-red-100 font-bold uppercase tracking-wide truncate">
+                                                    {mistake.cardPlayer}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+
+                            {/* FALLBACK DESCRIPTIONS */}
+                            {(!mistake.refDecision && !mistake.finalDecision) && (
+                                <div className="flex flex-col gap-2 w-full">
+                                    {[mistake.description1, mistake.description2, mistake.description3].map((desc, i) => (
+                                        desc ? (
+                                            <div key={i} className="flex items-center gap-3">
+                                                <div className="w-1.5 h-1.5 rounded-full bg-[#FFD700] shrink-0" />
+                                                <span style={{ fontSize: `${rowDescPx}px` }} className="text-white/90 font-bold uppercase tracking-wide">
+                                                    {desc}
+                                                </span>
+                                            </div>
+                                        ) : null
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
