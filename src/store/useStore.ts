@@ -1,9 +1,9 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { AppState, OfficialData, PRESETS } from '../types';
+import { AppState, PRESETS } from '../types';
 
 interface StoreState extends AppState {
-    updateState: (name: string, value: any) => void;
+    updateState: (name: string, value: unknown) => void;
     setState: (newState: Partial<AppState> | ((prev: AppState) => AppState)) => void;
     resetState: () => void;
     resetAllPhotos: () => void;
@@ -88,7 +88,36 @@ export const INITIAL_STATE: AppState = {
         representative3: { name: "Levent Kalkan", x: 50, y: 50, scale: 1 },
         representative4: { name: "Ferzende Emre", x: 50, y: 50, scale: 1 },
     },
-    fontSizeMultiplier: 1
+    fontSizeMultiplier: 1,
+    headingFontWeight: "900",
+    bodyFontWeight: "700",
+    titleFontWeight: "900",
+    matchInfoFontWeight: "700",
+    decisionFontWeight: "900",
+    commentFontWeight: "700",
+    authorFontWeight: "900",
+    brandingFontWeight: "700",
+    brandingFontSizeMultiplier: 1,
+    sponsorFontWeight: "900",
+    fixtureFontWeight: "700",
+    fontStyle: "normal",
+    commentFontStyle: "normal",
+
+    fixtureData: {
+        leagueName: "SÜPER LİG",
+        weekTitle: "25. HAFTA FİKSTÜRÜ",
+        byeTeam: "BAY GEÇEN TAKIM | KASIMPAŞA",
+        note: "Tüm maç anlatımları ve puan durumu varsayim.com'da",
+        matches: [
+            { id: "1", dateGroup: "6 MAYIS CUMARTESİ", homeTeam: "Antalyaspor", timeOrScore: "19.00", awayTeam: "Beşiktaş" },
+            { id: "2", dateGroup: "6 MAYIS CUMARTESİ", homeTeam: "Adana Demirspor", timeOrScore: "21.00", awayTeam: "Alanyaspor" },
+            { id: "3", dateGroup: "7 MAYIS PAZAR", homeTeam: "Ümraniyespor", timeOrScore: "13.30", awayTeam: "Sivasspor" },
+            { id: "4", dateGroup: "7 MAYIS PAZAR", homeTeam: "Konyaspor", timeOrScore: "16.00", awayTeam: "Kayserispor" },
+            { id: "5", dateGroup: "7 MAYIS PAZAR", homeTeam: "Giresunspor", timeOrScore: "19.00", awayTeam: "Fenerbahçe" },
+            { id: "6", dateGroup: "8 MAYIS PAZARTESİ", homeTeam: "Galatasaray", timeOrScore: "20.00", awayTeam: "Başakşehir" },
+            { id: "7", dateGroup: "8 MAYIS PAZARTESİ", homeTeam: "Trabzonspor", timeOrScore: "20.00", awayTeam: "Ankaragücü" },
+        ]
+    }
 };
 
 export const useStore = create<StoreState>()(
@@ -101,10 +130,10 @@ export const useStore = create<StoreState>()(
                     if (name.includes('.')) {
                         const keys = name.split('.');
                         const newState = { ...state };
-                        let current: any = newState;
+                        let current: Record<string, unknown> = newState as unknown as Record<string, unknown>;
                         for (let i = 0; i < keys.length - 1; i++) {
-                            current[keys[i]] = { ...current[keys[i]] };
-                            current = current[keys[i]];
+                            current[keys[i]] = { ...(current[keys[i]] as Record<string, unknown>) };
+                            current = current[keys[i]] as Record<string, unknown>;
                         }
                         current[keys[keys.length - 1]] = value;
                         return newState;
@@ -146,16 +175,31 @@ export const useStore = create<StoreState>()(
             name: 'varsayim_state',
             storage: createJSONStorage(() => localStorage),
             // Custom merge to ensure defaults for new properties
-            merge: (persistedState: any, currentState) => {
+            merge: (persistedState: unknown, currentState) => {
                 if (!persistedState) return currentState;
+                const pState = persistedState as Partial<AppState>;
                 const merged = {
                     ...currentState,
-                    ...persistedState,
-                    handles: { ...currentState.handles, ...(persistedState.handles || {}) },
-                    stats: { ...currentState.stats, ...(persistedState.stats || {}) },
-                    officials: { ...currentState.officials, ...(persistedState.officials || {}) },
-                    matchMistakes: persistedState.matchMistakes || currentState.matchMistakes,
-                    showNextPageIndicator: persistedState.showNextPageIndicator ?? currentState.showNextPageIndicator,
+                    ...pState,
+                    handles: { ...currentState.handles, ...(pState.handles || {}) },
+                    stats: { ...currentState.stats, ...(pState.stats || {}) },
+                    officials: { ...currentState.officials, ...(pState.officials || {}) },
+                    matchMistakes: pState.matchMistakes || currentState.matchMistakes,
+                    showNextPageIndicator: pState.showNextPageIndicator ?? currentState.showNextPageIndicator,
+                    headingFontWeight: pState.headingFontWeight || currentState.headingFontWeight || "900",
+                    bodyFontWeight: pState.bodyFontWeight || currentState.bodyFontWeight || "700",
+                    titleFontWeight: pState.titleFontWeight || currentState.titleFontWeight || "900",
+                    matchInfoFontWeight: pState.matchInfoFontWeight || currentState.matchInfoFontWeight || "700",
+                    decisionFontWeight: pState.decisionFontWeight || currentState.decisionFontWeight || "900",
+                    commentFontWeight: pState.commentFontWeight || currentState.commentFontWeight || "700",
+                    authorFontWeight: pState.authorFontWeight || currentState.authorFontWeight || "900",
+                    brandingFontWeight: pState.brandingFontWeight || currentState.brandingFontWeight || "700",
+                    brandingFontSizeMultiplier: pState.brandingFontSizeMultiplier ?? currentState.brandingFontSizeMultiplier ?? 1,
+                    sponsorFontWeight: pState.sponsorFontWeight || currentState.sponsorFontWeight || "900",
+                    fixtureFontWeight: pState.fixtureFontWeight || currentState.fixtureFontWeight || "700",
+                    fontStyle: pState.fontStyle || currentState.fontStyle || "normal",
+                    commentFontStyle: pState.commentFontStyle || currentState.commentFontStyle || "normal",
+                    fixtureData: pState.fixtureData || currentState.fixtureData,
                 };
 
                 // Validate currentPreset exists in PRESETS

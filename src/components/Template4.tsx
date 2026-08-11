@@ -1,7 +1,6 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { useStore } from "../store/useStore";
 import { PRESETS } from "../types";
-import { Globe } from "lucide-react";
 import BaseTemplate from "./common/BaseTemplate";
 
 interface Props {
@@ -23,7 +22,9 @@ const Template4: React.FC<Props> = ({ domRef }) => {
         awayTeam,
         date,
         matchWeek,
-        fontSizeMultiplier
+        fontSizeMultiplier,
+        titleFontWeight = "900",
+        matchInfoFontWeight = "700"
     } = useStore();
 
     const preset = PRESETS[currentPreset] || PRESETS["ratio-1-1"];
@@ -66,17 +67,18 @@ const Template4: React.FC<Props> = ({ domRef }) => {
 
     return (
         <BaseTemplate domRef={domRef} overlayContent={overlayContent} showBrandingHeader={true} showBrandingBar={true}>
-            {/* Arkaplan Gradyanı */}
-            <div className="absolute inset-0 bg-[#0a0a0a] z-0">
-                <div className="absolute inset-0 bg-gradient-to-b from-[#1a1a1a] via-[#0a0a0a] to-[#050505]" />
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-[radial-gradient(circle_at_center,rgba(255,20,147,0.03)_0%,transparent_70%)]" />
+            {/* ARKAPLAN GRADYANI */}
+            <div className="absolute inset-0 bg-[#060608] z-0">
+                <div className="absolute inset-0 bg-linear-to-b from-[#12131a] via-[#08090c] to-[#040405]" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] bg-[radial-gradient(circle_at_center,rgba(255,93,173,0.05)_0%,transparent_70%)]" />
             </div>
-            {/* ÜST SOL: BAŞLIK VE MAÇ BİLGİSİ (Template 2 Konumlandırma & Stil - TAM UYUM) */}
+
+            {/* ÜST SOL: BAŞLIK VE MAÇ BİLGİSİ */}
             <div className="absolute top-0 left-0 p-4 z-50 flex flex-col items-start gap-2">
                 <div className="bg-[#FFD700] text-black border-[3px] border-black px-6 py-2 shadow-[4px_4px_0px_#000]">
                     <span
-                        style={{ fontSize: `${mainTitlePx}px` }}
-                        className="font-black uppercase tracking-tighter leading-none"
+                        style={{ fontSize: `${mainTitlePx}px`, fontWeight: Number(titleFontWeight) }}
+                        className="uppercase tracking-tighter leading-none"
                     >
                         VAR / AVAR GÖREVLİLERİ
                     </span>
@@ -84,22 +86,22 @@ const Template4: React.FC<Props> = ({ domRef }) => {
                 {showMatchInfo && (
                     <div className="bg-black/40 backdrop-blur-3xl px-4 py-2 border-l-8 border-[#FFD700] shadow-[4px_4px_20px_rgba(255,215,0,0.2)] flex flex-col items-start">
                         <span
-                            style={{ fontSize: `${refereeNamePx}px` }}
-                            className="text-white font-black uppercase italic tracking-tighter leading-none mb-1 drop-shadow-md"
+                            style={{ fontSize: `${refereeNamePx}px`, fontWeight: Number(matchInfoFontWeight) }}
+                            className="text-white uppercase tracking-tighter leading-none mb-1 drop-shadow-md"
                         >
                             {homeTeam} - {awayTeam}
                         </span>
                         <div className="flex items-center gap-2">
                             <span
-                                style={{ fontSize: `${labelPx}px` }}
-                                className="text-[#FFD700] font-black uppercase tracking-widest opacity-90"
+                                style={{ fontSize: `${labelPx}px`, fontWeight: Number(matchInfoFontWeight) }}
+                                className="text-[#FFD700] uppercase tracking-widest opacity-90"
                             >
                                 {matchWeek}
                             </span>
                             <span className="text-white/40 text-[10px]">|</span>
                             <span
-                                style={{ fontSize: `${labelPx}px` }}
-                                className="text-white/60 font-bold uppercase"
+                                style={{ fontSize: `${labelPx}px`, fontWeight: Number(matchInfoFontWeight) }}
+                                className="text-white/60 uppercase"
                             >
                                 {date}
                             </span>
@@ -116,7 +118,7 @@ const Template4: React.FC<Props> = ({ domRef }) => {
                     <div className="flex flex-col items-center animate-in fade-in zoom-in duration-700">
                         <div
                             style={{ width: `${varBoxWidth}px` }}
-                            className="relative border-2 border-v-pink/50 shadow-[0_0_30px_rgba(255,0,150,0.25),_0_0_10px_rgba(255,0,150,0.15)] flex flex-col bg-black overflow-hidden"
+                            className="relative border-2 border-v-pink/50 shadow-[0_0_30px_rgba(255,0,150,0.25),0_0_10px_rgba(255,0,150,0.15)] flex flex-col bg-black overflow-hidden"
                         >
                             <div
                                 style={{ height: `${varBoxImgHeight}px` }}
@@ -125,6 +127,7 @@ const Template4: React.FC<Props> = ({ domRef }) => {
                                 {officials.var.image ? (
                                     <img
                                         src={officials.var.image}
+                                        alt={officials.var.name}
                                         className="w-full h-full object-cover grayscale-[0.2]"
                                         style={{
                                             objectPosition: `${officials.var.x ?? 50}% ${officials.var.y ?? 50}%`,
@@ -146,7 +149,7 @@ const Template4: React.FC<Props> = ({ domRef }) => {
                                 </h3>
                             </div>
                             {/* Arkadaki katman efekti (Görseldeki gibi gölge/derinlik) */}
-                            <div className="absolute -inset-[2px] border-[2px] border-white/5 pointer-events-none" />
+                            <div className="absolute -inset-0.5 border-2 border-white/5 pointer-events-none" />
                         </div>
                     </div>
                 )}
@@ -158,7 +161,7 @@ const Template4: React.FC<Props> = ({ domRef }) => {
                         <div className="flex flex-col items-stretch">
                             <div
                                 style={{ width: `${avarBoxWidth}px` }}
-                                className="relative h-full border-2 border-v-pink/40 shadow-[0_0_20px_rgba(255,0,150,0.2),_0_0_8px_rgba(255,0,150,0.1)] flex flex-col bg-black overflow-hidden"
+                                className="relative h-full border-2 border-v-pink/40 shadow-[0_0_20px_rgba(255,0,150,0.2),0_0_8px_rgba(255,0,150,0.1)] flex flex-col bg-black overflow-hidden"
                             >
                                 <div
                                     style={{ height: `${avarBoxImgHeight}px` }}
@@ -167,6 +170,7 @@ const Template4: React.FC<Props> = ({ domRef }) => {
                                     {officials.avar.image ? (
                                         <img
                                             src={officials.avar.image}
+                                            alt={officials.avar.name}
                                             className="w-full h-full object-cover grayscale-[0.3]"
                                             style={{
                                                 objectPosition: `${officials.avar.x ?? 50}% ${officials.avar.y ?? 50}%`,
@@ -195,7 +199,7 @@ const Template4: React.FC<Props> = ({ domRef }) => {
                         <div className="flex flex-col items-stretch animate-in fade-in slide-in-from-right-8 duration-1000 delay-150">
                             <div
                                 style={{ width: `${avarBoxWidth}px` }}
-                                className="relative h-full border-2 border-v-pink/40 shadow-[0_0_20px_rgba(255,0,150,0.2),_0_0_8px_rgba(255,0,150,0.1)] flex flex-col bg-black overflow-hidden"
+                                className="relative h-full border-2 border-v-pink/40 shadow-[0_0_20px_rgba(255,0,150,0.2),0_0_8px_rgba(255,0,150,0.1)] flex flex-col bg-black overflow-hidden"
                             >
                                 <div
                                     style={{ height: `${avarBoxImgHeight}px` }}
@@ -204,6 +208,7 @@ const Template4: React.FC<Props> = ({ domRef }) => {
                                     {officials.avar2.image ? (
                                         <img
                                             src={officials.avar2.image}
+                                            alt={officials.avar2.name}
                                             className="w-full h-full object-cover grayscale-[0.3]"
                                             style={{
                                                 objectPosition: `${officials.avar2.x ?? 50}% ${officials.avar2.y ?? 50}%`,

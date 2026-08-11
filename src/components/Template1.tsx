@@ -22,9 +22,13 @@ const Template1: React.FC<Props> = ({ domRef }) => {
         score,
         awayTeam,
         matchWeek,
-        separator,
         date,
-        fontSizeMultiplier
+        fontSizeMultiplier,
+        titleFontWeight = "900",
+        matchInfoFontWeight = "700",
+        decisionFontWeight = "900",
+        commentFontWeight = "700",
+        authorFontWeight = "900"
     } = useStore();
 
     const isLandscape = currentPreset.includes('land') || currentPreset.includes('square');
@@ -41,7 +45,7 @@ const Template1: React.FC<Props> = ({ domRef }) => {
     const refereeNamePx = mainTitlePx;
     const labelPx = isTall ? 14 : isWide ? 10 : 12;
 
-    const THEMES: Record<string, any> = {
+    const THEMES: Record<string, { highlight: string; cardBg: string; text: string }> = {
         varsayim: { highlight: "bg-[#94A3B8]", cardBg: "bg-[#FFFFFF]", text: "text-slate-800" },
     };
 
@@ -109,11 +113,11 @@ const Template1: React.FC<Props> = ({ domRef }) => {
     return (
         <BaseTemplate domRef={domRef} bgColor="#42403b">
             {/* ÜST SOL: BAŞLIK VE MAÇ BİLGİSİ */}
-            <div className="absolute top-0 left-0 p-4 z-[60] flex flex-col items-start gap-2">
+            <div className="absolute top-0 left-0 p-4 z-60 flex flex-col items-start gap-2">
                 <div className="bg-[#FFD700] text-black border-[3px] border-black px-6 py-2 shadow-[4px_4px_0px_#000]">
                     <span
-                        style={{ fontSize: `${mainTitlePx}px` }}
-                        className="font-black uppercase tracking-tighter leading-none"
+                        style={{ fontSize: `${mainTitlePx}px`, fontWeight: Number(titleFontWeight) }}
+                        className="uppercase tracking-tighter leading-none"
                     >
                         HAKEM YORUMU
                     </span>
@@ -121,22 +125,22 @@ const Template1: React.FC<Props> = ({ domRef }) => {
                 {showMatchInfo && (
                     <div className="bg-black/40 backdrop-blur-3xl px-4 py-2 border-l-8 border-[#FFD700] shadow-[4px_4px_20px_rgba(255,215,0,0.2)] flex flex-col items-start">
                         <span
-                            style={{ fontSize: `${refereeNamePx}px` }}
-                            className="text-white font-black uppercase italic tracking-tighter leading-none mb-1 drop-shadow-md"
+                            style={{ fontSize: `${refereeNamePx}px`, fontWeight: Number(matchInfoFontWeight) }}
+                            className="text-white uppercase tracking-tighter leading-none mb-1 drop-shadow-md"
                         >
                             {homeTeam} {score || "-"} {awayTeam}
                         </span>
                         <div className="flex items-center gap-2">
                             <span
-                                style={{ fontSize: `${labelPx}px` }}
-                                className="text-[#FFD700] font-black uppercase tracking-widest opacity-90"
+                                style={{ fontSize: `${labelPx}px`, fontWeight: Number(matchInfoFontWeight) }}
+                                className="text-[#FFD700] uppercase tracking-widest opacity-90"
                             >
                                 {matchWeek}
                             </span>
                             <span className="text-white/40 text-[10px]">|</span>
                             <span
-                                style={{ fontSize: `${labelPx}px` }}
-                                className="text-white/60 font-bold uppercase"
+                                style={{ fontSize: `${labelPx}px`, fontWeight: Number(matchInfoFontWeight) }}
+                                className="text-white/60 uppercase"
                             >
                                 {date}
                             </span>
@@ -145,14 +149,14 @@ const Template1: React.FC<Props> = ({ domRef }) => {
                 )}
             </div>
 
-            <div className={`flex-1 flex flex-col items-center justify-center p-[60px]`}>
+            <div className={`flex-1 flex flex-col items-center justify-center p-15`}>
                 {showPositionBox && (
                     <div className={`relative z-40 ${isExtremeLandscape ? 'mb-2 scale-[0.55] mt-0' : (isLandscape ? 'mt-12 mb-4 scale-75' : 'mt-20 mb-8')} origin-center flex flex-col items-center gap-4 w-full max-w-[90%]`}>
                         {positionText && (
                             <div className={`bg-white text-black border-brutal border-black ${isLandscape ? 'px-6 py-2' : 'px-10 py-3'} shadow-brutal flex items-center justify-center`}>
                                 <span
-                                    className={`font-black uppercase tracking-tighter text-left text-black leading-snug inline-block`}
-                                    style={{ fontSize: `${positionFontSize}px` }}
+                                    className={`uppercase tracking-tighter text-left text-black leading-snug inline-block`}
+                                    style={{ fontSize: `${positionFontSize}px`, fontWeight: Number(decisionFontWeight) }}
                                 >
                                     {positionText}
                                 </span>
@@ -162,8 +166,8 @@ const Template1: React.FC<Props> = ({ domRef }) => {
                         {refereeDecision && (
                             <div className={`bg-slate-800 border-brutal border-black ${isLandscape ? 'px-6 py-2' : 'px-10 py-3'} shadow-brutal flex items-center justify-center`}>
                                 <span
-                                    className={`font-black uppercase tracking-tighter text-center text-slate-100 leading-snug`}
-                                    style={{ fontSize: `${decisionFontSize}px` }}
+                                    className={`uppercase tracking-tighter text-center text-slate-100 leading-snug`}
+                                    style={{ fontSize: `${decisionFontSize}px`, fontWeight: Number(decisionFontWeight) }}
                                 >
                                     {refereeDecision}
                                 </span>
@@ -171,11 +175,11 @@ const Template1: React.FC<Props> = ({ domRef }) => {
                         )}
 
                         <div className={`w-full max-w-[98%] ${showMatchInfo ? (isExtremeLandscape ? 'mt-1' : (isLandscape ? 'mt-4' : 'mt-8')) : 'mt-0'} mb-0 relative z-10 flex flex-col items-center`}>
-                            <div className={`${currentTheme.cardBg} border-brutal border-black shadow-[8px_8px_0px_0px_#CBD5E1] rounded-brutal flex flex-col items-center justify-center relative min-h-[350px] min-w-[300px] w-fit max-w-full`}>
+                            <div className={`${currentTheme.cardBg} border-brutal border-black shadow-[8px_8px_0px_0px_#CBD5E1] rounded-brutal flex flex-col items-center justify-center relative min-h-87.5 min-w-75 w-fit max-w-full`}>
                                 <div className="relative z-10 w-full h-full flex flex-col items-center justify-center p-10 text-center">
                                     <p
-                                        className={`font-black leading-relaxed text-center whitespace-pre-wrap break-words w-full tracking-normal uppercase ${currentTheme.text}`}
-                                        style={{ fontSize: `${dynamicFontSize}px` }}
+                                        className={`leading-relaxed text-center whitespace-pre-wrap wrap-break-word w-full tracking-normal uppercase ${currentTheme.text}`}
+                                        style={{ fontSize: `${dynamicFontSize}px`, fontWeight: Number(commentFontWeight) }}
                                     >
                                         <span className={`select-none ${currentTheme.text} opacity-10 text-[1.2rem] absolute top-4 left-4 font-serif`}>“</span>
                                         {renderedComment}
@@ -189,7 +193,10 @@ const Template1: React.FC<Props> = ({ domRef }) => {
 
                 <div className={`${isExtremeLandscape ? 'mt-1 mb-1 scale-[0.6]' : (isLandscape ? 'mt-1 mb-2' : 'mt-2 mb-8')} z-10 flex items-center gap-6`}>
                     <div className={`bg-white border-brutal border-black px-6 py-2 shadow-brutal flex flex-col items-center`}>
-                        <h2 className={`${isExtremeLandscape ? 'text-2xl' : (isLandscape ? 'text-3xl' : 'text-5xl')} font-black uppercase tracking-tighter text-center text-black`}>
+                        <h2
+                            style={{ fontWeight: Number(authorFontWeight) }}
+                            className={`${isExtremeLandscape ? 'text-2xl' : (isLandscape ? 'text-3xl' : 'text-5xl')} uppercase tracking-tighter text-center text-black`}
+                        >
                             {author}
                         </h2>
                     </div>

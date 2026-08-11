@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useStore } from "../../store/useStore";
-import MatchInfoSection from "./MatchInfoSection";
+import { AppState, OfficialData } from "../../types";
 import PhotoControl from "./Common/PhotoControl";
 
 interface Props {
@@ -58,8 +58,9 @@ const Template3Form: React.FC<Props> = ({ handleChange }) => {
         const lines = automationText.split('\n').map((l: string) => l.trim()).filter((l: string) => l);
         if (lines.length < 2) return;
 
-        const newData: any = {
-            officials: { ...officials }
+        const newOfficials: Record<string, OfficialData> = { ...officials };
+        const newData: Partial<AppState> = {
+            officials: newOfficials
         };
 
         // İlk iki satır genellikle takımlardır (Temizlenmiş olarak)
@@ -83,24 +84,25 @@ const Template3Form: React.FC<Props> = ({ handleChange }) => {
             };
 
             const referee = extractName("Hakem");
-            if (referee) newData.officials.referee = { ...newData.officials.referee, name: referee };
+            if (referee) newOfficials.referee = { ...newOfficials.referee, name: referee };
 
             const as1 = extractName("1\\. Yardımcı Hakem");
-            if (as1) newData.officials.assistant1 = { ...newData.officials.assistant1, name: as1 };
+            if (as1) newOfficials.assistant1 = { ...newOfficials.assistant1, name: as1 };
 
             const as2 = extractName("2\\. Yardımcı Hakem");
-            if (as2) newData.officials.assistant2 = { ...newData.officials.assistant2, name: as2 };
+            if (as2) newOfficials.assistant2 = { ...newOfficials.assistant2, name: as2 };
 
             const fourth = extractName("Dördüncü Hakem");
-            if (fourth) newData.officials.fourthOfficial = { ...newData.officials.fourthOfficial, name: fourth };
+            if (fourth) newOfficials.fourthOfficial = { ...newOfficials.fourthOfficial, name: fourth };
 
             const observer = extractName("Gözlemci");
-            if (observer) newData.officials.observer = { ...newData.officials.observer, name: observer };
+            if (observer) newOfficials.observer = { ...newOfficials.observer, name: observer };
 
             const rep = extractName("Temsilci");
             if (rep && repCount <= 4) {
-                newData.officials[`representative${repCount}`] = {
-                    ...(newData.officials[`representative${repCount}`] || { x: 50, y: 50, scale: 1 }),
+                const key = `representative${repCount}`;
+                newOfficials[key] = {
+                    ...(newOfficials[key] || { x: 50, y: 50, scale: 1 }),
                     name: rep
                 };
                 repCount++;
@@ -131,7 +133,7 @@ const Template3Form: React.FC<Props> = ({ handleChange }) => {
                 />
                 <button
                     onClick={handleAutomate}
-                    className="w-full bg-v-yellow text-black font-black uppercase text-xs py-2 shadow-[2px_2px_0px_#000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all"
+                    className="w-full bg-v-yellow text-black font-black uppercase text-xs py-2 shadow-[2px_2px_0px_#000] hover:translate-x-px hover:translate-y-px hover:shadow-none transition-all"
                 >
                     BİLGİLERİ DOLDUR
                 </button>
@@ -143,8 +145,6 @@ const Template3Form: React.FC<Props> = ({ handleChange }) => {
                 </div>
                 <h4 className="font-black uppercase tracking-tighter text-v-yellow">MAÇ GÖREVLİLERİ</h4>
             </div>
-
-            <MatchInfoSection handleChange={handleChange} title="Maç Bilgileri" showLabel="" />
 
             {/* Saha Hakemleri */}
             <div className="space-y-4 animate-in fade-in duration-300">
@@ -225,7 +225,7 @@ const Template3Form: React.FC<Props> = ({ handleChange }) => {
                             ...prev,
                             officials: {
                                 ...prev.officials,
-                                var: { ...prev.officials.var, ...data as any }
+                                var: { ...prev.officials.var, ...data as Partial<OfficialData> }
                             }
                         }))}
                         accentColor="v-pink"
@@ -250,7 +250,7 @@ const Template3Form: React.FC<Props> = ({ handleChange }) => {
                             ...prev,
                             officials: {
                                 ...prev.officials,
-                                avar: { ...prev.officials.avar, ...data as any }
+                                avar: { ...prev.officials.avar, ...data as Partial<OfficialData> }
                             }
                         }))}
                         accentColor="v-pink"
@@ -284,7 +284,7 @@ const Template3Form: React.FC<Props> = ({ handleChange }) => {
                                         ...prev,
                                         officials: {
                                             ...prev.officials,
-                                            observer: { ...prev.officials.observer, ...data as any }
+                                            observer: { ...prev.officials.observer, ...data as Partial<OfficialData> }
                                         }
                                     }))}
                                     accentColor="black"
@@ -313,7 +313,7 @@ const Template3Form: React.FC<Props> = ({ handleChange }) => {
                                                 ...prev,
                                                 officials: {
                                                     ...prev.officials,
-                                                    representative1: { ...prev.officials.representative1, ...data as any }
+                                                    representative1: { ...prev.officials.representative1, ...data as Partial<OfficialData> }
                                                 }
                                             }))}
                                             accentColor="black"
@@ -332,7 +332,7 @@ const Template3Form: React.FC<Props> = ({ handleChange }) => {
                                                 ...prev,
                                                 officials: {
                                                     ...prev.officials,
-                                                    representative2: { ...prev.officials.representative2, ...data as any }
+                                                    representative2: { ...prev.officials.representative2, ...data as Partial<OfficialData> }
                                                 }
                                             }))}
                                             accentColor="black"
@@ -351,7 +351,7 @@ const Template3Form: React.FC<Props> = ({ handleChange }) => {
                                                 ...prev,
                                                 officials: {
                                                     ...prev.officials,
-                                                    representative3: { ...prev.officials.representative3, ...data as any }
+                                                    representative3: { ...prev.officials.representative3, ...data as Partial<OfficialData> }
                                                 }
                                             }))}
                                             accentColor="black"
@@ -370,7 +370,7 @@ const Template3Form: React.FC<Props> = ({ handleChange }) => {
                                                 ...prev,
                                                 officials: {
                                                     ...prev.officials,
-                                                    representative4: { ...prev.officials.representative4, ...data as any }
+                                                    representative4: { ...prev.officials.representative4, ...data as Partial<OfficialData> }
                                                 }
                                             }))}
                                             accentColor="black"

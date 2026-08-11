@@ -1,15 +1,16 @@
 import React from "react";
 import { useStore } from "../../store/useStore";
+import FontWeightPicker from "./FontWeightPicker";
 
 interface Props {
     handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
 }
 
 const BrandingSection: React.FC<Props> = ({ handleChange }) => {
-    const { showBrandingBar, handles } = useStore();
+    const { showBrandingBar, handles, brandingFontWeight = "700", updateState } = useStore();
 
     return (
-        <div className="space-y-4 pt-8 border-t-2 border-black border-dashed">
+        <div className="space-y-4">
             <div className="flex items-center justify-between">
                 <h3 className="text-xl font-black uppercase text-black">SOSYAL MEDYA / MARKA</h3>
                 <label className="flex items-center gap-2 cursor-pointer font-bold text-xs bg-black text-white px-2 py-1 rounded-brutal">
@@ -24,7 +25,14 @@ const BrandingSection: React.FC<Props> = ({ handleChange }) => {
                 </label>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <FontWeightPicker
+                label="Sosyal Medya Font Kalınlığı"
+                value={brandingFontWeight}
+                onChange={(val) => updateState("brandingFontWeight", val)}
+                accentColor="yellow"
+            />
+
+            <div className="grid grid-cols-2 gap-4 pt-2">
                 <label className="block space-y-1">
                     <span className="font-bold text-[10px] opacity-40 uppercase">Facebook</span>
                     <input

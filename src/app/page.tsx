@@ -50,7 +50,7 @@ export default function Home() {
   );
 
   return (
-    <main className="min-h-dvh bg-v-gray flex flex-col md:flex-row overflow-hidden relative">
+    <main className="h-screen w-screen bg-v-gray flex flex-col md:flex-row overflow-hidden relative">
       <Editor />
       <Preview
         domRef={captureRef}

@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { Outfit } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 
-const outfit = Outfit({
-  variable: "--font-outfit",
+const poppins = Poppins({
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
   subsets: ["latin", "latin-ext"],
+  variable: "--font-poppins",
 });
 
 export const metadata: Metadata = {
@@ -19,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="tr">
-      <body className={`${outfit.variable} antialiased font-sans`}>
+      <body className={`${poppins.variable} antialiased font-sans`}>
         {children}
       </body>
     </html>

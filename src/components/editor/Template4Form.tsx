@@ -1,6 +1,6 @@
 import React from "react";
 import { useStore } from "../../store/useStore";
-import MatchInfoSection from "./MatchInfoSection";
+import { OfficialData } from "../../types";
 import PhotoControl from "./Common/PhotoControl";
 
 interface Props {
@@ -13,16 +13,13 @@ const Template4Form: React.FC<Props> = ({ handleChange }) => {
         showVar,
         showAvar,
         showAvar2,
-        template,
         setState
     } = useStore();
 
     return (
         <div className="space-y-6">
-            <MatchInfoSection handleChange={handleChange} title="Maç Bilgileri" showLabel="" />
-
             {/* VAR / AVAR Bölümü */}
-            <div className="space-y-6 pt-4 border-t border-black/10">
+            <div className="space-y-6">
                 <div className="flex items-center justify-between">
                     <h4 className="font-black uppercase tracking-tighter text-v-pink underline decoration-2">VAR ODASI GÖREVLİLERİ</h4>
                     <div className="flex gap-4">
@@ -54,7 +51,7 @@ const Template4Form: React.FC<Props> = ({ handleChange }) => {
                                 ...prev,
                                 officials: {
                                     ...prev.officials,
-                                    var: { ...prev.officials.var, ...data as any }
+                                    var: { ...prev.officials.var, ...(data as Partial<OfficialData>) }
                                 }
                             }))}
                             accentColor="v-pink"
@@ -84,7 +81,7 @@ const Template4Form: React.FC<Props> = ({ handleChange }) => {
                                 ...prev,
                                 officials: {
                                     ...prev.officials,
-                                    avar: { ...prev.officials.avar, ...data as any }
+                                    avar: { ...prev.officials.avar, ...(data as Partial<OfficialData>) }
                                 }
                             }))}
                             accentColor="v-pink"
@@ -115,7 +112,7 @@ const Template4Form: React.FC<Props> = ({ handleChange }) => {
                                     ...prev,
                                     officials: {
                                         ...prev.officials,
-                                        avar2: { ...prev.officials.avar2, ...data as any }
+                                        avar2: { ...prev.officials.avar2, ...(data as Partial<OfficialData>) }
                                     }
                                 }))}
                                 accentColor="v-pink"

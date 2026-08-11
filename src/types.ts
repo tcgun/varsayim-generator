@@ -36,6 +36,36 @@ export interface MistakeItem {
   varIntervention?: string;
 }
 
+export type FontWeightOption = "100" | "200" | "300" | "400" | "500" | "600" | "700" | "800" | "900";
+
+export const FONT_WEIGHT_OPTIONS: { label: string; value: FontWeightOption; weightName: string }[] = [
+  { label: "Thin (100)", value: "100", weightName: "Thin" },
+  { label: "ExtraLight (200)", value: "200", weightName: "ExtraLight" },
+  { label: "Light (300)", value: "300", weightName: "Light" },
+  { label: "Regular (400)", value: "400", weightName: "Regular" },
+  { label: "Medium (500)", value: "500", weightName: "Medium" },
+  { label: "SemiBold (600)", value: "600", weightName: "SemiBold" },
+  { label: "Bold (700)", value: "700", weightName: "Bold" },
+  { label: "ExtraBold (800)", value: "800", weightName: "ExtraBold" },
+  { label: "Black (900)", value: "900", weightName: "Black" },
+];
+
+export interface FixtureMatch {
+  id: string;
+  homeTeam: string;
+  awayTeam: string;
+  timeOrScore: string;
+  dateGroup?: string;
+}
+
+export interface FixtureData {
+  leagueName?: string;
+  weekTitle?: string;
+  byeTeam?: string;
+  note?: string;
+  matches: FixtureMatch[];
+}
+
 export interface AppState {
   comment: string;
   highlight: string;
@@ -67,7 +97,7 @@ export interface AppState {
   contentLayout?: "compact" | "spread";
   authorImage?: string;
   showAuthorImage: boolean;
-  template: "template1" | "template2" | "template3" | "template4" | "template5";
+  template: "template1" | "template2" | "template3" | "template4" | "template5" | "template6";
   theme: "varsayim";
   showPositionBox: boolean;
   positionText: string;
@@ -117,9 +147,25 @@ export interface AppState {
   matchMistakes: MistakeItem[];
   showNextPageIndicator?: boolean;
 
-  // Author Image Positioning (Keep separate for now as it's unique)
+  // Author Image Positioning
   authorImageX?: number;
   authorImageY?: number;
   authorImageScale?: number;
   fontSizeMultiplier: number;
+  headingFontWeight?: FontWeightOption;
+  bodyFontWeight?: FontWeightOption;
+  titleFontWeight?: FontWeightOption;
+  matchInfoFontWeight?: FontWeightOption;
+  decisionFontWeight?: FontWeightOption;
+  commentFontWeight?: FontWeightOption;
+  authorFontWeight?: FontWeightOption;
+  brandingFontWeight?: FontWeightOption;
+  brandingFontSizeMultiplier?: number;
+  sponsorFontWeight?: FontWeightOption;
+  fixtureFontWeight?: FontWeightOption;
+  fontStyle?: "normal" | "italic";
+  commentFontStyle?: "normal" | "italic";
+
+  // Template 6 - Fixture Data
+  fixtureData: FixtureData;
 }

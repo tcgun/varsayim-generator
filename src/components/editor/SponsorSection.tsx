@@ -1,16 +1,17 @@
 import React from "react";
 import { useStore } from "../../store/useStore";
 import { Image as ImageIcon } from "lucide-react";
+import FontWeightPicker from "./FontWeightPicker";
 
 interface Props {
     handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
 }
 
 const SponsorSection: React.FC<Props> = ({ handleChange }) => {
-    const { showSponsor, sponsorName, sponsorLogo, setState } = useStore();
+    const { showSponsor, sponsorName, sponsorLogo, sponsorFontWeight = "900", setState, updateState } = useStore();
 
     return (
-        <div className="space-y-4 pt-8 border-t-2 border-black border-dashed">
+        <div className="space-y-4">
             <div className="flex items-center justify-between">
                 <h3 className="text-xl font-black uppercase text-black">SPONSOR</h3>
                 <label className="flex items-center gap-2 cursor-pointer font-bold text-xs bg-black text-white px-2 py-1 rounded-brutal">
@@ -27,7 +28,14 @@ const SponsorSection: React.FC<Props> = ({ handleChange }) => {
 
             {showSponsor && (
                 <div className="space-y-4 animate-in fade-in duration-300">
-                    <div className="grid grid-cols-[1fr,60px] gap-3">
+                    <FontWeightPicker
+                        label="Sponsor Yazısı Font Kalınlığı"
+                        value={sponsorFontWeight}
+                        onChange={(val) => updateState("sponsorFontWeight", val)}
+                        accentColor="pink"
+                    />
+
+                    <div className="grid grid-cols-[1fr,60px] gap-3 pt-1">
                         <label className="block space-y-1">
                             <span className="font-bold text-[10px] opacity-40 uppercase">Sponsor Adı</span>
                             <input
@@ -42,7 +50,7 @@ const SponsorSection: React.FC<Props> = ({ handleChange }) => {
                         <div className="space-y-1">
                             <span className="font-bold text-[10px] opacity-40 uppercase">Logo</span>
                             <div className="h-10 w-full border-2 border-dashed border-black/30 rounded flex items-center justify-center overflow-hidden bg-white relative">
-                                {sponsorLogo ? <img src={sponsorLogo} className="w-full h-full object-contain" /> : <ImageIcon size={16} className="opacity-30" />}
+                                {sponsorLogo ? <img src={sponsorLogo} alt="Sponsor Logo" className="w-full h-full object-contain" /> : <ImageIcon size={16} className="opacity-30" />}
                                 <input type="file" accept="image/*" onChange={(e) => {
                                     const file = e.target.files?.[0];
                                     if (file) {

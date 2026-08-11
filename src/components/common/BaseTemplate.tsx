@@ -30,11 +30,26 @@ const BaseTemplate: React.FC<BaseTemplateProps> = ({
         pattern,
         handles,
         showBrandingBar: showStateBrandingBar,
-        bgColor: storeBgColor
+        bgColor: storeBgColor,
+        headingFontWeight,
+        bodyFontWeight,
+        titleFontWeight = "900",
+        brandingFontWeight = "700",
+        fontStyle
     } = useStore();
 
     const preset = PRESETS[currentPreset] || PRESETS["ig-square"];
     const isLandscape = preset.width > preset.height;
+    const fixedBrandingPx = 16;
+
+    const activeHandles = [
+        { key: 'website', label: handles.website, icon: <Globe size={22} className="text-v-yellow" /> },
+        { key: 'instagram', label: handles.instagram, icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg> },
+        { key: 'tiktok', label: handles.tiktok, icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" /></svg> },
+        { key: 'twitter', label: handles.twitter, icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932 6.064-6.932zm-1.292 19.49h2.039L6.486 3.24H4.298l13.311 17.403z" /></svg> },
+        { key: 'facebook', label: handles.facebook, icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg> },
+        { key: 'youtube', label: handles.youtube, icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg> }
+    ].filter(item => item.label && item.label.trim() !== "");
 
     // Tema Renkleri
     const THEMES: Record<string, any> = {
@@ -59,7 +74,11 @@ const BaseTemplate: React.FC<BaseTemplateProps> = ({
                 width: preset.width,
                 height: preset.height,
                 backgroundColor: isRefereeBg ? undefined : (propBgColor || storeBgColor || currentTheme.bg),
-            }}
+                fontFamily: "var(--font-poppins), 'Poppins', sans-serif",
+                fontStyle: fontStyle || 'normal',
+                '--heading-font-weight': headingFontWeight || '900',
+                '--body-font-weight': bodyFontWeight || '700',
+            } as React.CSSProperties}
             id="capture-area"
         >
             {/* BACKGROUND LAYER */}
@@ -80,7 +99,7 @@ const BaseTemplate: React.FC<BaseTemplateProps> = ({
                         ) : (
                             <div className="w-full h-full bg-slate-900" />
                         )}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+                        <div className="absolute inset-0 bg-linear-to-t from-black via-black/40 to-transparent" />
                     </>
                 ) : (
                     <>
@@ -101,7 +120,7 @@ const BaseTemplate: React.FC<BaseTemplateProps> = ({
 
             {/* LOGO (Right Top) */}
             {showLogo && showBrandingHeader && (
-                <div className={`absolute ${isLandscape ? 'top-4 right-4' : 'top-6 right-6'} z-[60]`}>
+                <div className={`absolute ${isLandscape ? 'top-4 right-4' : 'top-6 right-6'} z-60`}>
                     <div className="bg-[#FFD700] text-black border-[3px] border-black shadow-[4px_4px_15px_rgba(255,0,150,0.4)] px-8 py-3">
                         <span className="text-4xl font-black tracking-tighter uppercase text-black leading-none select-none">
                             VARSAYIM
@@ -124,36 +143,22 @@ const BaseTemplate: React.FC<BaseTemplateProps> = ({
 
             {/* BOTTOM BAR AREA */}
             <div className="relative z-50 flex flex-col items-center w-full">
-                {/* Marka Çubuğu (Branding Bar) */}
-                {showBrandingBar && showStateBrandingBar && (
-                    <div className="w-full bg-black text-white py-4 px-8 border-t-brutal border-white/20 flex items-center justify-between">
-                        {/* Web Sitesi (Sol) */}
-                        <div className="flex items-center gap-2">
-                            <Globe size={24} className="text-v-yellow" />
-                            <span className="font-bold text-xl tracking-tight">{handles.website}</span>
-                        </div>
-
-                        {/* Sosyal Medya Kanalları (Orta/Sağ) */}
-                        <div className="flex items-center gap-5">
-                            {[
-                                { key: 'instagram', icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg> },
-                                { key: 'tiktok', icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" /></svg> },
-                                { key: 'twitter', icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932 6.064-6.932zm-1.292 19.49h2.039L6.486 3.24H4.298l13.311 17.403z" /></svg> },
-                                { key: 'facebook', icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg> },
-                                { key: 'youtube', icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg> }
-                            ].map((handle) => {
-                                const value = (handles as any)[handle.key];
-                                if (!value) return null;
-                                return (
-                                    <div key={handle.key} className="flex items-center gap-2 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all">
-                                        <div className="bg-white/10 p-1.5 rounded">
-                                            {handle.icon}
-                                        </div>
-                                        <span className="font-bold text-lg tracking-tight">{value}</span>
-                                    </div>
-                                );
-                            })}
-                        </div>
+                {/* Marka Çubuğu (Tek Satır Sabit) */}
+                {showBrandingBar && showStateBrandingBar && activeHandles.length > 0 && (
+                    <div className="w-full bg-black text-white py-3.5 px-6 border-t-brutal border-white/20 flex items-center justify-around gap-4 flex-nowrap overflow-hidden">
+                        {activeHandles.map((handle) => (
+                            <div key={handle.key} className="flex items-center gap-2 shrink-0 whitespace-nowrap">
+                                <div className="bg-white/10 p-1.5 rounded flex items-center justify-center shrink-0">
+                                    {handle.icon}
+                                </div>
+                                <span
+                                    style={{ fontSize: `${fixedBrandingPx}px`, fontWeight: Number(brandingFontWeight) }}
+                                    className="tracking-tight leading-none truncate"
+                                >
+                                    {handle.label}
+                                </span>
+                            </div>
+                        ))}
                     </div>
                 )}
             </div>
